@@ -40,11 +40,13 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: user/app:latest
+          tags: hanle23/portfolio:latest
   # Build job
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Detect package manager
         id: detect-package-manager
         run: |
