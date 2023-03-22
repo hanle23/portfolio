@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const DynamicAbout = dynamic(() => import("./about"), {
+const DynamicAbout = dynamic(() => import("./About"), {
   loading: () => <p>Loading...</p>,
 });
 Home.title = "Homepage";
