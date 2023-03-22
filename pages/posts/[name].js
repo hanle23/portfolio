@@ -1,12 +1,13 @@
-// export default function Post({ post }) {
-//   return (
-//     <ul>
-//       {posts.map((post) => (
-//         <li>{post.name}</li>
-//       ))}
-//     </ul>
-//   );
-// }
+export default function Post({ post }) {
+  return (
+    // <ul>
+    //   {posts.map((post) => (
+    //     <li>{post.name}</li>
+    //   ))}
+    // </ul>
+    <div>place holder</div>
+  );
+}
 
 export async function getStaticProps({ params }) {
   const res = await fetch(`https://.../posts/${params.name}`);
