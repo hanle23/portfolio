@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
+    "@nextui-org/react": "^1.0.0-beta.12",
     "next": "13.2.1",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
