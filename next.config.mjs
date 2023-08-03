@@ -6,6 +6,10 @@ const nextConfig = {
   },
   assetPrefix: "./",
   output: "standalone",
+  experimental: {
+    appDir: true,
+    mdxRs: true,
+  },
 };
 
 export default nextConfig;
