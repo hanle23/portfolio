@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    loader: "akamai",
-    path: "",
+    loader: 'akamai',
+    path: '',
   },
-  assetPrefix: "./",
-  output: "standalone",
-  experimental: {
-    appDir: true,
-    mdxRs: true,
-  },
-};
+  assetPrefix: './',
+  output: 'standalone',
+}
 
-export default nextConfig;
+export default nextConfig
