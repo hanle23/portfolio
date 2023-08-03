@@ -4,8 +4,7 @@ const nextConfig = {
     loader: 'akamai',
     path: '',
   },
-  assetPrefix: './',
-  output: 'standalone',
+  output: 'export',
 }
 
 export default nextConfig
