@@ -5,7 +5,11 @@ type AppProps = {
 }
 
 const RerouteButton = ({ text }: AppProps) => {
-  return <Button variant="contained">{text}</Button>
+  return (
+    <Button variant="contained" className="flex">
+      {text}
+    </Button>
+  )
 }
 
 export default RerouteButton
