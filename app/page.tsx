@@ -4,7 +4,7 @@ import RerouteButton from './components/rerouteButton'
 import React, { useState, useEffect } from 'react'
 
 export default function Page(): JSX.Element {
-  const phrases = ["Hi, I'm Han", 'Testing 2']
+  const phrases = ["Hi, I'm Han", 'This is a very long phrase']
   const [currentPhrase, setCurrentPhrase] = useState(phrases[0])
   const [index, setIndex] = useState(0)
 
@@ -14,7 +14,7 @@ export default function Page(): JSX.Element {
       () => {
         setIndex((i) => (i + 1) % phrases.length)
       }, // <-- increment index
-      currentPhrase.length * 100 + 10000,
+      10800,
     )
     return () => {
       clearInterval(timerId)
