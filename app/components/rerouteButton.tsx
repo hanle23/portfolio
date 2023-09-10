@@ -6,7 +6,11 @@ interface AppProps {
 }
 
 const RerouteButton = ({ text }: AppProps): React.JSX.Element => {
-  return <Button variant="contained">{text}</Button>
+  return (
+    <Button variant="contained" className="flex">
+      {text}
+    </Button>
+  )
 }
 
 export default RerouteButton
