@@ -8,7 +8,7 @@ export default function GreetingPhrase(): React.JSX.Element {
       () => {
         setIndex((i) => (i + 1) % phrases.length)
       }, // <-- increment index
-      10800,
+      10650,
     )
     return () => {
       clearInterval(timerId)
