@@ -8,31 +8,6 @@ module.exports = {
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      keyframes: {
-        typing: {
-          '0%': {
-            width: '0%',
-            visibility: 'hidden',
-          },
-          '100%': {
-            width: '100%',
-          },
-        },
-        blink: {
-          '50%': {
-            borderColor: 'transparent',
-          },
-          '100%': {
-            borderColor: 'white',
-          },
-        },
-      },
-      animation: {
-        sliding: 'typing 5.5s infinite alternate',
-      },
-    },
-  },
+  theme: {},
   plugins: [],
 }

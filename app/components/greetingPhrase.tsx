@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import Typewriter from 'typewriter-effect'
 export default function GreetingPhrase(): React.JSX.Element {
-  const phrases = ["Hi, I'm Han", 'Testing 2']
-  const [currentPhrase, setCurrentPhrase] = useState(phrases[0])
-  useEffect(() => {
-    console.log(currentPhrase.length)
-    const timerId = setInterval(
-      () => {
-        setIndex((i) => (i + 1) % phrases.length)
-      }, // <-- increment index
-      10650,
-    )
-    return () => {
-      clearInterval(timerId)
-    }
-  }, [])
-
-  const [index, setIndex] = useState(0)
-  useEffect(() => {
-    setCurrentPhrase(phrases[index]) // <-- update media state when index updates
-  }, [index])
+  const phrases = ["Hi, I'm Han", '안녕하세요 한이에요']
 
   return (
-    <div className="h-full w-max p-2">
-      <h1 className="animate-sliding overflow-hidden whitespace-nowrap border-r-4 border-r-white text-5xl text-white font-bold">
-        {currentPhrase}
-      </h1>
+    <div className="h-fit w-fit p-2 text-white text-5xl font-bold">
+      <Typewriter
+        options={{
+          strings: phrases,
+          autoStart: true,
+          loop: true,
+        }}
+      />
     </div>
   )
 }
