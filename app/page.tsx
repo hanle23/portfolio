@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import RerouteButton from './components/rerouteButton'
 import React from 'react'
 import GreetingPhrase from './components/greetingPhrase'
 
@@ -10,13 +9,13 @@ export default function Page(): JSX.Element {
       <div className="h-full w-1/6">
         <div className="flex h-full sticky overflow-auto lg:space-y-3  lg:flex-col pt-14">
           <Link href="/experience">
-            <RerouteButton text={'Experience'}></RerouteButton>
+            <p>Experience</p>
           </Link>
           <Link href="/portfolio">
-            <RerouteButton text={'Portfolio'}></RerouteButton>
+            <p>Portfolio</p>
           </Link>
           <Link href="/contact">
-            <RerouteButton text={'Contact'}></RerouteButton>
+            <p>Contact</p>
           </Link>
         </div>
       </div>
