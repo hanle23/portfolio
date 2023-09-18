@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       {/* <body>{children}</body> */}
       <body>
-        <div className="overscroll-none items-center w-full h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-10 pt-3">
+        <div className="overscroll-none items-center w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3">
           <NavBar />
           {children}
         </div>
