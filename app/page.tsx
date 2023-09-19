@@ -5,6 +5,8 @@ import GreetingPhrase from './components/greetingPhrase'
 import githubLogo from '../public/svg/githubIcon.svg'
 import linkedInLogo from '../public/svg/linkedInIcon.svg'
 import Link from 'next/link'
+import navLink from './components/navLink'
+import NavLink from './components/navLink'
 
 export default function Page(): JSX.Element {
   return (
@@ -57,6 +59,7 @@ export default function Page(): JSX.Element {
           pariatur.
         </p>
       </div>
+      <NavLink>Link 1</NavLink>
     </div>
   )
 }
