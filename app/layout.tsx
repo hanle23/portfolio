@@ -3,7 +3,7 @@ import React from 'react'
 // These styles apply to every route in the application
 import './globals.css'
 import NavBar from './components/navBar'
-import Provider from './components/cursor/Provider'
+import Cursor from './components/Cursor'
 
 export const metadata: Metadata = {
   title: 'Han Portfolio',
@@ -19,12 +19,11 @@ export default function RootLayout({
     <html lang="en">
       {/* <body>{children}</body> */}
       <body>
-        <Provider>
-          <div className="overscroll-none items-center w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3">
-            <NavBar />
-            {children}
-          </div>
-        </Provider>
+        <Cursor />
+        <div className="overscroll-none items-center w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3">
+          <NavBar />
+          {children}
+        </div>
       </body>
     </html>
   )
