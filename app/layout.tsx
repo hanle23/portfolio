@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
 import React from 'react'
+import { AppWrapper } from './components/appWrapper'
 // These styles apply to every route in the application
 import './globals.css'
-import NavBar from './components/navBar'
-import Cursor from './components/Cursor'
 
 export const metadata: Metadata = {
   title: 'Han Portfolio',
@@ -17,13 +16,8 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en">
-      {/* <body>{children}</body> */}
       <body>
-        <Cursor />
-        <div className="overscroll-none items-center w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3">
-          <NavBar />
-          {children}
-        </div>
+        <AppWrapper>{children}</AppWrapper>
       </body>
     </html>
   )

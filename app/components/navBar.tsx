@@ -43,6 +43,7 @@ export default function NavBar(): React.JSX.Element {
             href={`/${routePath === 'home' ? '' : routePath}`}
             className="lg:w-1/12 hover:cursor-none"
             key={routePath}
+            prefetch={true}
           >
             <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
