@@ -6,7 +6,24 @@ import Cursor from './cursor/Cursor'
 
 interface CurrentUserContextType {
   pos: { x: number; y: number }
-  isInWindow: boolean
+  status: string
+  selectedElement: SelectedElement
+  setStatus: React.Dispatch<React.SetStateAction<string>>
+  pressing: boolean
+  selectedElementSet: React.Dispatch<React.SetStateAction<SelectedElement>>
+  removeSelectedElement: VoidFunction
+}
+
+interface SelectedElement {
+  el: HTMLDivElement | null
+  type: string | null
+  config: { textSize?: number; hoverOffset?: number } | null
+}
+
+const initialSelectedElement: SelectedElement = {
+  el: null,
+  type: null,
+  config: null,
 }
 
 export const Context = createContext<CurrentUserContextType | null>(null)
@@ -17,18 +34,37 @@ export const AppWrapper = ({
   children: React.ReactNode
 }): React.JSX.Element => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [isMouseLeave, setMouseLeave] = useState(true)
+  const [selectedElement, selectedElementSet] = useState<SelectedElement>(
+    initialSelectedElement,
+  )
+  const [mouseStatus, setMouseStatus] = useState('')
+  const [pressing, setPressing] = useState(false)
   const changePosition = (e: React.MouseEvent<HTMLDivElement>): void => {
     setMousePos({ x: e.clientX, y: e.clientY })
   }
 
-  const mouseLeaveWindow = (isLeft: boolean): void => {
-    setMouseLeave(true)
-  }
-
   const context = {
     pos: mousePos,
-    isInWindow: isMouseLeave,
+    selectedElementSet: (element: {
+      el: HTMLDivElement | null
+      type: string
+      config: Record<string, any>
+    }) => {
+      selectedElementSet(element)
+      if (selectedElement.el != null) {
+        setMouseStatus('entering')
+      } else {
+        setMouseStatus('shifting')
+      }
+    },
+    removeSelectedElement: () => {
+      setMouseStatus('exiting')
+      selectedElementSet({ el: null, type: null, config: { textSize: 0 } })
+    },
+    status: mouseStatus,
+    setStatus: setMouseStatus,
+    selectedElement,
+    pressing,
   }
 
   return (
@@ -36,11 +72,11 @@ export const AppWrapper = ({
       <div
         className="overscroll-none items-center min-w-screen w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3"
         onMouseMove={changePosition}
-        onMouseLeave={() => {
-          mouseLeaveWindow(true)
+        onMouseDown={() => {
+          setPressing(true)
         }}
-        onMouseEnter={() => {
-          mouseLeaveWindow(false)
+        onMouseUp={() => {
+          setPressing(false)
         }}
       >
         <Cursor />
