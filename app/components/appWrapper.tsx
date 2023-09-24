@@ -7,15 +7,17 @@ import Cursor from './cursor/Cursor'
 interface CurrentUserContextType {
   pos: { x: number; y: number }
   status: string
-  selectedElement: SelectedElement
+  selectedElement: SelectedElement | null
   setStatus: React.Dispatch<React.SetStateAction<string>>
   pressing: boolean
-  selectedElementSet: React.Dispatch<React.SetStateAction<SelectedElement>>
-  removeSelectedElement: VoidFunction
+  selectedElementSet: React.Dispatch<
+    React.SetStateAction<SelectedElement | null>
+  >
+  removeSelectedElement: () => void
 }
 
 interface SelectedElement {
-  el: HTMLDivElement | null
+  el: (EventTarget & HTMLElement) | null
   type: string | null
   config: { textSize?: number; hoverOffset?: number } | null
 }
@@ -45,13 +47,9 @@ export const AppWrapper = ({
 
   const context = {
     pos: mousePos,
-    selectedElementSet: (element: {
-      el: HTMLDivElement | null
-      type: string
-      config: Record<string, any>
-    }) => {
+    selectedElementSet: (element: any) => {
       selectedElementSet(element)
-      if (selectedElement.el != null) {
+      if (element.el !== null) {
         setMouseStatus('entering')
       } else {
         setMouseStatus('shifting')
@@ -59,7 +57,7 @@ export const AppWrapper = ({
     },
     removeSelectedElement: () => {
       setMouseStatus('exiting')
-      selectedElementSet({ el: null, type: null, config: { textSize: 0 } })
+      selectedElementSet({ el: null, type: null, config: null }) // Handle null case
     },
     status: mouseStatus,
     setStatus: setMouseStatus,
