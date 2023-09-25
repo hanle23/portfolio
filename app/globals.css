@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* * {
   cursor: none !important;
-}
+} */
 
 div .block {
   border-radius: 4px !important;

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import NavLink from './specialComponent/NavLink'
 
 export default function NavBar(): React.JSX.Element {
   const pathname = usePathname()
@@ -41,13 +42,16 @@ export default function NavBar(): React.JSX.Element {
         return (
           <Link
             href={`/${routePath === 'home' ? '' : routePath}`}
-            className="lg:w-1/12 hover:cursor-none"
+            className="hover:cursor-none"
             key={routePath}
             prefetch={true}
           >
-            <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
+            {/* <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
-            </button>
+            </button> */}
+            <NavLink className="text-white text-base font-bold relative flex justify-center rounded-lg">
+              <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
+            </NavLink>
           </Link>
         )
       })}

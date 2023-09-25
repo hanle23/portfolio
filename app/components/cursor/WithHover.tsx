@@ -4,7 +4,7 @@ import { Context } from '../appWrapper'
 const withHover = (
   Component: React.ComponentType<any>, // Adjust the type accordingly
   type: string,
-  config: Record<string, any>, // Adjust the type accordingly
+  config?: Record<string, any>, // Adjust the type accordingly
 ) => {
   return function WithHoverComponent({ passThroughRef, ...props }: any) {
     const context = useContext(Context)
@@ -30,7 +30,7 @@ const withHover = (
       setHovering(true)
     }
 
-    const handleMouseLeave = (e: React.MouseEvent<HTMLElement>): void => {
+    const handleMouseLeave = (): void => {
       if (context === null) return
       context.removeSelectedElement()
       setHovering(false)

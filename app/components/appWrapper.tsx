@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 
@@ -64,6 +64,10 @@ export const AppWrapper = ({
     selectedElement,
     pressing,
   }
+
+  useEffect(() => {
+    context.status = mouseStatus
+  }, [mouseStatus])
 
   return (
     <Context.Provider value={context}>
