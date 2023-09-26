@@ -17,14 +17,23 @@ export default function Page(): JSX.Element {
         </p>
       </div>
       <div className="grid mt-6 grid-cols-1 md:grid-cols-2 gap-6">
-        <p className="text-base text-sky-100 font-semibold ">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.
-        </p>
+        <div>
+          <p className="text-base text-sky-100 font-semibold ">
+            Back to 2016 when I was first discovered a Trouble in Terrorist Town
+            server in CS:GO, my friend and I was learning to write some mods for
+            his server and it pulls me into the hobby of programming. Till now I
+            have had many opportunities to widen my knowledge in all kind of
+            topics within Computer Science at an education institution and a
+            start-up.
+          </p>
+          <p className="text-base text-sky-100 font-semibold ">
+            Nowadays I am seeking for my next opportunities to build great
+            product, working with others and continue develop myself to be a
+            better engineer, while fooling around with new and cool
+            technologies.
+          </p>
+        </div>
+
         <div className="hidden md:block"></div>
         <div className="flex lg:items-end space-x-4">
           <BlockContainer>
@@ -56,12 +65,9 @@ export default function Page(): JSX.Element {
           </BlockContainer>
         </div>
         <p className="text-base text-sky-100 font-semibold">
-          2Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.
+          {
+            "During my free time I usually playing games, especially Baldur's Gate 3 these days, reading books and hopefully getting a new piano eventually to be a real Asian."
+          }
         </p>
       </div>
     </div>
