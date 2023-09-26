@@ -40,19 +40,21 @@ export default function NavBar(): React.JSX.Element {
     >
       {route?.map((routePath: string) => {
         return (
-          <Link
-            href={`/${routePath === 'home' ? '' : routePath}`}
-            className="hover:cursor-none"
+          <NavLink
             key={routePath}
-            prefetch={true}
+            className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
           >
-            {/* <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
+            <Link
+              href={`/${routePath === 'home' ? '' : routePath}`}
+              prefetch={true}
+            >
+              {/* <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
             </button> */}
-            <NavLink className="text-white text-base font-bold relative flex justify-center rounded-lg">
+
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
-            </NavLink>
-          </Link>
+            </Link>
+          </NavLink>
         )
       })}
     </div>

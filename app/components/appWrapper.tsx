@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState } from 'react'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 
@@ -39,7 +39,7 @@ export const AppWrapper = ({
   const [selectedElement, selectedElementSet] = useState<SelectedElement>(
     initialSelectedElement,
   )
-  const [mouseStatus, setMouseStatus] = useState('')
+  const [status, setStatus] = useState('')
   const [pressing, setPressing] = useState(false)
   const changePosition = (e: React.MouseEvent<HTMLDivElement>): void => {
     setMousePos({ x: e.clientX, y: e.clientY })
@@ -50,24 +50,20 @@ export const AppWrapper = ({
     selectedElementSet: (element: any) => {
       selectedElementSet(element)
       if (element.el !== null) {
-        setMouseStatus('entering')
+        setStatus('entering')
       } else {
-        setMouseStatus('shifting')
+        setStatus('shifting')
       }
     },
     removeSelectedElement: () => {
-      setMouseStatus('exiting')
-      selectedElementSet({ el: null, type: null, config: null }) // Handle null case
+      setStatus('exiting')
+      selectedElementSet({ el: null, type: null, config: null })
     },
-    status: mouseStatus,
-    setStatus: setMouseStatus,
+    status,
+    setStatus,
     selectedElement,
     pressing,
   }
-
-  useEffect(() => {
-    context.status = mouseStatus
-  }, [mouseStatus])
 
   return (
     <Context.Provider value={context}>

@@ -44,8 +44,10 @@ const withHover = (
       context.selectedElement?.el != null &&
       context.selectedElement.type === 'block'
     ) {
-      const amount = context.selectedElement.config?.hoverOffset ?? 2
-
+      const amount =
+        context.selectedElement.config?.hoverOffset != null
+          ? context.selectedElement.config.hoverOffset
+          : 2
       const relativePos = {
         x: context.pos.x - context.selectedElement.el.offsetLeft,
         y: context.pos.y - context.selectedElement.el.offsetTop,
@@ -54,10 +56,10 @@ const withHover = (
       const xMid = context.selectedElement.el.offsetWidth / 2
       const yMid = context.selectedElement.el.offsetHeight / 2
       const xMove =
-        ((relativePos.x - xMid) / context.selectedElement.el.offsetHeight) *
+        ((relativePos.x - xMid) / context.selectedElement.el.clientWidth) *
         amount
       const yMove =
-        ((relativePos.y - yMid) / context.selectedElement.el.offsetHeight) *
+        ((relativePos.y - yMid) / context.selectedElement.el.clientHeight) *
         amount
 
       styles = {
