@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import BlockContainer from './specialComponent/NavLink'
 
 export default function NavBar(): React.JSX.Element {
   const pathname = usePathname()
@@ -39,15 +40,17 @@ export default function NavBar(): React.JSX.Element {
     >
       {route?.map((routePath: string) => {
         return (
-          <Link
-            href={`/${routePath === 'home' ? '' : routePath}`}
-            className="lg:w-1/12 hover:cursor-none"
+          <BlockContainer
             key={routePath}
+            className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
           >
-            <button className="text-white text-base font-bold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
+            <Link
+              href={`/${routePath === 'home' ? '' : routePath}`}
+              prefetch={true}
+            >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
-            </button>
-          </Link>
+            </Link>
+          </BlockContainer>
         )
       })}
     </div>

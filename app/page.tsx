@@ -5,6 +5,7 @@ import GreetingPhrase from './components/greetingPhrase'
 import githubLogo from '../public/svg/githubIcon.svg'
 import linkedInLogo from '../public/svg/linkedInIcon.svg'
 import Link from 'next/link'
+import BlockContainer from './components/specialComponent/NavLink'
 
 export default function Page(): JSX.Element {
   return (
@@ -35,27 +36,33 @@ export default function Page(): JSX.Element {
 
         <div className="hidden md:block"></div>
         <div className="flex lg:items-end space-x-4">
-          <Link href="/contact" className="">
-            <button className="justify-center items-center border-sky-100 hover:bg-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-xl font-bold text-sky-100 hover:scale-110 transition duration-150">
-              Get in touch
-            </button>
-          </Link>
-          <a
-            target="_blank"
-            href="https://github.com/hanle23"
-            rel="noopener noreferrer"
-            className="hover:scale-125 transition duration-150"
-          >
-            <Image src={githubLogo} width={50} alt="GitHub Link" />
-          </a>
-          <a
-            target="_blank"
-            href="https://www.linkedin.com/in/han-le23/"
-            rel="noopener noreferrer"
-            className="hover:scale-125 transition duration-150"
-          >
-            <Image src={linkedInLogo} width={50} alt="LinkedIn Link" />
-          </a>
+          <BlockContainer>
+            <Link href="/contact">
+              <button className="justify-center items-center border-sky-100 hover:bg-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-xl font-bold text-sky-100 hover:scale-110 transition duration-150">
+                Get in touch
+              </button>
+            </Link>
+          </BlockContainer>
+          <BlockContainer>
+            <a
+              target="_blank"
+              href="https://github.com/hanle23"
+              rel="noopener noreferrer"
+              className="transition duration-150"
+            >
+              <Image src={githubLogo} width={50} alt="GitHub Link" />
+            </a>
+          </BlockContainer>
+          <BlockContainer>
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/in/han-le23/"
+              rel="noopener noreferrer"
+              className="hover:scale-125 transition duration-150"
+            >
+              <Image src={linkedInLogo} width={50} alt="LinkedIn Link" />
+            </a>
+          </BlockContainer>
         </div>
         <p className="text-base text-sky-100 font-semibold">
           {
