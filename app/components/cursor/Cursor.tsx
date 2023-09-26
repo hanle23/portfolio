@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 export default function Cursor(): React.JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null)
   const context = useContext(Context)
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const baseStyles = {
     left: context?.pos.x,
     top: context?.pos.y,
@@ -12,7 +12,7 @@ export default function Cursor(): React.JSX.Element {
     height: '24px',
     background: '#fff',
     opacity: `${isVisible && context != null && context.pos.x > 1 ? '1' : '0'}`,
-    position: 'absolute' as 'absolute',
+    position: 'fixed' as 'fixed',
     borderRadius: '15px',
   }
 
@@ -20,14 +20,19 @@ export default function Cursor(): React.JSX.Element {
     if (context == null) return
     if (
       (context.status === 'entering' || context.status === 'shifting') &&
-      context.selectedElement?.el != null
+      context.selectedElement?.el != null &&
+      context.selectedElement.el.offsetParent instanceof HTMLElement
     ) {
       if (context.selectedElement.type === 'block') {
         gsap.to(cursor.current, {
           duration: 0.5,
           ease: 'elastic.out(1, 1)',
-          left: context.selectedElement.el.offsetLeft,
-          top: context.selectedElement.el.offsetTop,
+          left:
+            context.selectedElement.el.offsetLeft +
+            context.selectedElement.el.offsetParent?.offsetLeft,
+          top:
+            context.selectedElement.el.offsetTop +
+            context.selectedElement.el.offsetParent?.offsetTop,
           height: `${context.selectedElement.el.offsetHeight}px`,
           width: `${context.selectedElement.el.offsetWidth}px`,
           borderRadius: '4px',
@@ -85,7 +90,10 @@ export default function Cursor(): React.JSX.Element {
     }
   }, [context?.pos])
 
-  if (context?.selectedElement?.el != null) {
+  if (
+    context?.selectedElement?.el != null &&
+    context.selectedElement.el.offsetParent instanceof HTMLElement
+  ) {
     const amount = 5
     const relativePos = {
       x: context.pos.x - context.selectedElement.el.offsetLeft,
@@ -100,8 +108,14 @@ export default function Cursor(): React.JSX.Element {
       amount
 
     if (context.selectedElement.type === 'block') {
-      baseStyles.left = context.selectedElement.el.offsetLeft + xMove
-      baseStyles.top = context.selectedElement.el.offsetTop + yMove
+      baseStyles.left =
+        context.selectedElement.el.offsetLeft +
+        context.selectedElement.el.offsetParent?.offsetLeft +
+        xMove
+      baseStyles.top =
+        context.selectedElement.el.offsetTop +
+        context.selectedElement.el.offsetParent?.offsetTop +
+        yMove
       baseStyles.height = `${context.selectedElement.el.offsetHeight}px`
       baseStyles.width = `${context.selectedElement.el.offsetWidth}px`
       baseStyles.opacity = '0.2'

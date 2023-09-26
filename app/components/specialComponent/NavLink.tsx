@@ -4,8 +4,8 @@ const baseStyles = {
   padding: '8px 16px',
   position: 'relative',
 }
-const NavLink = (props: any): React.JSX.Element => {
+const BlockContainer = (props: any): React.JSX.Element => {
   return <div style={baseStyles} {...props} />
 }
 
-export default WithHover(NavLink, 'block')
+export default WithHover(BlockContainer, 'block')
