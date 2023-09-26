@@ -73,7 +73,10 @@ export default function Cursor(): React.JSX.Element {
       context.selectedElement?.type === 'text' &&
       context.selectedElement?.el != null
     ) {
-      const { textSize } = context.selectedElement.config
+      const textSize =
+        context.selectedElement?.config?.textSize != null
+          ? context.selectedElement?.config?.textSize
+          : 1
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
         duration: 0.5,
