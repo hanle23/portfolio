@@ -38,7 +38,7 @@ export default function Page(): JSX.Element {
         <div className="flex lg:items-end space-x-4">
           <BlockContainer>
             <Link href="/contact">
-              <button className="justify-center items-center border-sky-100 hover:bg-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-xl font-bold text-sky-100 hover:scale-110 transition duration-150">
+              <button className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-xl font-bold text-sky-100 transition duration-150">
                 Get in touch
               </button>
             </Link>

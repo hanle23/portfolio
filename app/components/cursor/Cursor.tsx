@@ -36,6 +36,7 @@ export default function Cursor(): React.JSX.Element {
           height: `${context.selectedElement.el.offsetHeight}px`,
           width: `${context.selectedElement.el.offsetWidth}px`,
           borderRadius: '4px',
+          opacity: '0.2',
           onComplete: () => {
             context.setStatus('entered')
           },
@@ -47,7 +48,6 @@ export default function Cursor(): React.JSX.Element {
     ) {
       gsap.killTweensOf(cursor.current)
     }
-    console.log(context.status)
   }, [context?.selectedElement, context?.status])
 
   useEffect(() => {
@@ -143,14 +143,13 @@ export default function Cursor(): React.JSX.Element {
   const shapeClass =
     context?.selectedElement?.el != null &&
     !(context.status === 'entering' || context.status === 'shifting') &&
-    context.selectedElement.type
+    context.selectedElement.type != null &&
+    !isVisible
   return (
     <div
       style={baseStyles}
       ref={cursor}
-      className={
-        shapeClass === false && context?.pressing === true ? 'pressing' : ''
-      }
+      className={!shapeClass && context?.pressing === true ? 'pressing' : ''}
     />
   )
 }
