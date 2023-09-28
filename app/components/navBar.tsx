@@ -21,8 +21,6 @@ export default function NavBar(): React.JSX.Element {
     })
     setRoute(nextRoute)
   }, [pathname])
-  console.log(`Pathname: ${pathname}`)
-  console.log(route)
 
   useEffect(() => {
     const scrollHandler = (): void => {
