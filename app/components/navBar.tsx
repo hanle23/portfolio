@@ -45,7 +45,7 @@ export default function NavBar(): React.JSX.Element {
             className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
           >
             <Link
-              href={`/portfolio/${routePath === 'home' ? '' : routePath}`}
+              href={`/${routePath === 'home' ? '' : routePath}`}
               prefetch={true}
             >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
