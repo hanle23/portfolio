@@ -13,7 +13,7 @@ export default function NavBar(): React.JSX.Element {
 
     const originalRoute: string[] = ['experience', 'projects', 'contact']
     const nextRoute: string[] = originalRoute.map((v, _) => {
-      if (v === url.replace('/', '')) {
+      if (v === url.replace('/', '') || v === url.replace('/portfolio/', '')) {
         return 'home'
       } else {
         return v
@@ -45,7 +45,7 @@ export default function NavBar(): React.JSX.Element {
             className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
           >
             <Link
-              href={`/${routePath === 'home' ? '' : routePath}`}
+              href={`/portfolio/${routePath === 'home' ? '' : routePath}`}
               prefetch={true}
             >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
