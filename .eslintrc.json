@@ -17,5 +17,5 @@
     "project": true
   },
   "plugins": ["react"],
-  "rules": {}
+  "rules": { "@typescript-eslint/restrict-template-expressions": "error" }
 }

@@ -1,21 +1,56 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import BlockContainer from './specialComponent/NavLink'
+
 export default function NavBar(): React.JSX.Element {
-  const route = ['experience', 'project', 'contact']
+  const pathname = usePathname()
+  const [route, setRoute] = useState<string[]>([])
+  const [top, setTop] = useState<boolean>(true)
+  useEffect(() => {
+    const url = `${pathname}`
+
+    const originalRoute: string[] = ['experience', 'projects', 'contact']
+    const nextRoute: string[] = originalRoute.map((v, _) => {
+      if (v === url.replace('/', '')) {
+        return 'home'
+      } else {
+        return v
+      }
+    })
+    setRoute(nextRoute)
+  }, [pathname])
+
+  useEffect(() => {
+    const scrollHandler = (): void => {
+      window.scrollY > 10 ? setTop(false) : setTop(true)
+    }
+    window.addEventListener('scroll', scrollHandler)
+    return () => {
+      window.removeEventListener('scroll', scrollHandler)
+    }
+  }, [top])
 
   return (
-    <div className="flex justify-center space-x-44">
-      {route.map((routePath: string) => {
+    <div
+      className={`flex justify-center space-x-5 sticky top-0 z-50 lg:space-x-44 ${
+        !top ? 'bg-[#233831] bg-opacity-70 rounded-full shadow-lg' : ''
+      }`}
+    >
+      {route?.map((routePath: string) => {
         return (
-          <Link
-            href={`/${routePath}`}
-            className="w-1/12 hover:cursor-none"
+          <BlockContainer
             key={routePath}
+            className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
           >
-            <button className="text-white text-base font-extrabold h-full w-full transition duration-150 bg-transparent p-2.5 hover:scale-110 rounded-lg hover:shadow-md hover:bg-white hover:bg-opacity-10">
+            <Link
+              href={`/${routePath === 'home' ? '' : routePath}`}
+              prefetch={true}
+            >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
-            </button>
-          </Link>
+            </Link>
+          </BlockContainer>
         )
       })}
     </div>

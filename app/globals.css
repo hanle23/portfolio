@@ -2,4 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  cursor: none !important;
+}
 
+div .block {
+  border-radius: 4px !important;
+}
+div .text {
+  height: 30px !important;
+  width: 3px !important;
+  border-radius: 1px !important;
+}
+div .pressing {
+  opacity: 0.5 !important;
+  transition: opacity 0s !important;
+}
