@@ -1,36 +1,43 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
+import BlockContainer from '../components/specialComponent/NavLink'
 
-async function getData(): Promise<JSON> {
-  const res = await fetch('https://api.github.com/users/hanle23/repos')
-  if (!res.ok) {
-    throw new Error('Failed to fetch data')
-  }
-  const data = await res.json()
-  const filteredResult = data.flatMap((item: any) => {
-    if (
-      item.visibility !== 'public' ||
-      item.fork === true ||
-      item.name === 'hanle23'
-    ) {
-      return []
+export default function Page(): React.JSX.Element {
+  const [data, setData] = useState<{ data: JSON[] } | null>(null)
+  useEffect(() => {
+    const fetchData = (): void => {
+      fetch('/api/projects')
+        .then(async (response) => await response.json())
+        .then((result) => {
+          setData(result)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+        })
     }
-    return item
-  })
-  filteredResult.sort(function (a: any, b: any) {
-    return new Date(b.pushed_at).valueOf() - new Date(a.pushed_at).valueOf()
-  })
-  console.log(Object.keys(filteredResult).length)
-  console.log(filteredResult)
 
-  return data
-}
-
-export default async function Page(): Promise<React.JSX.Element> {
-  const data = await getData()
+    fetchData()
+  }, [])
 
   return (
     <div>
-      <h1>{`Welcome to Project Page`}</h1>
+      <h1 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h1>
+      <div className="grid grid-cols-2">
+        {data?.data.map((project: any) => {
+          return (
+            <BlockContainer key={project.name}>
+              <a
+                target="_blank"
+                href={project.html_url}
+                rel="noopener noreferrer"
+                className="transition duration-150"
+              >
+                <p>{project.name}</p>
+              </a>
+            </BlockContainer>
+          )
+        })}
+      </div>
     </div>
   )
 }
