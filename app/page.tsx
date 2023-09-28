@@ -7,7 +7,7 @@ import linkedInLogo from '../public/svg/linkedInIcon.svg'
 import Link from 'next/link'
 import BlockContainer from './components/specialComponent/NavLink'
 
-export default function Page(): JSX.Element {
+export default function Page(): React.JSX.Element {
   return (
     <div className="grid content-center justify-items-start w-full pt-20 lg:pt-40">
       <GreetingPhrase />

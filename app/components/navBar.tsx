@@ -40,13 +40,11 @@ export default function NavBar(): React.JSX.Element {
     >
       {route?.map((routePath: string) => {
         return (
-          <BlockContainer
-            key={routePath}
-            className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
-          >
+          <BlockContainer key={routePath}>
             <Link
               href={`/${routePath === 'home' ? '' : routePath}`}
               prefetch={true}
+              className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
             >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
             </Link>
