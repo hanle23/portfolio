@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import { AppWrapper } from './components/appWrapper'
+import { AppWrapper } from '../components/appWrapper'
 // These styles apply to every route in the application
 import './globals.css'
 
