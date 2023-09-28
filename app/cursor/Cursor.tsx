@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext, useState } from 'react'
-import { Context } from '../appWrapper'
+import { Context } from '../components/appWrapper'
 import { gsap } from 'gsap'
 export default function Cursor(): React.JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null)

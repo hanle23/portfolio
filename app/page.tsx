@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import GreetingPhrase from '../components/greetingPhrase'
-import githubLogo from '../../public/svg/githubIcon.svg'
-import linkedInLogo from '../../public/svg/linkedInIcon.svg'
+import GreetingPhrase from './components/greetingPhrase'
+import githubLogo from '../public/svg/githubIcon.svg'
+import linkedInLogo from '../public/svg/linkedInIcon.svg'
 import Link from 'next/link'
-import BlockContainer from '../components/specialComponent/NavLink'
+import BlockContainer from './components/specialComponent/NavLink'
 
 export default function Page(): JSX.Element {
   return (

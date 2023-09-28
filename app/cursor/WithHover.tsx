@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Context } from '../appWrapper'
+import { Context } from '../components/appWrapper'
 
 const withHover = (
   Component: React.ComponentType<any>, // Adjust the type accordingly

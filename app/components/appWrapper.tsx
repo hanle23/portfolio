@@ -2,7 +2,7 @@
 
 import React, { createContext, useState } from 'react'
 import NavBar from './navBar'
-import Cursor from './cursor/Cursor'
+import Cursor from '../cursor/Cursor'
 
 interface CurrentUserContextType {
   pos: { x: number; y: number }

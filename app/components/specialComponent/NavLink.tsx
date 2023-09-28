@@ -1,5 +1,5 @@
 import React from 'react'
-import WithHover from '../cursor/WithHover'
+import WithHover from '../../cursor/WithHover'
 const baseStyles = {
   padding: '8px 16px',
   position: 'relative',
