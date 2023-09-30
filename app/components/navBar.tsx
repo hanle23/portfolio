@@ -13,7 +13,7 @@ export default function NavBar(): React.JSX.Element {
 
     const originalRoute: string[] = ['experience', 'projects', 'contact']
     const nextRoute: string[] = originalRoute.map((v, _) => {
-      if (v === url.replace('/', '')) {
+      if (v === url.replace('/', '') || v === url.replace('/portfolio/', '')) {
         return 'home'
       } else {
         return v

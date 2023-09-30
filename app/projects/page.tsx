@@ -18,21 +18,40 @@ export default function Page(): React.JSX.Element {
 
     fetchData()
   }, [])
-
   return (
     <div>
       <h1 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h1>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-5 mt-5 grid-flow-row">
         {data?.map((project: any) => {
+          console.log(project)
           return (
             <BlockContainer key={project.name}>
               <a
                 target="_blank"
                 href={project.html_url}
                 rel="noopener noreferrer"
-                className="transition duration-150"
+                className="border inline-block rounded-md p-2.5 transition duration-150 w-full h-full relative"
               >
-                <p>{project.name}</p>
+                <h3 className="text-sky-100 font-bold text-lg">
+                  {project.name
+                    .replace(/-/gi, ' ')
+                    .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
+                </h3>
+                <p className="line-clamp-2">
+                  {project.description === null
+                    ? 'Coming soon!'
+                    : project.description}
+                </p>
+                <p className="text-sm text-sky-100 absolute bottom-0">
+                  Most recent activity:{' '}
+                  {new Date(project.updated_at) > new Date(project.pushed_at)
+                    ? `${new Date(
+                        project.updated_at,
+                      ).toLocaleDateString()} - Updated`
+                    : `${new Date(
+                        project.pushed_at,
+                      ).toLocaleDateString()} - Pushed`}
+                </p>
               </a>
             </BlockContainer>
           )
