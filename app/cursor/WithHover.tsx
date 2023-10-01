@@ -5,6 +5,7 @@ const withHover = (
   Component: React.ComponentType<any>,
   type: string,
   config?: Record<string, any>,
+
 ) => {
   return function WithHoverComponent({ passThroughRef, ...props }: any) {
     const context = useContext(Context)

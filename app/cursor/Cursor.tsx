@@ -29,6 +29,7 @@ export default function Cursor(): React.JSX.Element {
           ease: 'elastic.out(1, 1)',
           left: context?.selectedElement?.el?.getBoundingClientRect().left,
           top: context?.selectedElement?.el?.getBoundingClientRect().top,
+
           height: `${context.selectedElement.el.offsetHeight}px`,
           width: `${context.selectedElement.el.offsetWidth}px`,
           borderRadius: '4px',
@@ -47,8 +48,6 @@ export default function Cursor(): React.JSX.Element {
   }, [context?.selectedElement, context?.status])
 
   useEffect(() => {
-    console.log('Here')
-    console.log(context?.selectedElement?.el?.offsetLeft)
     if (context == null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
