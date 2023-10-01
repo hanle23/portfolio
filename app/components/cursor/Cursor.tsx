@@ -27,14 +27,14 @@ export default function Cursor(): React.JSX.Element {
         gsap.to(cursor.current, {
           duration: 0.5,
           ease: 'elastic.out(1, 1)',
-          left:
-            context.selectedElement.el.offsetLeft +
-            context.selectedElement.el.offsetParent?.offsetLeft,
-          top:
-            context.selectedElement.el.offsetTop +
-            context.selectedElement.el.offsetParent?.offsetTop,
-          height: `${context.selectedElement.el.offsetHeight}px`,
-          width: `${context.selectedElement.el.offsetWidth}px`,
+          left: context.selectedElement.el.getBoundingClientRect().left,
+          top: context.selectedElement.el.getBoundingClientRect().top,
+          height: `${
+            context.selectedElement.el.getBoundingClientRect().height
+          }px`,
+          width: `${
+            context.selectedElement.el.getBoundingClientRect().width
+          }px`,
           borderRadius: '4px',
           opacity: '0.2',
           onComplete: () => {
@@ -99,8 +99,9 @@ export default function Cursor(): React.JSX.Element {
   ) {
     const amount = 5
     const relativePos = {
-      x: context.pos.x - context.selectedElement.el.offsetLeft,
-      y: context.pos.y - context.selectedElement.el.offsetTop,
+      x:
+        context.pos.x - context.selectedElement.el.getBoundingClientRect().left,
+      y: context.pos.y - context.selectedElement.el.getBoundingClientRect().top,
     }
     const xMid = context.selectedElement.el.offsetWidth / 2
     const yMid = context.selectedElement.el.offsetHeight / 2
@@ -112,15 +113,15 @@ export default function Cursor(): React.JSX.Element {
 
     if (context.selectedElement.type === 'block') {
       baseStyles.left =
-        context.selectedElement.el.offsetLeft +
-        context.selectedElement.el.offsetParent?.offsetLeft +
-        xMove
+        context.selectedElement.el.getBoundingClientRect().left + xMove
       baseStyles.top =
-        context.selectedElement.el.offsetTop +
-        context.selectedElement.el.offsetParent?.offsetTop +
-        yMove
-      baseStyles.height = `${context.selectedElement.el.offsetHeight}px`
-      baseStyles.width = `${context.selectedElement.el.offsetWidth}px`
+        context.selectedElement.el.getBoundingClientRect().top + yMove
+      baseStyles.height = `${
+        context.selectedElement.el.getBoundingClientRect().height
+      }px`
+      baseStyles.width = `${
+        context.selectedElement.el.getBoundingClientRect().width
+      }px`
       baseStyles.opacity = '0.2'
     }
   }

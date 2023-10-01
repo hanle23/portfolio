@@ -19,46 +19,46 @@ export default function Page(): React.JSX.Element {
       <div className="grid mt-6 grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <p className="text-base text-sky-100 font-semibold ">
-            Back to 2016 when I was first discovered a Trouble in Terrorist Town
-            server in CS:GO, my friend and I was learning to write some mods for
-            his server and it pulls me into the hobby of programming. Till now I
-            have had many opportunities to widen my knowledge in all kind of
-            topics within Computer Science at an education institution and a
-            start-up.
+            Back in 2016 when I first discovered a Trouble in Terrorist Town
+            server in CS:GO, my friend and I were learning to write some mods
+            for his server, and it pulled me into the hobby of programming.
+            Since then, I have had many opportunities to broaden my knowledge in
+            various topics within Computer Science, both at an educational
+            institution and at a start-up.
           </p>
           <p className="text-base text-sky-100 font-semibold ">
-            Nowadays I am seeking for my next opportunities to build great
-            product, working with others and continue develop myself to be a
-            better engineer, while fooling around with new and cool
-            technologies.
+            Nowadays I am actively seeking for my next opportunity to build
+            great products, collaborate with others and continue developing
+            myself to become a better engineer, all while fooling around with
+            new and cool technologies.
           </p>
         </div>
 
         <div className="hidden md:block"></div>
-        <div className="flex lg:items-end space-x-4">
-          <BlockContainer>
+        <div className="flex md:items-end  space-x-4">
+          <BlockContainer className="h-fit">
             <Link href="/contact">
-              <button className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-xl font-bold text-sky-100 transition duration-150">
+              <button className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150">
                 Get in touch
               </button>
             </Link>
           </BlockContainer>
-          <BlockContainer>
+          <BlockContainer className="h-fit">
             <a
               target="_blank"
               href="https://github.com/hanle23"
               rel="noopener noreferrer"
-              className="transition duration-150"
+              className=""
             >
               <Image src={githubLogo} width={50} alt="GitHub Link" />
             </a>
           </BlockContainer>
-          <BlockContainer>
+          <BlockContainer className="h-fit">
             <a
               target="_blank"
               href="https://www.linkedin.com/in/han-le23/"
               rel="noopener noreferrer"
-              className="hover:scale-125 transition duration-150"
+              className=""
             >
               <Image src={linkedInLogo} width={50} alt="LinkedIn Link" />
             </a>
