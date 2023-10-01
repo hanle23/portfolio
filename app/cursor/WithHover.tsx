@@ -2,9 +2,9 @@ import React, { useState, useContext } from 'react'
 import { Context } from '../components/appWrapper'
 
 const withHover = (
-  Component: React.ComponentType<any>, // Adjust the type accordingly
+  Component: React.ComponentType<any>,
   type: string,
-  config?: Record<string, any>, // Adjust the type accordingly
+  config?: Record<string, any>,
 ) => {
   return function WithHoverComponent({ passThroughRef, ...props }: any) {
     const context = useContext(Context)

@@ -25,14 +25,10 @@ export default function Cursor(): React.JSX.Element {
     ) {
       if (context.selectedElement.type === 'block') {
         gsap.to(cursor.current, {
-          duration: 0.5,
+          duration: 0.1,
           ease: 'elastic.out(1, 1)',
-          left:
-            context.selectedElement.el.offsetLeft +
-            context.selectedElement.el.offsetParent?.offsetLeft,
-          top:
-            context.selectedElement.el.offsetTop +
-            context.selectedElement.el.offsetParent?.offsetTop,
+          left: context?.selectedElement?.el?.getBoundingClientRect().left,
+          top: context?.selectedElement?.el?.getBoundingClientRect().top,
           height: `${context.selectedElement.el.offsetHeight}px`,
           width: `${context.selectedElement.el.offsetWidth}px`,
           borderRadius: '4px',
@@ -51,6 +47,8 @@ export default function Cursor(): React.JSX.Element {
   }, [context?.selectedElement, context?.status])
 
   useEffect(() => {
+    console.log('Here')
+    console.log(context?.selectedElement?.el?.offsetLeft)
     if (context == null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
@@ -112,13 +110,9 @@ export default function Cursor(): React.JSX.Element {
 
     if (context.selectedElement.type === 'block') {
       baseStyles.left =
-        context.selectedElement.el.offsetLeft +
-        context.selectedElement.el.offsetParent?.offsetLeft +
-        xMove
+        context?.selectedElement?.el?.getBoundingClientRect().left + xMove
       baseStyles.top =
-        context.selectedElement.el.offsetTop +
-        context.selectedElement.el.offsetParent?.offsetTop +
-        yMove
+        context?.selectedElement?.el?.getBoundingClientRect().top + yMove
       baseStyles.height = `${context.selectedElement.el.offsetHeight}px`
       baseStyles.width = `${context.selectedElement.el.offsetWidth}px`
       baseStyles.opacity = '0.2'

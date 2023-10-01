@@ -34,8 +34,8 @@ export default function NavBar(): React.JSX.Element {
 
   return (
     <div
-      className={`flex justify-center space-x-5 sticky top-0 z-50 lg:space-x-44 ${
-        !top ? 'bg-[#233831] bg-opacity-70 rounded-full shadow-lg' : ''
+      className={`flex justify-center space-x-5 sticky top-0 z-50 lg:space-x-44 px-2.5 ${
+        !top ? 'bg-[#233831] bg-opacity-70 rounded-full shadow-lg ' : ''
       }`}
     >
       {route?.map((routePath: string) => {

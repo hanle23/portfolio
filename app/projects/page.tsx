@@ -19,18 +19,24 @@ export default function Page(): React.JSX.Element {
     fetchData()
   }, [])
   return (
-    <div>
+    <div className="flex flex-nowrap flex-col place-content-center">
       <h1 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h1>
-      <div className="grid grid-cols-2 gap-5 mt-5 grid-flow-row">
+      <div className="grid grid-cols-2 gap-2 mt-5 w-full h-full  place-content-center">
         {data?.map((project: any) => {
-          console.log(project)
+          const recentActivity =
+            new Date(project.updated_at) > new Date(project.pushed_at)
+              ? `updated_at`
+              : `pushed_at`
+          const currentDate = new Date().getTime()
+          const maxDate = new Date(project[recentActivity])
+          maxDate.setMonth(maxDate.getMonth() + 1)
           return (
-            <BlockContainer key={project.name}>
+            <BlockContainer key={project.name} className="flex h-fit w-7/12">
               <a
                 target="_blank"
                 href={project.html_url}
                 rel="noopener noreferrer"
-                className="border inline-block rounded-md p-2.5 transition duration-150 w-full h-full relative"
+                className="border inline-block rounded-md p-2.5 transition duration-150 hover:bg-stone-500 w-full  relative"
               >
                 <h3 className="text-sky-100 font-bold text-lg">
                   {project.name
@@ -42,15 +48,19 @@ export default function Page(): React.JSX.Element {
                     ? 'Coming soon!'
                     : project.description}
                 </p>
-                <p className="text-sm text-sky-100 absolute bottom-0">
-                  Most recent activity:{' '}
-                  {new Date(project.updated_at) > new Date(project.pushed_at)
-                    ? `${new Date(
-                        project.updated_at,
-                      ).toLocaleDateString()} - Updated`
-                    : `${new Date(
-                        project.pushed_at,
-                      ).toLocaleDateString()} - Pushed`}
+                <p className="text-sm text-sky-100 flex items-center space-x-1">
+                  <div
+                    className={`border border-transparent ${
+                      maxDate.getTime() <= currentDate
+                        ? 'bg-sky-100'
+                        : 'bg-green-500'
+                    } h-[10px] w-[10px] rounded-full`}
+                  />
+                  <p>
+                    {maxDate.getTime() <= currentDate
+                      ? `Stale`
+                      : `Recently updated`}
+                  </p>
                 </p>
               </a>
             </BlockContainer>
