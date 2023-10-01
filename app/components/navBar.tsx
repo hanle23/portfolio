@@ -34,19 +34,19 @@ export default function NavBar(): React.JSX.Element {
 
   return (
     <div
-      className={`flex justify-center space-x-5 sticky top-0 z-50 lg:space-x-44 ${
-        !top ? 'bg-[#233831] bg-opacity-70 rounded-full shadow-lg' : ''
+      className={`flex justify-center space-x-5 sticky top-0 z-50 lg:space-x-44 px-2.5 ${
+        !top ? 'bg-[#233831] bg-opacity-70 rounded-full shadow-lg ' : ''
+
       }`}
     >
       {route?.map((routePath: string) => {
         return (
-          <BlockContainer
-            key={routePath}
-            className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
-          >
+          <BlockContainer key={routePath}>
             <Link
               href={`/${routePath === 'home' ? '' : routePath}`}
               prefetch={true}
+              className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
+
             >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
             </Link>

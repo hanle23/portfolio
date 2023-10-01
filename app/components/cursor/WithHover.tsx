@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react'
-import { Context } from '../components/appWrapper'
+import { Context } from '../appWrapper'
 
 const withHover = (
-  Component: React.ComponentType<any>,
+  Component: React.ComponentType<any>, // Adjust the type accordingly
   type: string,
-  config?: Record<string, any>,
-
+  config?: Record<string, any>, // Adjust the type accordingly
 ) => {
   return function WithHoverComponent({ passThroughRef, ...props }: any) {
     const context = useContext(Context)
@@ -50,12 +49,16 @@ const withHover = (
           ? context.selectedElement.config.hoverOffset
           : 2
       const relativePos = {
-        x: context.pos.x - context.selectedElement.el.offsetLeft,
-        y: context.pos.y - context.selectedElement.el.offsetTop,
+        x:
+          context.pos.x -
+          context.selectedElement.el.getBoundingClientRect().left,
+        y:
+          context.pos.y -
+          context.selectedElement.el.getBoundingClientRect().top,
       }
 
-      const xMid = context.selectedElement.el.offsetWidth / 2
-      const yMid = context.selectedElement.el.offsetHeight / 2
+      const xMid = context.selectedElement.el.getBoundingClientRect().width / 2
+      const yMid = context.selectedElement.el.getBoundingClientRect().height / 2
       const xMove =
         ((relativePos.x - xMid) / context.selectedElement.el.clientWidth) *
         amount
