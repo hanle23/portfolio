@@ -68,7 +68,7 @@ export const AppWrapper = ({
   return (
     <Context.Provider value={context}>
       <div
-        className="overscroll-none overflow-x-hidden items-center min-w-screen w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3"
+        className="overscroll-none items-center min-w-screen w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3"
         onMouseMove={changePosition}
         onMouseDown={() => {
           setPressing(true)
