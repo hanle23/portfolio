@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useEffect, useState } from 'react'
 import BlockContainer from '../components/specialComponent/NavLink'
@@ -17,7 +16,7 @@ export default function Page(): React.JSX.Element {
 
   useEffect(() => {
     const fetchData = (): void => {
-      fetch('/api/projects')
+      fetch('portfolio/api/projects')
         .then(async (response) => await response.json())
         .then((result) => {
           setData(result.data)
@@ -91,7 +90,6 @@ export default function Page(): React.JSX.Element {
           </button>
         </BlockContainer>
       </div>
-
     </div>
   )
 }
