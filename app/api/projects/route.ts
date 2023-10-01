@@ -17,7 +17,17 @@ export async function GET(): Promise<NextResponse<{ data: JSON[] }>> {
     return item
   })
   filteredResult.sort(function (a: any, b: any) {
-    return new Date(b.pushed_at).valueOf() - new Date(a.pushed_at).valueOf()
+    const recentActivityA =
+      new Date(a.updated_at) > new Date(a.pushed_at)
+        ? a.updated_at
+        : a.pushed_at
+    const recentActivityB =
+      new Date(b.updated_at) > new Date(b.pushed_at)
+        ? b.updated_at
+        : b.pushed_at
+    return (
+      new Date(recentActivityB).valueOf() - new Date(recentActivityA).valueOf()
+    )
   })
   return NextResponse.json({ data: filteredResult })
 }

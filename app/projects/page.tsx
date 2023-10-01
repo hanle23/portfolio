@@ -30,7 +30,7 @@ export default function Page(): React.JSX.Element {
   }, [])
   return (
     <div>
-      <h1 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h1>
+      <h2 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
         <div className="grid grid-cols-2 gap-y-4 justify-items-center mt-8 w-full h-full">
           {currentDisplay?.map((project: any) => {
@@ -47,7 +47,7 @@ export default function Page(): React.JSX.Element {
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
-                  className="border inline-block rounded-md p-2.5 transition duration-150 hover:bg-stone-500 w-full relative"
+                  className="border inline-block rounded-md p-2.5  transition duration-150 hover:bg-stone-500 w-full relative"
                 >
                   <h3 className="text-sky-100 font-bold text-lg">
                     {project.name
@@ -56,10 +56,10 @@ export default function Page(): React.JSX.Element {
                   </h3>
                   <p className="line-clamp-2">
                     {project.description === null
-                      ? 'Coming soon!'
+                      ? 'Description coming soon!'
                       : project.description}
                   </p>
-                  <p className="text-sm text-sky-100 flex items-center space-x-1">
+                  <div className="text-sm text-sky-100 flex items-center space-x-1">
                     <div
                       className={`border border-transparent ${
                         maxDate.getTime() <= currentDate
@@ -67,12 +67,12 @@ export default function Page(): React.JSX.Element {
                           : 'bg-green-500'
                       } h-[10px] w-[10px] rounded-full`}
                     />
-                    <p>
+                    <div>
                       {maxDate.getTime() <= currentDate
                         ? `Stale`
                         : `Recently updated`}
-                    </p>
-                  </p>
+                    </div>
+                  </div>
                 </a>
               </BlockContainer>
             )
