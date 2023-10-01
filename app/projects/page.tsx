@@ -16,7 +16,7 @@ export default function Page(): React.JSX.Element {
 
   useEffect(() => {
     const fetchData = (): void => {
-      fetch('portfolio/api/projects')
+      fetch('/api/projects')
         .then(async (response) => await response.json())
         .then((result) => {
           setData(result.data)
