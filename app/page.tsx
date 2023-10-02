@@ -31,7 +31,6 @@ export default function Page(): React.JSX.Element {
             great products, collaborate with others and continue developing
             myself to become a better engineer, all while fooling around with
             new and cool technologies.
-
           </p>
         </div>
 
@@ -41,35 +40,28 @@ export default function Page(): React.JSX.Element {
           <BlockContainer className="h-fit">
             <Link href="/contact">
               <button className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150">
-
                 Get in touch
               </button>
             </Link>
           </BlockContainer>
 
           <BlockContainer className="h-fit">
-
             <a
               target="_blank"
               href="https://github.com/hanle23"
               rel="noopener noreferrer"
-
               className=""
-
             >
               <Image src={githubLogo} width={50} alt="GitHub Link" />
             </a>
           </BlockContainer>
 
           <BlockContainer className="h-fit">
-
             <a
               target="_blank"
               href="https://www.linkedin.com/in/han-le23/"
               rel="noopener noreferrer"
-
               className=""
-
             >
               <Image src={linkedInLogo} width={50} alt="LinkedIn Link" />
             </a>

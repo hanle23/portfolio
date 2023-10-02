@@ -5,7 +5,6 @@ import NavBar from './navBar'
 
 import Cursor from './cursor/Cursor'
 
-
 interface CurrentUserContextType {
   pos: { x: number; y: number }
   status: string
@@ -71,7 +70,6 @@ export const AppWrapper = ({
     <Context.Provider value={context}>
       <div
         className="overscroll-none items-center min-w-screen w-full min-h-screen bg-gradient-to-tr to-blue-400 from-green-500 px-7 lg:px-10 py-3"
-
         onMouseMove={changePosition}
         onMouseDown={() => {
           setPressing(true)

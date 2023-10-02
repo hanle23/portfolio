@@ -5,7 +5,10 @@ const withHover = (
   Component: React.ComponentType<any>,
   type: string,
   config?: Record<string, any>,
+<<<<<<< HEAD
 
+=======
+>>>>>>> 24-pulling-github-repo-to-project-page
 ) => {
   return function WithHoverComponent({ passThroughRef, ...props }: any) {
     const context = useContext(Context)

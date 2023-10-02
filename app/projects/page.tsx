@@ -1,4 +1,3 @@
-
 'use client'
 import React, { useEffect, useState } from 'react'
 import BlockContainer from '../components/specialComponent/NavLink'
@@ -31,7 +30,7 @@ export default function Page(): React.JSX.Element {
   }, [])
   return (
     <div>
-      <h2 className="text-center text-sky-100 font-extrabold text-lg lg:text-3xl mt-8">{`Project List`}</h2>
+      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-4xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
         <div className="grid grid-cols-2 gap-y-4 justify-items-center mt-8 w-full h-full">
           {currentDisplay?.map((project: any) => {
@@ -48,14 +47,14 @@ export default function Page(): React.JSX.Element {
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
-                  className="border inline-block rounded-md p-2.5  transition duration-150 hover:bg-stone-500 w-full relative"
+                  className="border inline-block rounded-md p-2.5  transition duration-150  w-full relative"
                 >
                   <h3 className="text-sky-100 font-bold text-lg">
                     {project.name
                       .replace(/-/gi, ' ')
                       .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
                   </h3>
-                  <p className="line-clamp-2">
+                  <p className="text-sky-100 line-clamp-2">
                     {project.description === null
                       ? 'Description coming soon!'
                       : project.description}
@@ -80,18 +79,18 @@ export default function Page(): React.JSX.Element {
           })}
         </div>
       )}
-
-      <div className={`flex justify-center mt-3`}>
-        <BlockContainer>
-          <button
-            className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
-            onClick={toggleDisplay}
-          >
-            Show {displaySmallData ? 'More' : 'Less'}
-          </button>
-        </BlockContainer>
-      </div>
-
+      {currentDisplay != null && (
+        <div className={`flex justify-center mt-3`}>
+          <BlockContainer>
+            <button
+              className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
+              onClick={toggleDisplay}
+            >
+              Show {displaySmallData ? 'More' : 'Less'}
+            </button>
+          </BlockContainer>
+        </div>
+      )}
     </div>
   )
 }

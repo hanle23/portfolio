@@ -48,6 +48,8 @@ export default function Cursor(): React.JSX.Element {
   }, [context?.selectedElement, context?.status])
 
   useEffect(() => {
+    console.log('Here')
+    console.log(context?.selectedElement?.el?.offsetLeft)
     if (context == null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
