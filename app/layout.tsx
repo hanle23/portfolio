@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import { AppWrapper } from './components/appWrapper'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppWrapper>{children}</AppWrapper>
+        <Analytics />
       </body>
     </html>
   )
