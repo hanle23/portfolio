@@ -35,6 +35,7 @@ export default function Page(): React.JSX.Element {
         </div>
 
         <div className="hidden md:block"></div>
+
         <div className="flex md:items-end  space-x-4">
           <BlockContainer className="h-fit">
             <Link href="/contact">
@@ -43,6 +44,7 @@ export default function Page(): React.JSX.Element {
               </button>
             </Link>
           </BlockContainer>
+
           <BlockContainer className="h-fit">
             <a
               target="_blank"
@@ -53,6 +55,7 @@ export default function Page(): React.JSX.Element {
               <Image src={githubLogo} width={50} alt="GitHub Link" />
             </a>
           </BlockContainer>
+
           <BlockContainer className="h-fit">
             <a
               target="_blank"
