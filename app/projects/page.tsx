@@ -32,7 +32,7 @@ export default function Page(): React.JSX.Element {
     <div>
       <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-4xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
-        <div className="grid grid-cols-2 gap-y-4 justify-items-center mt-8 w-full h-full">
+        <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-8 w-full h-full">
           {currentDisplay?.map((project: any) => {
             const recentActivity =
               new Date(project.updated_at) > new Date(project.pushed_at)
@@ -42,35 +42,37 @@ export default function Page(): React.JSX.Element {
             const maxDate = new Date(project[recentActivity])
             maxDate.setMonth(maxDate.getMonth() + 1)
             return (
-              <BlockContainer key={project.name} className="flex h-fit w-7/12">
+              <BlockContainer key={project.name} className="flex h-full w-7/12">
                 <a
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
                   className="border inline-block rounded-md p-2.5  transition duration-150  w-full relative"
                 >
-                  <h3 className="text-sky-100 font-bold text-lg">
-                    {project.name
-                      .replace(/-/gi, ' ')
-                      .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
-                  </h3>
-                  <p className="text-sky-100 line-clamp-2">
-                    {project.description === null
-                      ? 'Description coming soon!'
-                      : project.description}
-                  </p>
-                  <div className="text-sm text-sky-100 flex items-center space-x-1">
-                    <div
-                      className={`border border-transparent ${
-                        maxDate.getTime() <= currentDate
-                          ? 'bg-sky-100'
-                          : 'bg-green-500'
-                      } h-[10px] w-[10px] rounded-full`}
-                    />
-                    <div>
-                      {maxDate.getTime() <= currentDate
-                        ? `Stale`
-                        : `Recently updated`}
+                  <div className="flex flex-col h-full">
+                    <h3 className="text-sky-100 font-bold text-lg">
+                      {project.name
+                        .replace(/-/gi, ' ')
+                        .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
+                    </h3>
+                    <p className="text-sky-100 line-clamp-2">
+                      {project.description === null
+                        ? 'Description coming soon!'
+                        : project.description}
+                    </p>
+                    <div className="text-sm text-sky-100 flex items-center space-x-1 mt-auto">
+                      <div
+                        className={`border border-transparent ${
+                          maxDate.getTime() <= currentDate
+                            ? 'bg-sky-100'
+                            : 'bg-green-500'
+                        } h-[10px] w-[10px] rounded-full`}
+                      />
+                      <div>
+                        {maxDate.getTime() <= currentDate
+                          ? `Stale`
+                          : `Recently updated`}
+                      </div>
                     </div>
                   </div>
                 </a>
