@@ -12,25 +12,26 @@ export default function Page(): React.JSX.Element {
     <div className="grid content-center justify-items-start w-full pt-20 lg:pt-40">
       <GreetingPhrase />
       <div className="pl-0.5 mt-5">
-        <p className="text-lg lg:text-3xl font-extrabold text-sky-100">
-          Full Stack Developer at Tesoract Inc
+        <p className="text-lg md:text-4xl font-extrabold text-sky-100">
+          Full Stack Engineer at Tesoract Inc
         </p>
       </div>
       <div className="grid mt-6 grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p className="text-base text-sky-100 font-semibold ">
+          <p className="text-base text-sky-100">
             Back in 2016 when I first discovered a Trouble in Terrorist Town
             server in CS:GO, my friend and I were learning to write some mods
             for his server, and it pulled me into the hobby of programming.
             Since then, I have had many opportunities to broaden my knowledge in
-            various topics within Computer Science, both at an educational
-            institution and at a start-up.
+            various topics within Computer Science, both at an{' '}
+            <strong>educational institution</strong> and at a{' '}
+            <strong>start-up</strong> .
           </p>
-          <p className="text-base text-sky-100 font-semibold ">
+          <p className="text-base text-sky-100 ">
             Nowadays I am actively seeking for my next opportunity to build
-            great products, collaborate with others and continue developing
-            myself to become a better engineer, all while fooling around with
-            new and cool technologies.
+            great products while developing <strong>Saas</strong> application{' '}
+            <strong>Tesoract</strong>, and creating internal softwares for{' '}
+            <strong>School of Continuing Studies at York University</strong>
           </p>
         </div>
 
@@ -67,7 +68,7 @@ export default function Page(): React.JSX.Element {
             </a>
           </BlockContainer>
         </div>
-        <p className="text-base text-sky-100 font-semibold">
+        <p className="text-base text-sky-100">
           {
             "During my free time I usually playing games, especially Baldur's Gate 3 these days, reading books and hopefully getting a new piano eventually to be a real Asian."
           }

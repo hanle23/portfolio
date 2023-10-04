@@ -3,7 +3,7 @@ import { experiencesData } from '@/lib/data'
 export default function Page(): React.JSX.Element {
   return (
     <div>
-      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-4xl my-8">{`Experiences`}</h2>
+      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-5xl my-8">{`Experiences`}</h2>
       <article className="flex">
         <div>
           <div className="sticky top-10">Category Header</div>
