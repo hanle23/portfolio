@@ -13,7 +13,7 @@ export default function Cursor(): React.JSX.Element {
     background: '#fff',
     opacity: `${isVisible && context != null && context.pos.x > 1 ? '1' : '0'}`,
     position: 'fixed' as 'fixed',
-    borderRadius: '15px',
+    borderRadius: '9999px',
   }
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Cursor(): React.JSX.Element {
     ) {
       if (context.selectedElement.type === 'block') {
         gsap.to(cursor.current, {
-          duration: 0.5,
+          duration: 0,
           ease: 'elastic.out(1, 1)',
           left: context.selectedElement.el.getBoundingClientRect().left,
           top: context.selectedElement.el.getBoundingClientRect().top,
@@ -35,7 +35,7 @@ export default function Cursor(): React.JSX.Element {
           width: `${
             context.selectedElement.el.getBoundingClientRect().width
           }px`,
-          borderRadius: '4px',
+          borderRadius: '5px',
           opacity: '0.2',
           onComplete: () => {
             context.setStatus('entered')
