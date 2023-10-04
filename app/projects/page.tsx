@@ -65,7 +65,7 @@ export default function Page(): React.JSX.Element {
                         className={`border border-transparent ${
                           maxDate.getTime() <= currentDate
                             ? 'bg-sky-100'
-                            : 'bg-green-500'
+                            : 'bg-green-600'
                         } h-[10px] w-[10px] rounded-full`}
                       />
                       <div>
