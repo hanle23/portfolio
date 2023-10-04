@@ -30,7 +30,7 @@ export default function Page(): React.JSX.Element {
   }, [])
   return (
     <div>
-      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-4xl mt-8">{`Project List`}</h2>
+      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-5xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
         <div className="grid grid-cols-2 gap-y-4 justify-items-center mt-8 w-full h-full">
           {currentDisplay?.map((project: any) => {
@@ -42,14 +42,14 @@ export default function Page(): React.JSX.Element {
             const maxDate = new Date(project[recentActivity])
             maxDate.setMonth(maxDate.getMonth() + 1)
             return (
-              <BlockContainer key={project.name} className="flex h-fit w-7/12">
+              <BlockContainer key={project.name} className="flex h-fit w-8/12">
                 <a
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
                   className="border inline-block rounded-md p-2.5  transition duration-150  w-full relative"
                 >
-                  <h3 className="text-sky-100 font-bold text-lg">
+                  <h3 className="text-sky-100 font-bold text-xl">
                     {project.name
                       .replace(/-/gi, ' ')
                       .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
