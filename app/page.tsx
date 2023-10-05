@@ -5,7 +5,7 @@ import GreetingPhrase from './components/greetingPhrase'
 import githubLogo from '../public/svg/githubIcon.svg'
 import linkedInLogo from '../public/svg/linkedInIcon.svg'
 import Link from 'next/link'
-import BlockContainer from './components/specialComponent/NavLink'
+import BlockContainer from './components/specialComponent/BlockContainer'
 
 export default function Page(): React.JSX.Element {
   return (
