@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import BlockContainer from '../components/specialComponent/NavLink'
+import BlockContainer from '../components/specialComponent/BlockContainer'
 
 export default function Page(): React.JSX.Element {
   const [data, setData] = useState<JSON[] | null>(null)

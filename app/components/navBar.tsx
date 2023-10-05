@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import BlockContainer from './specialComponent/NavLink'
+import BlockContainer from './specialComponent/BlockContainer'
 
 export default function NavBar(): React.JSX.Element {
   const pathname = usePathname()
