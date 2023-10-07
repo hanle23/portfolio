@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import BlockContainer from '../components/specialComponent/BlockContainer'
+import BlockContainer from '../specialComponent/BlockContainer'
 
-export default function Page(): React.JSX.Element {
+export default function ProjectPage(): React.JSX.Element {
   const [data, setData] = useState<JSON[] | null>(null)
   const smallData = data?.slice(0, 6)
 
@@ -42,7 +42,7 @@ export default function Page(): React.JSX.Element {
             const maxDate = new Date(project[recentActivity])
             maxDate.setMonth(maxDate.getMonth() + 1)
             return (
-              <BlockContainer key={project.name} className="flex h-full w-8/12">
+              <BlockContainer key={project.name} className="flex h-full w-9/12">
                 <a
                   target="_blank"
                   href={project.html_url}

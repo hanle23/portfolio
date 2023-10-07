@@ -16,7 +16,7 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gradient-to-tr to-blue-400 from-green-500 bg-no-repeat bg-fixed">
         <AppWrapper>{children}</AppWrapper>
         <Analytics />
       </body>
