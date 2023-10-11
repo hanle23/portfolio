@@ -1,26 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import BlockContainer from './specialComponent/BlockContainer'
 
 export default function NavBar(): React.JSX.Element {
-  const pathname = usePathname()
-  const [route, setRoute] = useState<string[]>([])
+  const route = ['experience', 'projects', 'contact']
   const [top, setTop] = useState<boolean>(true)
-  useEffect(() => {
-    const url = `${pathname}`
-
-    const originalRoute: string[] = ['experience', 'projects', 'contact']
-    const nextRoute: string[] = originalRoute.map((v, _) => {
-      if (v === url.replace('/', '') || v === url.replace('/portfolio/', '')) {
-        return 'home'
-      } else {
-        return v
-      }
-    })
-    setRoute(nextRoute)
-  }, [pathname])
 
   useEffect(() => {
     const scrollHandler = (): void => {
@@ -42,7 +27,7 @@ export default function NavBar(): React.JSX.Element {
         return (
           <BlockContainer key={routePath}>
             <Link
-              href={`/${routePath === 'home' ? '' : routePath}`}
+              href={`#${routePath}-section`}
               prefetch={true}
               className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
             >

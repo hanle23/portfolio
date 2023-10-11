@@ -29,7 +29,7 @@ export default function ProjectPage(): React.JSX.Element {
     fetchData()
   }, [])
   return (
-    <div>
+    <div id="projects-section">
       <h2 className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-8 w-full h-full">
