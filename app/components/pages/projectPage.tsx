@@ -30,7 +30,7 @@ export default function ProjectPage(): React.JSX.Element {
   }, [])
   return (
     <div>
-      <h2 className="text-center text-sky-100 font-extrabold text-lg md:text-5xl mt-8">{`Project List`}</h2>
+      <h2 className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</h2>
       {currentDisplay != null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-8 w-full h-full">
           {currentDisplay?.map((project: any) => {
@@ -49,12 +49,12 @@ export default function ProjectPage(): React.JSX.Element {
                   rel="noopener noreferrer"
                   className="border inline-block rounded-md p-2.5  transition duration-150  w-full relative"
                 >
-                  <div className="flex flex-col h-full">
-                    <h3 className="text-sky-100 font-bold text-xl">
+                  <div className="flex flex-col h-full overflow-hidden">
+                    <div className="text-sky-100 font-bold text-lg md:text-xl">
                       {project.name
                         .replace(/-/gi, ' ')
                         .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
-                    </h3>
+                    </div>
                     <p className="text-sky-100 line-clamp-2">
                       {project.description === null
                         ? 'Description coming soon!'
