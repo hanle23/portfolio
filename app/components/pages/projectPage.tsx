@@ -84,7 +84,7 @@ export default function ProjectPage(): React.JSX.Element {
           })}
         </div>
       )}
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-10">
         {currentDisplay != null && (
           <div className="">
             <BlockContainer>
