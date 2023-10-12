@@ -28,11 +28,11 @@ export default function ExperiencePage(): React.JSX.Element {
   })
   return (
     <div
-      className="justify-items-center grid text-sky-100 relative h-screen w-fit"
+      className="justify-items-center grid text-sky-100  min-h-screen w-fit m-auto"
       id="experience-section"
     >
       <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 z-[-1]">{`Experiences`}</div>
-      <div className="sticky md:-m-[80px] justify-self-end top-20 md:right-28 hidden md:block">
+      <div className="sticky md:-my-[80px] justify-self-end top-20 md:right-28 hidden md:block">
         <BlockContainer>
           <button
             onClick={() => {
@@ -43,12 +43,11 @@ export default function ExperiencePage(): React.JSX.Element {
           </button>
         </BlockContainer>
       </div>
-
       <div className="top-[-100%] grid justify-items-center">
         {experiences?.map((experience) => {
           return (
             <article className="flex w-8/12" key={experience.title}>
-              <BlockContainer className="flex h-full w-full p-3">
+              <BlockContainer className="flex h-full w-full p-3 relative">
                 <div className=" items-center w-4/12 shrink-0">
                   <div className="sticky top-10">
                     {`${
@@ -65,7 +64,7 @@ export default function ExperiencePage(): React.JSX.Element {
                   </div>
                   <div className="sticky -z-[1] bottom-[100px]" />
                 </div>
-                <div>
+                <div className="grid">
                   <div className="text-2xl font-semibold">
                     {experience.title}
                   </div>
@@ -80,7 +79,7 @@ export default function ExperiencePage(): React.JSX.Element {
           )
         })}
       </div>
-
+      <div className="sticky -z-[1] bottom-[50px]" />
       <DialogModal open={open} onClose={setOpen}>
         <iframe
           src="/pdf/resume.pdf#toolbar=0"
@@ -88,7 +87,6 @@ export default function ExperiencePage(): React.JSX.Element {
           className="w-full h-full"
         ></iframe>
       </DialogModal>
-      <div className="sticky -z-[1] bottom-[100px]" />
     </div>
   )
 }
