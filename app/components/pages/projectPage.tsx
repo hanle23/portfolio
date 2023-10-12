@@ -29,10 +29,10 @@ export default function ProjectPage(): React.JSX.Element {
     fetchData()
   }, [])
   return (
-    <div id="projects-section" className="h-fit w-fit">
-      <h2 className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</h2>
+    <div id="projects-section" className="h-screen w-fit grid">
+      <div className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
       {currentDisplay != null && (
-        <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-8 w-full h-full">
+        <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: any) => {
             const recentActivity =
               new Date(project.updated_at) > new Date(project.pushed_at)
@@ -81,18 +81,20 @@ export default function ProjectPage(): React.JSX.Element {
           })}
         </div>
       )}
-      {currentDisplay != null && (
-        <div className={`flex justify-center mt-3`}>
-          <BlockContainer>
-            <button
-              className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
-              onClick={toggleDisplay}
-            >
-              Show {displaySmallData ? 'More' : 'Less'}
-            </button>
-          </BlockContainer>
-        </div>
-      )}
+      <div className="flex justify-center">
+        {currentDisplay != null && (
+          <div className="">
+            <BlockContainer>
+              <button
+                className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
+                onClick={toggleDisplay}
+              >
+                Show {displaySmallData ? 'More' : 'Less'}
+              </button>
+            </BlockContainer>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

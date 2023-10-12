@@ -28,7 +28,7 @@ export default function ExperiencePage(): React.JSX.Element {
   })
   return (
     <div
-      className="justify-items-center grid text-sky-100 relative h-fit w-fit"
+      className="justify-items-center grid text-sky-100 relative h-screen w-fit"
       id="experience-section"
     >
       <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 z-[-1]">{`Experiences`}</div>
@@ -54,14 +54,25 @@ export default function ExperiencePage(): React.JSX.Element {
                     {`${
                       months[experience.startDate.getMonth()]
                     } ${experience.startDate.getFullYear()} — ${
-                      months[experience.endDate.getMonth()]
-                    } ${experience.endDate.getFullYear()}`}
+                      experience.endDate.setHours(0, 0, 0, 0) ===
+                      new Date().setHours(0, 0, 0, 0)
+                        ? 'Present'
+                        : `${
+                            months[experience.endDate.getMonth()]
+                          } ${experience.endDate.getFullYear()}`
+                    }
+                      `}
                   </div>
                   <div className="sticky -z-[1] bottom-[100px]" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-semibold">{experience.title}</h2>
-                  <h3>{experience.location}</h3>
+                  <div className="text-2xl font-semibold">
+                    {experience.title}
+                  </div>
+                  <div className="text-xl font-medium">
+                    {experience.company}
+                  </div>
+                  <div>{experience.location}</div>
                   <p>{experience.description}</p>
                 </div>
               </BlockContainer>

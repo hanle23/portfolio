@@ -9,7 +9,7 @@ import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 
 export default function MainPage(): React.JSX.Element {
   return (
-    <div className="h-fit w-fit">
+    <div className="h-screen grid content-center w-fit">
       <GreetingPhrase />
       <div className="pl-0.5 mt-5">
         <p className="text-lg md:text-4xl font-extrabold text-sky-100">
