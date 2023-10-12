@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode
 }): React.JSX.Element {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className="bg-gradient-to-tr to-blue-400 from-green-500 bg-no-repeat bg-fixed h-fit w-full">
         <AppWrapper>{children}</AppWrapper>
         <Analytics />

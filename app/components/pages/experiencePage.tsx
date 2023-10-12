@@ -26,6 +26,26 @@ export default function ExperiencePage(): React.JSX.Element {
   experiences.sort(function (a: any, b: any) {
     return new Date(b.startDate).valueOf() - new Date(a.startDate).valueOf()
   })
+
+  function FormatDate({
+    className,
+    experience,
+  }: {
+    className: string
+    experience: { startDate: Date; endDate: Date }
+  }): React.JSX.Element {
+    const startDate = `${
+      months[experience.startDate.getMonth()]
+    } ${experience.startDate.getFullYear()}`
+    const endDate =
+      experience.endDate.setHours(0, 0, 0, 0) ===
+      new Date().setHours(0, 0, 0, 0)
+        ? 'Present'
+        : `${
+            months[experience.endDate.getMonth()]
+          } ${experience.endDate.getFullYear()}`
+    return <div className={className}>{`${startDate} — ${endDate}`}</div>
+  }
   return (
     <div
       className="justify-items-center grid text-sky-100  min-h-screen w-fit m-auto"
@@ -49,18 +69,11 @@ export default function ExperiencePage(): React.JSX.Element {
             <article className="flex w-8/12" key={experience.title}>
               <BlockContainer className="flex h-full w-full p-3 relative">
                 <div className=" items-center w-4/12 shrink-0">
-                  <div className="sticky top-10">
-                    {`${
-                      months[experience.startDate.getMonth()]
-                    } ${experience.startDate.getFullYear()} — ${
-                      experience.endDate.setHours(0, 0, 0, 0) ===
-                      new Date().setHours(0, 0, 0, 0)
-                        ? 'Present'
-                        : `${
-                            months[experience.endDate.getMonth()]
-                          } ${experience.endDate.getFullYear()}`
-                    }
-                      `}
+                  <div className="">
+                    <FormatDate
+                      experience={experience}
+                      className="sticky top-10"
+                    />
                   </div>
                   <div className="sticky -z-[1] bottom-[100px]" />
                 </div>
@@ -85,7 +98,7 @@ export default function ExperiencePage(): React.JSX.Element {
           src="/pdf/resume.pdf#toolbar=0"
           allowFullScreen={true}
           className="w-full h-full"
-        ></iframe>
+        />
       </DialogModal>
     </div>
   )

@@ -1,11 +1,19 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import BlockContainer from './specialComponent/BlockContainer'
 
 export default function NavBar(): React.JSX.Element {
   const route = ['experience', 'projects', 'contact']
   const [top, setTop] = useState<boolean>(true)
+
+  function scrollSmoothTo(elementId: string): void {
+    const element = document.getElementById(elementId)
+    if (element === null) return
+    element.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    })
+  }
 
   useEffect(() => {
     const scrollHandler = (): void => {
@@ -26,13 +34,14 @@ export default function NavBar(): React.JSX.Element {
       {route?.map((routePath: string) => {
         return (
           <BlockContainer key={routePath}>
-            <Link
-              href={`#${routePath}-section`}
-              prefetch={true}
+            <a
+              onClick={() => {
+                scrollSmoothTo(`${routePath}-section`)
+              }}
               className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"
             >
               <p>{routePath.charAt(0).toUpperCase() + routePath.slice(1)}</p>
-            </Link>
+            </a>
           </BlockContainer>
         )
       })}
