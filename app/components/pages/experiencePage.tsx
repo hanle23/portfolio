@@ -71,7 +71,7 @@ export default function ExperiencePage(): React.JSX.Element {
                 <div className=" items-center w-4/12 shrink-0">
                   <FormatDate
                     experience={experience}
-                    className="sticky top-10"
+                    className="sticky top-10 font-medium"
                   />
                   <div className="sticky -z-[1] bottom-[100px]" />
                 </div>
