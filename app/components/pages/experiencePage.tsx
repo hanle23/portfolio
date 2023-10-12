@@ -69,12 +69,10 @@ export default function ExperiencePage(): React.JSX.Element {
             <article className="flex w-8/12" key={experience.title}>
               <BlockContainer className="flex h-full w-full p-3 relative">
                 <div className=" items-center w-4/12 shrink-0">
-                  <div className="">
-                    <FormatDate
-                      experience={experience}
-                      className="sticky top-10"
-                    />
-                  </div>
+                  <FormatDate
+                    experience={experience}
+                    className="sticky top-10"
+                  />
                   <div className="sticky -z-[1] bottom-[100px]" />
                 </div>
                 <div className="grid">
@@ -92,7 +90,7 @@ export default function ExperiencePage(): React.JSX.Element {
           )
         })}
       </div>
-      <div className="sticky -z-[1] bottom-[50px]" />
+
       <DialogModal open={open} onClose={setOpen}>
         <iframe
           src="/pdf/resume.pdf#toolbar=0"
@@ -100,6 +98,7 @@ export default function ExperiencePage(): React.JSX.Element {
           className="w-full h-full"
         />
       </DialogModal>
+      <div className="sticky -z-[1] bottom-[50px]" />
     </div>
   )
 }
