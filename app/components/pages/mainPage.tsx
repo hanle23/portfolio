@@ -4,8 +4,8 @@ import Image from 'next/image'
 import GreetingPhrase from '@/app/components/greetingPhrase'
 import githubLogo from '@/public/svg/githubIcon.svg'
 import linkedInLogo from '@/public/svg/linkedInIcon.svg'
-import Link from 'next/link'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
+import scrollToSection from '@/app/components/scrollComponents/scrollToSection'
 
 export default function MainPage(): React.JSX.Element {
   return (
@@ -27,6 +27,7 @@ export default function MainPage(): React.JSX.Element {
             <strong>educational institution</strong> and at a{' '}
             <strong>start-up</strong> .
           </p>
+          <br />
           <p className="text-base text-sky-100 ">
             Nowadays I am actively seeking for my next opportunity to build
             great products while developing <strong>Saas</strong> application{' '}
@@ -39,11 +40,14 @@ export default function MainPage(): React.JSX.Element {
 
         <div className="flex md:items-end  space-x-4">
           <BlockContainer className="h-fit">
-            <Link href="/contact">
-              <button className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150">
-                Get in touch
-              </button>
-            </Link>
+            <button
+              className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150"
+              onClick={() => {
+                scrollToSection(`contact-section`)
+              }}
+            >
+              Get in touch
+            </button>
           </BlockContainer>
 
           <BlockContainer className="h-fit">
