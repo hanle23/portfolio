@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import BlockContainer from './specialComponent/BlockContainer'
+import { Context } from '@/app/components/appWrapper'
 import scrollToSection from '@/app/components/scrollComponents/scrollToSection'
 
 export default function NavBar(): React.JSX.Element {
   const route = ['experience', 'projects', 'contact']
   const [top, setTop] = useState<boolean>(true)
+  const context = useContext(Context)
 
   useEffect(() => {
     const scrollHandler = (): void => {
@@ -28,6 +30,10 @@ export default function NavBar(): React.JSX.Element {
           <BlockContainer key={routePath}>
             <a
               onClick={() => {
+                if (routePath === 'contact') {
+                  context?.setContactOpen(true)
+                  return
+                }
                 scrollToSection(`${routePath}-section`)
               }}
               className="text-white p-2.5 hover:cursor-none text-base font-bold relative flex justify-center rounded-lg"

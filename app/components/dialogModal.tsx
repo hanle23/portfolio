@@ -9,24 +9,26 @@ interface props {
   open: boolean
   onClose: React.Dispatch<React.SetStateAction<boolean>>
   children: React.ReactNode
+  className: string
 }
 export default function DialogModal({
   open,
   onClose,
   children,
+  className,
 }: props): React.JSX.Element {
   const context = useContext(Context)
   return (
     <>
       {open && (
         <div
-          className=" fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-50"
+          className="fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-50"
           onClick={() => {
             onClose(false)
           }}
         >
           <div
-            className="bg-white md:h-5/6 md:w-8/12 text-black"
+            className={className}
             onClick={(event) => {
               if (event.target === event.currentTarget) {
                 event.stopPropagation()

@@ -123,10 +123,22 @@ export default function Cursor(): React.JSX.Element {
       setIsVisible(false)
     }
     document.body.addEventListener('mouseenter', handleMouseEnter)
+    document
+      .getElementById('resumeFrame')
+      ?.addEventListener('mouseenter', handleMouseLeave)
+    document
+      .getElementById('resumeFrame')
+      ?.addEventListener('mouseleave', handleMouseEnter)
     document.body.addEventListener('mouseleave', handleMouseLeave)
     return () => {
       document.body.removeEventListener('mouseenter', handleMouseEnter)
       document.body.removeEventListener('mouseleave', handleMouseLeave)
+      document
+        .getElementById('resumeFrame')
+        ?.removeEventListener('mouseenter', handleMouseLeave)
+      document
+        .getElementById('resumeFrame')
+        ?.removeEventListener('mouseleave', handleMouseEnter)
     }
   })
 

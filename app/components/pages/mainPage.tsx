@@ -1,13 +1,14 @@
 'use client'
-import React from 'react'
+import React, { useContext } from 'react'
 import Image from 'next/image'
 import GreetingPhrase from '@/app/components/greetingPhrase'
 import githubLogo from '@/public/svg/githubIcon.svg'
 import linkedInLogo from '@/public/svg/linkedInIcon.svg'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
-import scrollToSection from '@/app/components/scrollComponents/scrollToSection'
+import { Context } from '@/app/components/appWrapper'
 
 export default function MainPage(): React.JSX.Element {
+  const context = useContext(Context)
   return (
     <div className="h-screen grid content-center w-fit">
       <GreetingPhrase />
@@ -43,7 +44,7 @@ export default function MainPage(): React.JSX.Element {
             <button
               className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150"
               onClick={() => {
-                scrollToSection(`contact-section`)
+                context?.setContactOpen(true)
               }}
             >
               Get in touch
