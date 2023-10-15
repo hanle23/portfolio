@@ -52,14 +52,14 @@ export default function ExperiencePage(): React.JSX.Element {
       id="experience-section"
     >
       <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 z-[-1]">{`Experiences`}</div>
-      <div className="sticky md:-my-[80px] justify-self-end top-20 md:right-28 hidden md:block">
-        <BlockContainer>
+      <div className="sticky h-fit md:-my-[80px] justify-self-end top-20 md:right-28 hidden md:block">
+        <BlockContainer className="h-full">
           <button
             onClick={() => {
               setOpen(!open)
             }}
           >
-            <Image src={resumeLogo} width={50} alt="Resume" />
+            <Image src={resumeLogo} width={50} alt="Resume Icon" />
           </button>
         </BlockContainer>
       </div>

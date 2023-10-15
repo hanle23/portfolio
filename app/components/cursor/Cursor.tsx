@@ -17,12 +17,8 @@ export default function Cursor(): React.JSX.Element {
   }
 
   useEffect(() => {
-    if (context == null) return
-    if (
-      (context.status === 'entering' || context.status === 'shifting') &&
-      context.selectedElement?.el != null &&
-      context.selectedElement.el.offsetParent instanceof HTMLElement
-    ) {
+    if (context == null || context.selectedElement?.el == null) return
+    if (context.status === 'entering' || context.status === 'shifting') {
       if (context.selectedElement.type === 'block') {
         gsap.to(cursor.current, {
           duration: 0,
@@ -36,22 +32,19 @@ export default function Cursor(): React.JSX.Element {
             context.selectedElement.el.getBoundingClientRect().width
           }px`,
           borderRadius: '5px',
-          opacity: '0.2',
+          opacity: '0.19',
           onComplete: () => {
             context.setStatus('entered')
           },
         })
       }
-    } else if (
-      context.status === 'exiting' ||
-      context.selectedElement?.el == null
-    ) {
+    } else if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
     }
   }, [context?.selectedElement, context?.status])
 
   useEffect(() => {
-    if (context == null) return
+    if (context == null || context.selectedElement?.el != null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
@@ -70,8 +63,7 @@ export default function Cursor(): React.JSX.Element {
       })
     } else if (
       (context.status === 'entering' || context.status === 'shifting') &&
-      context.selectedElement?.type === 'text' &&
-      context.selectedElement?.el != null
+      context.selectedElement?.type === 'text'
     ) {
       const textSize =
         context.selectedElement?.config?.textSize != null
@@ -93,10 +85,7 @@ export default function Cursor(): React.JSX.Element {
     }
   }, [context?.pos])
 
-  if (
-    context?.selectedElement?.el != null &&
-    context.selectedElement.el.offsetParent instanceof HTMLElement
-  ) {
+  if (context?.selectedElement?.el != null) {
     const amount = 5
     const relativePos = {
       x:
