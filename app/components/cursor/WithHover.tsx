@@ -13,17 +13,10 @@ const withHover = (
 
     const handleMouseEnter = (e: React.MouseEvent<HTMLElement>): void => {
       if (context === null) return
-      if (context.selectedElementSet == null) return
-
       const result = {
         el: e.currentTarget,
         type,
         config: { ...config },
-      }
-
-      if (type === 'text') {
-        const computed = window.getComputedStyle(e.currentTarget).fontSize
-        result.config.textSize = parseFloat(computed.replace('px', ''))
       }
 
       context.selectedElementSet(result)
