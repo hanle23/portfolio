@@ -51,19 +51,20 @@ export default function ExperiencePage(): React.JSX.Element {
       className="justify-items-center grid text-sky-100  min-h-screen w-fit m-auto"
       id="experience-section"
     >
-      <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 z-[-1]">{`Experiences`}</div>
-      <div className="sticky md:-my-[80px] justify-self-end top-20 md:right-28 hidden md:block">
-        <BlockContainer>
-          <button
-            onClick={() => {
-              setOpen(!open)
-            }}
-          >
-            <Image src={resumeLogo} width={50} alt="Resume" />
-          </button>
-        </BlockContainer>
-      </div>
+      <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 -z-[1]">{`Experiences`}</div>
+
       <div className="top-[-100%] grid justify-items-center">
+        <div className="sticky h-fit md:-mt-[80px] justify-self-end top-20 md:right-28 hidden md:block">
+          <BlockContainer>
+            <button
+              onClick={() => {
+                setOpen(!open)
+              }}
+            >
+              <Image src={resumeLogo} width={50} alt="Resume Icon" />
+            </button>
+          </BlockContainer>
+        </div>
         {experiences?.map((experience) => {
           return (
             <article className="flex w-8/12" key={experience.title}>
@@ -89,16 +90,21 @@ export default function ExperiencePage(): React.JSX.Element {
             </article>
           )
         })}
+        <div className="sticky z-[-1] bottom-[1000px]" />
       </div>
 
-      <DialogModal open={open} onClose={setOpen}>
+      <DialogModal
+        id="iframe"
+        open={open}
+        onClose={setOpen}
+        className="bg-white md:h-5/6 md:w-8/12 text-black"
+      >
         <iframe
           src="/pdf/resume.pdf#toolbar=0"
           allowFullScreen={true}
           className="w-full h-full"
         />
       </DialogModal>
-      <div className="sticky -z-[1] bottom-[50px]" />
     </div>
   )
 }

@@ -11,6 +11,8 @@ interface CurrentUserContextType {
   selectedElement: SelectedElement | null
   setStatus: React.Dispatch<React.SetStateAction<string>>
   pressing: boolean
+  contactOpen: boolean
+  setContactOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectedElementSet: React.Dispatch<
     React.SetStateAction<SelectedElement | null>
   >
@@ -40,6 +42,7 @@ export const AppWrapper = ({
   const [selectedElement, selectedElementSet] = useState<SelectedElement>(
     initialSelectedElement,
   )
+  const [contactOpen, setContactOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [pressing, setPressing] = useState(false)
   const changePosition = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -60,6 +63,8 @@ export const AppWrapper = ({
       setStatus('exiting')
       selectedElementSet({ el: null, type: null, config: null })
     },
+    contactOpen,
+    setContactOpen,
     status,
     setStatus,
     selectedElement,

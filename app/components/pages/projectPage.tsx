@@ -50,7 +50,7 @@ export default function ProjectPage(): React.JSX.Element {
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
-                  className="border inline-block rounded-md p-2.5  transition duration-150  w-full relative"
+                  className="border inline-block rounded-md p-2.5  transition duration-150 w-full relative"
                 >
                   <div className="flex flex-col h-full overflow-hidden">
                     <div className="text-sky-100 font-bold text-lg md:text-xl">
@@ -58,7 +58,7 @@ export default function ProjectPage(): React.JSX.Element {
                         .replace(/-/gi, ' ')
                         .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
                     </div>
-                    <p className="text-sky-100 line-clamp-2">
+                    <p className="text-sky-100 line-clamp-2 hover:line-clamp-none">
                       {project.description === null
                         ? 'Description coming soon!'
                         : project.description}
@@ -74,7 +74,7 @@ export default function ProjectPage(): React.JSX.Element {
                       <div>
                         {maxDate.getTime() <= currentDate
                           ? `Stale`
-                          : `Recently updated`}
+                          : `New update available!`}
                       </div>
                     </div>
                   </div>
