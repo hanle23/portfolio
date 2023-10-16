@@ -24,7 +24,7 @@ export default function DialogModal({
     <>
       {open && (
         <div
-          className="fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-0"
+          className="fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-[1]"
           onClick={() => {
             onClose(false)
           }}

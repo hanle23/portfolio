@@ -31,7 +31,7 @@ export default function ProjectPage(): React.JSX.Element {
   return (
     <div
       id="projects-section"
-      className="h-screen w-fit flex flex-col relative m-auto"
+      className="h-screen w-fit flex flex-col  m-auto z-[0]"
     >
       <div className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
       {currentDisplay != null && (
