@@ -94,12 +94,12 @@ export default function ExperiencePage(): React.JSX.Element {
       </div>
 
       <DialogModal
+        id="iframe"
         open={open}
         onClose={setOpen}
         className="bg-white md:h-5/6 md:w-8/12 text-black"
       >
         <iframe
-          id="resumeFrame"
           src="/pdf/resume.pdf#toolbar=0"
           allowFullScreen={true}
           className="w-full h-full"

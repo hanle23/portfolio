@@ -10,34 +10,35 @@ interface props {
   onClose: React.Dispatch<React.SetStateAction<boolean>>
   children: React.ReactNode
   className: string
+  id?: string
 }
 export default function DialogModal({
   open,
   onClose,
   children,
   className,
+  id,
 }: props): React.JSX.Element {
   const context = useContext(Context)
   return (
     <>
       {open && (
         <div
-          className="fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-50"
+          className="fixed inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-0"
           onClick={() => {
             onClose(false)
           }}
         >
           <div
+            id={id}
             className={className}
             onClick={(event) => {
-              if (event.target === event.currentTarget) {
-                event.stopPropagation()
-              }
+              event.stopPropagation()
             }}
           >
             {children}
           </div>
-          <div className="h-5/6 ">
+          <div className="h-5/6">
             <BlockContainer className="bg-white opacity-20 rounded-lg h-fit w-fit">
               <button
                 onClick={() => {

@@ -39,7 +39,7 @@ export default function MainPage(): React.JSX.Element {
 
         <div className="hidden md:block"></div>
 
-        <div className="flex md:items-end  space-x-4">
+        <div className="flex md:items-end  space-x-4 z-0">
           <BlockContainer className="h-fit">
             <button
               className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150"
