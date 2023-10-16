@@ -19,7 +19,7 @@ export default function Cursor(): React.JSX.Element {
           }`,
           position: 'fixed' as 'fixed',
           borderRadius: '9999px',
-          zIndex: inDialog ? 1 : 0,
+          zIndex: inDialog ? 2 : 0,
           pointerEvents: 'none ' as 'none',
         }
       : {}
