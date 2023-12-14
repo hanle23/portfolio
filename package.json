@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/react": "18.2.6",
     "@vercel/analytics": "^1.0.2",
+    "@vercel/speed-insights": "^1.0.2",
     "gsap": "^3.12.2",
     "next": "^13.4.12",
     "next-themes": "^0.2.1",
