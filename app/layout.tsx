@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import React from 'react'
 import { AppWrapper } from './components/appWrapper'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className="bg-gradient-to-tr to-blue-400 from-green-500 bg-no-repeat bg-fixed h-fit w-full">
         <AppWrapper>{children}</AppWrapper>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
