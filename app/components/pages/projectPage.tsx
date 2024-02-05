@@ -4,16 +4,11 @@ import BlockContainer from '../specialComponent/BlockContainer'
 
 export default function ProjectPage(): React.JSX.Element {
   const [data, setData] = useState<JSON[] | null>(null)
-  const smallData = data?.slice(0, 6)
-
   const [displaySmallData, setDisplaySmallData] = useState(true)
 
   const toggleDisplay = (): void => {
     setDisplaySmallData((prevDisplay) => !prevDisplay)
   }
-
-  const currentDisplay = displaySmallData ? smallData : data
-
   useEffect(() => {
     const fetchData = (): void => {
       fetch('/api/projects')
@@ -28,6 +23,11 @@ export default function ProjectPage(): React.JSX.Element {
 
     fetchData()
   }, [])
+
+  const smallData =
+    data?.length !== undefined && data?.length > 6 ? data?.slice(0, 6) : data
+  const currentDisplay = displaySmallData ? smallData : data
+
   return (
     <div
       id="projects-section"
@@ -84,9 +84,10 @@ export default function ProjectPage(): React.JSX.Element {
           })}
         </div>
       )}
-      <div className="flex justify-center mt-10">
-        {currentDisplay != null && (
-          <div className="">
+      {currentDisplay != null &&
+        data?.length !== undefined &&
+        data?.length > 6 && (
+          <div className="flex justify-center mt-10">
             <BlockContainer>
               <button
                 className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
@@ -97,7 +98,6 @@ export default function ProjectPage(): React.JSX.Element {
             </BlockContainer>
           </div>
         )}
-      </div>
     </div>
   )
 }
