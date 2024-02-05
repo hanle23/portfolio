@@ -6,6 +6,21 @@ export default function Cursor(): React.JSX.Element {
   const context = useContext(Context)
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [inDialog, setInDialog] = useState<boolean>(false)
+  const [, setScrollPosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleScroll = (): void => {
+      setScrollPosition({
+        x: window.scrollX,
+        y: window.scrollY,
+      })
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   const baseStyles =
     context !== null
       ? {
@@ -13,7 +28,7 @@ export default function Cursor(): React.JSX.Element {
           top: context?.pos.y - 12,
           width: '24px',
           height: '24px',
-          background: '#fff',
+          background: '#FFF',
           opacity: `${
             isVisible && context != null && context.pos.x > 1 ? '1' : '0'
           }`,
@@ -23,21 +38,19 @@ export default function Cursor(): React.JSX.Element {
           pointerEvents: 'none ' as 'none',
         }
       : {}
+
   useEffect(() => {
     if (context == null || context.selectedElement?.el == null) return
     if (context.status === 'entering' || context.status === 'shifting') {
       if (context.selectedElement.type === 'block') {
+        const rect = context.selectedElement.el.getBoundingClientRect()
         gsap.to(cursor.current, {
           duration: 0,
           ease: 'elastic.out(1, 1)',
-          left: context.selectedElement.el.getBoundingClientRect().left,
-          top: context.selectedElement.el.getBoundingClientRect().top,
-          height: `${
-            context.selectedElement.el.getBoundingClientRect().height
-          }px`,
-          width: `${
-            context.selectedElement.el.getBoundingClientRect().width
-          }px`,
+          left: rect.left,
+          top: rect.top,
+          height: `${rect.height}px`,
+          width: `${rect.width}px`,
           borderRadius: '5px',
           opacity: '0.19',
           onComplete: () => {
@@ -108,16 +121,12 @@ export default function Cursor(): React.JSX.Element {
       amount
 
     if (context.selectedElement.type === 'block') {
-      baseStyles.left =
-        context.selectedElement.el.getBoundingClientRect().left + xMove
-      baseStyles.top =
-        context.selectedElement.el.getBoundingClientRect().top + yMove
-      baseStyles.height = `${
-        context.selectedElement.el.getBoundingClientRect().height
-      }px`
-      baseStyles.width = `${
-        context.selectedElement.el.getBoundingClientRect().width
-      }px`
+      const rect = context.selectedElement.el.getBoundingClientRect()
+      // console.log(scrollPosition.x, scrollPosition.y)
+      baseStyles.left = rect.left + xMove
+      baseStyles.top = rect.top + yMove
+      baseStyles.height = `${rect.height}px`
+      baseStyles.width = `${rect.width}px`
       baseStyles.opacity = '0.2'
     }
   }
