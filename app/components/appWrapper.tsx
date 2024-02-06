@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useState } from 'react'
+import { NextUIProvider } from '@nextui-org/react'
 import NavBar from './navBar'
 
 import Cursor from './cursor/Cursor'
@@ -72,21 +73,23 @@ export const AppWrapper = ({
   }
 
   return (
-    <Context.Provider value={context}>
-      <div
-        className="items-center flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
-        onMouseMove={changePosition}
-        onMouseDown={() => {
-          setPressing(true)
-        }}
-        onMouseUp={() => {
-          setPressing(false)
-        }}
-      >
-        <Cursor />
-        <NavBar />
-        {children}
-      </div>
-    </Context.Provider>
+    <NextUIProvider>
+      <Context.Provider value={context}>
+        <div
+          className="items-center flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
+          onMouseMove={changePosition}
+          onMouseDown={() => {
+            setPressing(true)
+          }}
+          onMouseUp={() => {
+            setPressing(false)
+          }}
+        >
+          <Cursor />
+          <NavBar />
+          {children}
+        </div>
+      </Context.Provider>
+    </NextUIProvider>
   )
 }
