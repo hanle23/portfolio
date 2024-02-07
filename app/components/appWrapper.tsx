@@ -76,7 +76,7 @@ export const AppWrapper = ({
     <NextUIProvider>
       <Context.Provider value={context}>
         <div
-          className="items-center flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
+          className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
           onMouseMove={changePosition}
           onMouseDown={() => {
             setPressing(true)
