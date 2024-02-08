@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { experiencesData } from '@/lib/data'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
-import Image from 'next/image'
 import ResumeLogo from '@/public/js/resumeIcon'
 import DialogModal from '@/app/components/dialogModal'
 
