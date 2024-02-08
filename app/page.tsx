@@ -11,7 +11,7 @@ import { Context } from '@/app/components/appWrapper'
 export default function Page(): React.JSX.Element {
   const context = useContext(Context)
   return (
-    <div className="grid content-center justify-items-center gap-y-10 w-full h-full">
+    <div className="grid content-center justify-items-center gap-y-10 w-full h-full ">
       <div className="overlay"></div>
       <div>
         <MainPage />

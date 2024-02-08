@@ -42,7 +42,7 @@ export default function MainPage(): React.JSX.Element {
         <div className="flex md:items-end  space-x-4 z-0">
           <BlockContainer className="h-fit">
             <button
-              className="justify-center items-center border-text-light p-2.5 border rounded-lg hover:text-black text-xl font-bold transition duration-150"
+              className="justify-center items-center border-text-light p-2.5 border rounded-lg text-xl font-bold transition duration-150"
               onClick={() => {
                 context?.setContactOpen(true)
               }}

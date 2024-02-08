@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import { NextUIProvider } from '@nextui-org/react'
 import NavBar from './navBar'
 
@@ -71,6 +71,39 @@ export const AppWrapper = ({
     selectedElement,
     pressing,
   }
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+
+    function disableScroll(): void {
+      console.log('Hide scroll')
+      document.body.style.overflow = 'hidden'
+    }
+
+    function enableScrolling(): void {
+      document.body.style.overflow = ''
+      // Clear the previous timeout if there is one
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
+      // Start a new timeout that will call disableScroll after 1 second of inactivity
+      timeoutId = setTimeout(disableScroll, 1000)
+    }
+
+    document.body.addEventListener('wheel', enableScrolling)
+    document.body.addEventListener('click', enableScrolling)
+    document.body.addEventListener('mousemove', enableScrolling)
+
+    // Clean up the event listeners and the timeout when the component unmounts
+    return () => {
+      document.body.removeEventListener('wheel', enableScrolling)
+      document.body.removeEventListener('click', enableScrolling)
+      document.body.removeEventListener('mousemove', enableScrolling)
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [])
 
   return (
     <NextUIProvider>
