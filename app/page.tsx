@@ -22,7 +22,7 @@ export default function Page(): React.JSX.Element {
             id="builtInModal"
             open={context?.contactOpen}
             onClose={context?.setContactOpen}
-            className="bg-gradient-to-b to-[#F9957F] from-[#F2F5D0] rounded-lg h-5/6 w-8/12 text-zinc-500"
+            className="bg-main-light rounded-lg h-5/6 w-8/12 text-text-light"
           >
             <ContactPage />
           </DialogModal>
