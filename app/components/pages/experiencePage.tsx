@@ -5,6 +5,15 @@ import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 import ResumeLogo from '@/public/js/resumeIcon'
 import DialogModal from '@/app/components/dialogModal'
 
+interface Project {
+  title: string
+  company: string
+  location: string
+  description: string
+  startDate: Date
+  endDate: Date
+}
+
 export default function ExperiencePage(): React.JSX.Element {
   const [open, setOpen] = useState(false)
   const months = [
@@ -22,7 +31,7 @@ export default function ExperiencePage(): React.JSX.Element {
     'Dec',
   ]
   const experiences = [...experiencesData]
-  experiences.sort(function (a: any, b: any) {
+  experiences.sort(function (a: Project, b: Project) {
     return new Date(b.startDate).valueOf() - new Date(a.startDate).valueOf()
   })
 

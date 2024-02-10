@@ -1,22 +1,26 @@
 import { NextResponse } from 'next/server'
 
-export async function GET(): Promise<NextResponse<{ data: JSON[] }>> {
+interface RepoItem {
+  updated_at: string
+  pushed_at: string
+  visibility: string
+  fork: boolean
+  name: string
+}
+
+export async function GET(): Promise<NextResponse<{ data: RepoItem[] }>> {
   const res = await fetch('https://api.github.com/users/hanle23/repos')
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }
-  const data = await res.json()
-  const filteredResult: JSON[] = data.flatMap((item: any) => {
-    if (
-      item.visibility !== 'public' ||
-      item.fork === true ||
-      item.name === 'hanle23'
-    ) {
+  const data: RepoItem[] = await res.json()
+  const filteredResult: RepoItem[] = data.flatMap((item: RepoItem) => {
+    if (item.visibility !== 'public' || item.fork || item.name === 'hanle23') {
       return []
     }
     return item
   })
-  filteredResult.sort(function (a: any, b: any) {
+  filteredResult.sort(function (a: RepoItem, b: RepoItem) {
     const recentActivityA =
       new Date(a.updated_at) > new Date(a.pushed_at)
         ? a.updated_at

@@ -40,7 +40,7 @@ export default function Cursor(): React.JSX.Element {
       : {}
 
   useEffect(() => {
-    if (context == null || context.selectedElement?.el == null) return
+    if (context?.selectedElement?.el == null) return
     if (context.status === 'entering' || context.status === 'shifting') {
       if (context.selectedElement.type === 'block') {
         const rect = context.selectedElement.el.getBoundingClientRect()
@@ -61,7 +61,7 @@ export default function Cursor(): React.JSX.Element {
     } else if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
     }
-  }, [context?.selectedElement, context?.status])
+  }, [context, context?.selectedElement, context?.status])
 
   useEffect(() => {
     if (context == null || context.selectedElement?.el != null) return
@@ -103,7 +103,7 @@ export default function Cursor(): React.JSX.Element {
         },
       })
     }
-  }, [context?.pos])
+  }, [context, context?.pos])
 
   if (context?.selectedElement?.el != null) {
     const amount = 5
