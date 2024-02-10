@@ -93,7 +93,7 @@ export default function ProjectPage(): React.JSX.Element {
           <div className="flex justify-center mt-10">
             <BlockContainer>
               <button
-                className="justify-center items-center border-text-light p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
+                className="justify-center text-text-light items-center border-text-light p-2.5 border rounded-lg  hover:mix-blend-screen text-lg font-bold"
                 onClick={toggleDisplay}
               >
                 Show {displaySmallData ? 'More' : 'Less'}
