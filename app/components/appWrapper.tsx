@@ -14,9 +14,7 @@ interface CurrentUserContextType {
   pressing: boolean
   contactOpen: boolean
   setContactOpen: React.Dispatch<React.SetStateAction<boolean>>
-  selectedElementSet: React.Dispatch<
-    React.SetStateAction<SelectedElement | null>
-  >
+  selectedElementSet: (element: React.SetStateAction<SelectedElement>) => void
   removeSelectedElement: () => void
 }
 
@@ -52,9 +50,9 @@ export const AppWrapper = ({
 
   const context = {
     pos: mousePos,
-    selectedElementSet: (element: any) => {
+    selectedElementSet: (element: React.SetStateAction<SelectedElement>) => {
       selectedElementSet(element)
-      if (element.el !== null) {
+      if (element !== null && 'el' in element && element.el !== null) {
         setStatus('entering')
       } else {
         setStatus('shifting')

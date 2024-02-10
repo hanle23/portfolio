@@ -2,8 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import BlockContainer from '../specialComponent/BlockContainer'
 
+interface Project {
+  name: string
+  description: string
+  updated_at: string
+  pushed_at: string
+  html_url: string
+}
+interface RES {
+  data: Project[]
+}
+
 export default function ProjectPage(): React.JSX.Element {
-  const [data, setData] = useState<JSON[] | null>(null)
+  const [data, setData] = useState<Project[] | null>(null)
   const [displaySmallData, setDisplaySmallData] = useState(true)
 
   const toggleDisplay = (): void => {
@@ -13,7 +24,7 @@ export default function ProjectPage(): React.JSX.Element {
     const fetchData = (): void => {
       fetch('/api/projects')
         .then(async (response) => await response.json())
-        .then((result) => {
+        .then((result: RES) => {
           setData(result.data)
         })
         .catch((error) => {
@@ -36,7 +47,7 @@ export default function ProjectPage(): React.JSX.Element {
       <div className="text-center text-text-light font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
       {currentDisplay != null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
-          {currentDisplay?.map((project: any) => {
+          {currentDisplay?.map((project: Project) => {
             const recentActivity =
               new Date(project.updated_at) > new Date(project.pushed_at)
                 ? `updated_at`
@@ -62,9 +73,7 @@ export default function ProjectPage(): React.JSX.Element {
                         .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
                     </div>
                     <p className="line-clamp-2 hover:line-clamp-none">
-                      {project.description === null
-                        ? 'Description coming soon!'
-                        : project.description}
+                      {project.description ?? 'Description coming soon!'}
                     </p>
                     <div className="text-sm  flex items-center space-x-1 mt-auto">
                       <div

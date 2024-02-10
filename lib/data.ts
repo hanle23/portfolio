@@ -1,6 +1,14 @@
-export const experiencesData = [
+interface Project {
+  title: string
+  company: string
+  location: string
+  description: string
+  startDate: Date
+  endDate: Date
+}
+export const experiencesData: Project[] = [
   {
-    title: 'Software Developer Intern',
+    title: 'Programmer',
     company: 'York University School of Continuing Studies',
     location: 'Toronto, ON',
     description:
