@@ -33,7 +33,7 @@ export default function ProjectPage(): React.JSX.Element {
       id="projects-section"
       className="h-screen w-fit flex flex-col  m-auto z-[0]"
     >
-      <div className="text-center text-sky-100 font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
+      <div className="text-center text-text-light font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
       {currentDisplay != null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: any) => {
@@ -45,25 +45,28 @@ export default function ProjectPage(): React.JSX.Element {
             const maxDate = new Date(project[recentActivity])
             maxDate.setMonth(maxDate.getMonth() + 1)
             return (
-              <BlockContainer key={project.name} className="flex h-full w-9/12">
+              <BlockContainer
+                key={project.name}
+                className="flex h-full w-9/12 text-text-light"
+              >
                 <a
                   target="_blank"
                   href={project.html_url}
                   rel="noopener noreferrer"
-                  className="border inline-block rounded-md p-2.5  transition duration-150 w-full relative"
+                  className="border border-text-light inline-block rounded-md p-2.5  transition duration-150 w-full relative"
                 >
                   <div className="flex flex-col h-full overflow-hidden">
-                    <div className="text-sky-100 font-bold text-lg md:text-xl">
+                    <div className=" font-bold text-lg md:text-xl">
                       {project.name
                         .replace(/-/gi, ' ')
                         .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
                     </div>
-                    <p className="text-sky-100 line-clamp-2 hover:line-clamp-none">
+                    <p className="line-clamp-2 hover:line-clamp-none">
                       {project.description === null
                         ? 'Description coming soon!'
                         : project.description}
                     </p>
-                    <div className="text-sm text-sky-100 flex items-center space-x-1 mt-auto">
+                    <div className="text-sm  flex items-center space-x-1 mt-auto">
                       <div
                         className={`border border-transparent ${
                           maxDate.getTime() <= currentDate
@@ -90,7 +93,7 @@ export default function ProjectPage(): React.JSX.Element {
           <div className="flex justify-center mt-10">
             <BlockContainer>
               <button
-                className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black hover:mix-blend-screen text-lg font-bold text-sky-100"
+                className="justify-center text-text-light items-center border-text-light p-2.5 border rounded-lg  hover:mix-blend-screen text-lg font-bold"
                 onClick={toggleDisplay}
               >
                 Show {displaySmallData ? 'More' : 'Less'}

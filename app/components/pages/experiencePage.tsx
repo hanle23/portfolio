@@ -2,8 +2,7 @@
 import React, { useState } from 'react'
 import { experiencesData } from '@/lib/data'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
-import Image from 'next/image'
-import resumeLogo from '@/public/svg/resumeIcon.svg'
+import ResumeLogo from '@/public/js/resumeIcon'
 import DialogModal from '@/app/components/dialogModal'
 
 export default function ExperiencePage(): React.JSX.Element {
@@ -48,7 +47,7 @@ export default function ExperiencePage(): React.JSX.Element {
   }
   return (
     <div
-      className="justify-items-center grid text-sky-100  min-h-screen w-fit m-auto"
+      className="justify-items-center grid text-text-light  min-h-screen w-fit m-auto"
       id="experience-section"
     >
       <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10">{`Experiences`}</div>
@@ -61,7 +60,7 @@ export default function ExperiencePage(): React.JSX.Element {
                 setOpen(!open)
               }}
             >
-              <Image src={resumeLogo} width={50} alt="Resume Icon" />
+              <ResumeLogo color="#3a405c" />
             </button>
           </BlockContainer>
         </div>

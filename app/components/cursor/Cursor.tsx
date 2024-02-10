@@ -28,7 +28,7 @@ export default function Cursor(): React.JSX.Element {
           top: context?.pos.y - 12,
           width: '24px',
           height: '24px',
-          background: '#FFF',
+          background: '#3a405c',
           opacity: `${
             isVisible && context != null && context.pos.x > 1 ? '1' : '0'
           }`,
@@ -173,7 +173,7 @@ export default function Cursor(): React.JSX.Element {
     <div
       style={baseStyles}
       ref={cursor}
-      className={`hidden md:inline ${
+      className={`hidden sm:inline ${
         !shapeClass && context?.pressing === true ? 'pressing' : ''
       }`}
     />

@@ -39,12 +39,13 @@ export default function DialogModal({
             {children}
           </div>
           <div className="h-5/6">
-            <BlockContainer className="bg-white opacity-20 rounded-lg h-fit w-fit">
+            <BlockContainer className="flex bg-white opacity-20 rounded-lg h-fit w-fit">
               <button
                 onClick={() => {
                   if (context !== null) context.removeSelectedElement()
                   onClose(false)
                 }}
+                className="flex h-fit w-fit"
               >
                 <Image src={closeLogo} width={35} alt="Close Icon" />
               </button>
