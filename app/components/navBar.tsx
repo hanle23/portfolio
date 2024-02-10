@@ -23,8 +23,11 @@ export default function NavBar(): React.JSX.Element {
   const context = useContext(Context)
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="z-[1] rounded-lg w-fit">
-      <NavbarContent>
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      className="z-[1] rounded-lg sm:w-fit"
+    >
+      <NavbarContent justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="sm:hidden"
@@ -61,7 +64,7 @@ export default function NavBar(): React.JSX.Element {
           )
         })}
       </NavbarContent>
-      <NavbarContent>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <Dropdown>
           <NavbarItem className="hidden sm:flex text-text-light">
             <DropdownTrigger>
@@ -74,7 +77,7 @@ export default function NavBar(): React.JSX.Element {
           </NavbarItem>
           <DropdownMenu
             aria-label="apps"
-            className="w-[340px] z-100"
+            className="bg-black z-auto"
             itemClasses={{
               base: 'gap-4',
             }}

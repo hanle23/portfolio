@@ -173,7 +173,7 @@ export default function Cursor(): React.JSX.Element {
     <div
       style={baseStyles}
       ref={cursor}
-      className={`hidden md:inline ${
+      className={`hidden sm:inline ${
         !shapeClass && context?.pressing === true ? 'pressing' : ''
       }`}
     />
