@@ -40,9 +40,8 @@ export const AppWrapper = ({
   children: React.ReactNode
 }): React.JSX.Element => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [selectedElement, selectedElementSet] = useState<SelectedElement>(
-    initialSelectedElement,
-  )
+  const [selectedElement, selectedElementSet] =
+    useState<SelectedElement | null>(initialSelectedElement)
   const [contactOpen, setContactOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [pressing, setPressing] = useState(false)
@@ -52,12 +51,26 @@ export const AppWrapper = ({
 
   const context = {
     pos: mousePos,
-    selectedElementSet: (element: any) => {
-      selectedElementSet(element)
-      if (element.el !== null) {
-        setStatus('entering')
+    selectedElementSet: (
+      element: React.SetStateAction<SelectedElement | null>,
+    ) => {
+      if (typeof element === 'function') {
+        selectedElementSet((prevState) => {
+          const newElement = element(prevState)
+          if (newElement?.el !== null) {
+            setStatus('entering')
+          } else {
+            setStatus('shifting')
+          }
+          return newElement
+        })
       } else {
-        setStatus('shifting')
+        selectedElementSet(element)
+        if (element?.el !== null) {
+          setStatus('entering')
+        } else {
+          setStatus('shifting')
+        }
       }
     },
     removeSelectedElement: () => {
@@ -70,6 +83,7 @@ export const AppWrapper = ({
     setStatus,
     selectedElement,
     pressing,
+    setPressing,
   }
 
   useEffect(() => {
