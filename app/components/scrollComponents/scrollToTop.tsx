@@ -19,10 +19,12 @@ const ScrollToTop = (): React.JSX.Element => {
 
   const scrollToTop = (): void => {
     isVisible &&
-      window.scrollTo({
-        top: 0,
-        behavior: 'auto',
-      })
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+      }, 100)
   }
 
   return (

@@ -14,7 +14,9 @@ interface CurrentUserContextType {
   pressing: boolean
   contactOpen: boolean
   setContactOpen: React.Dispatch<React.SetStateAction<boolean>>
-  selectedElementSet: (element: React.SetStateAction<SelectedElement>) => void
+  selectedElementSet: React.Dispatch<
+    React.SetStateAction<SelectedElement | null>
+  >
   removeSelectedElement: () => void
 }
 
@@ -50,9 +52,9 @@ export const AppWrapper = ({
 
   const context = {
     pos: mousePos,
-    selectedElementSet: (element: React.SetStateAction<SelectedElement>) => {
+    selectedElementSet: (element: any) => {
       selectedElementSet(element)
-      if (element !== null && 'el' in element && element.el !== null) {
+      if (element.el !== null) {
         setStatus('entering')
       } else {
         setStatus('shifting')
@@ -87,10 +89,11 @@ export const AppWrapper = ({
       // Start a new timeout that will call disableScroll after 1 second of inactivity
       timeoutId = setTimeout(disableScroll, 1000)
     }
-
-    document.body.addEventListener('wheel', enableScrolling)
-    document.body.addEventListener('click', enableScrolling)
-    document.body.addEventListener('mousemove', enableScrolling)
+    if (window.matchMedia('(min-width: 640px)').matches) {
+      document.body.addEventListener('wheel', enableScrolling)
+      document.body.addEventListener('click', enableScrolling)
+      document.body.addEventListener('mousemove', enableScrolling)
+    }
 
     // Clean up the event listeners and the timeout when the component unmounts
     return () => {
