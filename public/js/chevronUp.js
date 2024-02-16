@@ -12,10 +12,10 @@ export default function CheckMarks({
       viewBox={viewBox}
       fill="none"
       stroke={color}
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="lucide lucide-chevron-up"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-chevron-up"
     >
       <path d="m18 15-6-6-6 6" />
     </svg>
