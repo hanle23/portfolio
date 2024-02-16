@@ -2,9 +2,17 @@
 import React, { useState } from 'react'
 import { experiencesData } from '@/lib/data'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
-import Image from 'next/image'
-import resumeLogo from '@/public/svg/resumeIcon.svg'
+import ResumeLogo from '@/public/js/resumeIcon'
 import DialogModal from '@/app/components/dialogModal'
+
+interface Project {
+  title: string
+  company: string
+  location: string
+  description: string
+  startDate: Date
+  endDate: Date
+}
 
 export default function ExperiencePage(): React.JSX.Element {
   const [open, setOpen] = useState(false)
@@ -23,7 +31,7 @@ export default function ExperiencePage(): React.JSX.Element {
     'Dec',
   ]
   const experiences = [...experiencesData]
-  experiences.sort(function (a: any, b: any) {
+  experiences.sort(function (a: Project, b: Project) {
     return new Date(b.startDate).valueOf() - new Date(a.startDate).valueOf()
   })
 
@@ -48,10 +56,10 @@ export default function ExperiencePage(): React.JSX.Element {
   }
   return (
     <div
-      className="justify-items-center grid text-sky-100  min-h-screen w-fit m-auto"
+      className="justify-items-center grid text-text-light  min-h-screen w-fit m-auto"
       id="experience-section"
     >
-      <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10 -z-[1]">{`Experiences`}</div>
+      <div className="text-center font-extrabold text-3xl md:text-5xl mt-8 mb-10">{`Experiences`}</div>
 
       <div className="top-[-100%] grid justify-items-center">
         <div className="sticky h-fit md:-mt-[80px] justify-self-end top-20 md:right-28 hidden md:block">
@@ -61,7 +69,7 @@ export default function ExperiencePage(): React.JSX.Element {
                 setOpen(!open)
               }}
             >
-              <Image src={resumeLogo} width={50} alt="Resume Icon" />
+              <ResumeLogo color="#3a405c" />
             </button>
           </BlockContainer>
         </div>

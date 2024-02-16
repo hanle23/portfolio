@@ -10,16 +10,16 @@ import { Context } from '@/app/components/appWrapper'
 export default function MainPage(): React.JSX.Element {
   const context = useContext(Context)
   return (
-    <div className="h-screen grid content-center w-fit">
+    <div className="h-screen grid content-center w-fit text-text-light">
       <GreetingPhrase />
       <div className="pl-0.5 mt-5">
-        <p className="text-lg md:text-4xl font-extrabold text-sky-100">
+        <p className="text-lg md:text-4xl font-extrabold ">
           Full Stack Engineer at Tesoract Inc
         </p>
       </div>
       <div className="grid mt-6 grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <p className="text-base text-sky-100">
+          <p className="text-base">
             Back in 2016 when I first discovered a Trouble in Terrorist Town
             server in CS:GO, my friend and I were learning to write some mods
             for his server, and it pulled me into the hobby of programming.
@@ -29,7 +29,7 @@ export default function MainPage(): React.JSX.Element {
             <strong>start-up</strong> .
           </p>
           <br />
-          <p className="text-base text-sky-100 ">
+          <p className="text-base ">
             Nowadays I am actively seeking for my next opportunity to build
             great products while developing <strong>Saas</strong> application{' '}
             <strong>Tesoract</strong>, and creating internal softwares for{' '}
@@ -42,7 +42,7 @@ export default function MainPage(): React.JSX.Element {
         <div className="flex md:items-end  space-x-4 z-0">
           <BlockContainer className="h-fit">
             <button
-              className="justify-center items-center border-sky-100 p-2.5 border rounded-lg hover:text-black text-xl font-bold text-sky-100 transition duration-150"
+              className="justify-center items-center border-text-light p-2.5 border rounded-lg text-xl font-bold transition duration-150"
               onClick={() => {
                 context?.setContactOpen(true)
               }}
@@ -73,7 +73,7 @@ export default function MainPage(): React.JSX.Element {
             </a>
           </BlockContainer>
         </div>
-        <p className="text-base text-sky-100">
+        <p className="text-base ">
           {
             "During my free time I usually playing games, especially Baldur's Gate 3 these days, reading books and hopefully getting a new piano eventually to be a real Asian."
           }

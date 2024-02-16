@@ -1,13 +1,24 @@
+import { nextui } from '@nextui-org/react'
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}', // Note the addition of the `app` directory.
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {},
-  plugins: [],
+  theme: {
+    extend: {
+      colors: {
+        'main-light': '#f3edde',
+        'nav-light': '#1f1d1e',
+        'text-light': '#3a405c',
+      },
+    },
+    darkMode: 'class',
+    plugins: [nextui()],
+  },
 }
