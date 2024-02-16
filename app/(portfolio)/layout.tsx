@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import { AppWrapper } from './components/appWrapper'
+import { AppWrapper } from '../components/appWrapper'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import './globals.css'
+import '../globals.css'
 
 export const metadata: Metadata = {
   title: 'Han Portfolio',
@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="h-full w-full bg-main-light">
-        <AppWrapper>{children}</AppWrapper>
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>
