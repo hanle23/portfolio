@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="h-full w-full bg-main-light">
-        {children}
+        <AppWrapper>{children}</AppWrapper>
         <Analytics />
         <SpeedInsights />
       </body>
