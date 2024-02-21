@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 export default function Page(): React.JSX.Element {
   return (
