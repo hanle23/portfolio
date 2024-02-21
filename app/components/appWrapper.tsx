@@ -90,7 +90,6 @@ export const AppWrapper = ({
     let timeoutId: NodeJS.Timeout
 
     function disableScroll(): void {
-      console.log('Hide scroll')
       document.body.style.overflow = 'hidden'
     }
 

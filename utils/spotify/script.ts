@@ -1,16 +1,9 @@
-const clientId = process.env.SPOTIFY_CLIENT_ID
-const params = new URLSearchParams(window.location.search)
-const code = params.get('code')
-
-if (!code) {
-  redirectToAuthCodeFlow(clientId)
-} else {
-  const accessToken = await getAccessToken(clientId, code)
-  const profile = await fetchProfile(accessToken)
-  populateUI(profile)
-}
-
-async function redirectToAuthCodeFlow(clientId: string) {
+export async function redirectToAuthCodeFlow(
+  clientId: string | undefined,
+): Promise<void> {
+  if (clientId === undefined) {
+    throw new Error('Client ID not found')
+  }
   const verifier = generateCodeVerifier(128)
   const challenge = await generateCodeChallenge(verifier)
   localStorage.setItem('verifier', verifier)
@@ -48,14 +41,42 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
     .replace(/=+$/, '')
 }
 
-async function getAccessToken(clientId: string, code: string) {
-  // TODO: Get access token for code
+export async function getAccessToken(
+  clientId: string | undefined,
+  code: string | null,
+): Promise<string> {
+  if (clientId === undefined) {
+    throw new Error('Client ID not found')
+  }
+  if (code === null) {
+    throw new Error('Code not found')
+  }
+  const verifier = localStorage.getItem('verifier')
+  if (verifier === null) {
+    throw new Error('Code verifier not found')
+  }
+  const params = new URLSearchParams()
+  params.append('client_id', clientId)
+  params.append('grant_type', 'authorization_code')
+  params.append('code', code)
+  params.append('redirect_uri', 'http://localhost:5173/callback')
+  params.append('code_verifier', verifier)
+
+  const result = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params,
+  })
+
+  const { accessToken } = await result.json()
+  return accessToken
 }
 
-async function fetchProfile(token: string): Promise<any> {
-  // TODO: Call Web API
-}
+export async function fetchProfile(token: string): Promise<UserProfile> {
+  const result = await fetch('https://api.spotify.com/v1/me', {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${token}` },
+  })
 
-function populateUI(profile: any) {
-  // TODO: Update UI with profile data
+  return await result.json()
 }
