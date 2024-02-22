@@ -1,16 +1,23 @@
-export async function redirectToAuthCodeFlow(
-  clientId: string | undefined,
-): Promise<void> {
-  if (clientId === undefined) {
+function getClientID(): string {
+  const clientID = '08795885b8704b8ab1bfc7010d8f8ca4'
+  if (clientID === undefined) {
+    throw new Error('Client ID not found')
+  }
+  return clientID
+}
+
+export async function redirectToAuthCodeFlow(): Promise<void> {
+  const clientID = getClientID()
+  if (clientID === undefined) {
     throw new Error('Client ID not found')
   }
   const verifier = generateCodeVerifier(128)
   const challenge = await generateCodeChallenge(verifier)
   localStorage.setItem('verifier', verifier)
   const params = new URLSearchParams()
-  params.append('client_id', clientId)
+  params.append('client_id', clientID)
   params.append('response_type', 'code')
-  params.append('redirect_uri', 'http://localhost:3000/callback')
+  params.append('redirect_uri', 'http://localhost:3000/beatsflow')
   params.append('scope', 'user-read-private user-read-email')
   params.append('code_challenge_method', 'S256')
   params.append('code_challenge', challenge)
@@ -41,10 +48,8 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
     .replace(/=+$/, '')
 }
 
-export async function getAccessToken(
-  clientId: string | undefined,
-  code: string | null,
-): Promise<string> {
+export async function getAccessToken(code: string | null): Promise<string> {
+  const clientId = getClientID()
   if (clientId === undefined) {
     throw new Error('Client ID not found')
   }
@@ -70,13 +75,4 @@ export async function getAccessToken(
 
   const { accessToken } = await result.json()
   return accessToken
-}
-
-export async function fetchProfile(token: string): Promise<UserProfile> {
-  const result = await fetch('https://api.spotify.com/v1/me', {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  return await result.json()
 }

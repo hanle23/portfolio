@@ -1,9 +1,7 @@
 'use client'
-
 import React, { createContext, useState, useEffect } from 'react'
-import { NextUIProvider } from '@nextui-org/react'
+import { NextUIWrapper } from './nextUIWrapper'
 import NavBar from './navBar'
-
 import Cursor from './cursor/Cursor'
 
 interface CurrentUserContextType {
@@ -120,7 +118,7 @@ export const AppWrapper = ({
   }, [])
 
   return (
-    <NextUIProvider>
+    <NextUIWrapper>
       <Context.Provider value={context}>
         <div
           className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
@@ -137,6 +135,6 @@ export const AppWrapper = ({
           {children}
         </div>
       </Context.Provider>
-    </NextUIProvider>
+    </NextUIWrapper>
   )
 }
