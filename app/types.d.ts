@@ -21,3 +21,8 @@ interface Image {
   height: number
   width: number
 }
+
+interface Response {
+  statusCode: number
+  message: string
+}

@@ -9,11 +9,15 @@ async function fetchUserProfile(
 ): Promise<UserProfile | undefined> {
   if (code !== null) {
     const accessToken = await getAccessToken(code)
-    const result = await fetch('/api/spotify').then(async (response) => {
-      return await response.json()
+    const response = await fetch('/api/spotify', {
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
-    console.log(result)
-    return result
+    if (!response.ok) {
+      throw new Error('Failed to fetch profile')
+    }
+
+    const { data } = await response.json()
+    return data
   }
 }
 
