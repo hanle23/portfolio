@@ -1,19 +1,13 @@
-function getClientID(): string {
-  const clientID = '08795885b8704b8ab1bfc7010d8f8ca4'
-  if (clientID === undefined) {
-    throw new Error('Client ID not found')
-  }
-  return clientID
-}
+import { setLocalStorageItem } from '@/utils/LocalStorage'
 
 export async function redirectToAuthCodeFlow(): Promise<void> {
-  const clientID = getClientID()
+  const clientID = process.env.SPOTIFY_CLIENT_ID
   if (clientID === undefined) {
     throw new Error('Client ID not found')
   }
   const verifier = generateCodeVerifier(128)
   const challenge = await generateCodeChallenge(verifier)
-  localStorage.setItem('verifier', verifier)
+  setLocalStorageItem('verifier', verifier)
   const params = new URLSearchParams()
   params.append('client_id', clientID)
   params.append('response_type', 'code')
@@ -46,33 +40,4 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '')
-}
-
-export async function getAccessToken(code: string | null): Promise<string> {
-  const clientId = getClientID()
-  if (clientId === undefined) {
-    throw new Error('Client ID not found')
-  }
-  if (code === null) {
-    throw new Error('Code not found')
-  }
-  const verifier = localStorage.getItem('verifier')
-  if (verifier === null) {
-    throw new Error('Code verifier not found')
-  }
-  const params = new URLSearchParams()
-  params.append('client_id', clientId)
-  params.append('grant_type', 'authorization_code')
-  params.append('code', code)
-  params.append('redirect_uri', 'http://localhost:5173/callback')
-  params.append('code_verifier', verifier)
-
-  const result = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params,
-  })
-
-  const { accessToken } = await result.json()
-  return accessToken
 }

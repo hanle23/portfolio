@@ -1,30 +1,31 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { redirectToAuthCodeFlow, getAccessToken } from '@/utils/spotify/script'
+import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 
 import Image from 'next/image'
 
-async function fetchUserProfile(
-  code: string | null,
-): Promise<UserProfile | undefined> {
-  if (code !== null) {
-    const accessToken = await getAccessToken(code)
-    const response = await fetch('/api/spotify', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    if (!response.ok) {
-      throw new Error('Failed to fetch profile')
-    }
-
-    const { data } = await response.json()
-    return data
-  }
-}
-
 export default function Page(): React.JSX.Element {
   const [profile, setProfile] = useState<UserProfile | null>(null)
-
   useEffect(() => {
+    async function fetchUserProfile(code: string | null): Promise<void> {
+      if (code !== null) {
+        const accessToken = await fetch('/api/spotify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        })
+        const accessTokenString = JSON.stringify(accessToken)
+        const response = await fetch('/api/spotify', {
+          headers: { Authorization: `Bearer ${accessTokenString}` },
+        })
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile')
+        }
+
+        const { data } = await response.json()
+        return data
+      }
+    }
     if (typeof window !== 'undefined') {
       const searchParams = new URLSearchParams(window.location.search)
       const code = searchParams.get('code')
