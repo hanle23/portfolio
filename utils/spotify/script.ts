@@ -1,7 +1,8 @@
 import { setLocalStorageItem } from '@/utils/LocalStorage'
+import getClientID from './getClientID'
 
 export async function redirectToAuthCodeFlow(): Promise<void> {
-  const clientID = process.env.SPOTIFY_CLIENT_ID
+  const clientID = getClientID()
   if (clientID === undefined) {
     throw new Error('Client ID not found')
   }

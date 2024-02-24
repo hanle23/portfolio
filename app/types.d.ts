@@ -26,3 +26,10 @@ interface Response {
   statusCode: number
   message: string
 }
+
+interface SpotifyError {
+  error: {
+    status: number
+    message: string
+  }
+}

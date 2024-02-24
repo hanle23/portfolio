@@ -1,13 +1,12 @@
 import type { NextRequest } from 'next/server'
-// import getClientID from '@/utils/spotify/getClientID'
-import { getLocalStorageItem } from '@/utils/LocalStorage'
+import { NextResponse } from 'next/server'
+import getClientID from '@/utils/spotify/getClientID'
 
-export async function GET(req: NextRequest): Promise<Response> {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const authHeader: string | null = req.headers.get('authorization')
   if (authHeader === null || !authHeader.startsWith('Bearer ')) {
-    return Response.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-
   const accessToken = authHeader.slice(7)
   const response = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
@@ -15,20 +14,21 @@ export async function GET(req: NextRequest): Promise<Response> {
   })
 
   const profile = await response.json()
-  return Response.json(profile)
+  return NextResponse.json(profile)
 }
 
-export async function POST(req: Request): Promise<Response> {
-  console.log('Post')
-  const { code }: { code: string } = await req.json()
-  const clientId = process.env.SPOTIFY_CLIENT_ID
+export async function POST(
+  req: Request,
+): Promise<NextResponse<{ accessToken: string }>> {
+  const { code, verifier }: { code: string; verifier: string } =
+    await req.json()
+  const clientId = getClientID()
   if (clientId === undefined) {
     throw new Error('Client ID not found')
   }
   if (code === null) {
     throw new Error('Code not found')
   }
-  const verifier = getLocalStorageItem('verifier')
   if (verifier === null) {
     throw new Error('Code verifier not found')
   }
@@ -44,7 +44,7 @@ export async function POST(req: Request): Promise<Response> {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params,
   })
-
-  const { accessToken } = await result.json()
-  return accessToken
+  const resJSON = await result.json()
+  const accessToken = resJSON.access_token
+  return NextResponse.json({ accessToken })
 }

@@ -1,29 +1,32 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
-
-import Image from 'next/image'
+import { getLocalStorageItem } from '@/utils/LocalStorage'
 
 export default function Page(): React.JSX.Element {
   const [profile, setProfile] = useState<UserProfile | null>(null)
+
   useEffect(() => {
-    async function fetchUserProfile(code: string | null): Promise<void> {
+    async function fetchUserProfile(code: string | null): Promise<any | null> {
       if (code !== null) {
+        const verifier = getLocalStorageItem('verifier')
         const accessToken = await fetch('/api/spotify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, verifier }),
         })
-        const accessTokenString = JSON.stringify(accessToken)
+        const accessTokenJSON = await accessToken.json()
+        const accessTokenString = accessTokenJSON.accessToken
+
         const response = await fetch('/api/spotify', {
           headers: { Authorization: `Bearer ${accessTokenString}` },
         })
-        if (!response.ok) {
-          throw new Error('Failed to fetch profile')
+        const responseJSON: UserProfile | SpotifyError = await response.json()
+        if ('error' in responseJSON) {
+          return null
         }
-
-        const { data } = await response.json()
-        return data
+        console.log(responseJSON)
+        return responseJSON
       }
     }
     if (typeof window !== 'undefined') {
@@ -31,8 +34,8 @@ export default function Page(): React.JSX.Element {
       const code = searchParams.get('code')
       if (code !== null) {
         fetchUserProfile(code)
-          .then((profile) => {
-            if (profile !== undefined) {
+          .then((profile: UserProfile) => {
+            if (profile !== null) {
               setProfile(profile)
             }
           })
@@ -67,12 +70,6 @@ export default function Page(): React.JSX.Element {
       {profile !== null && (
         <div>
           <h1>{profile.display_name}</h1>
-          <Image
-            src={profile.images[0].url}
-            alt={profile.display_name}
-            width={500}
-            height={500}
-          />
         </div>
       )}
     </div>
