@@ -1,12 +1,12 @@
 'use client'
 import React, { useContext } from 'react'
-import ProjectPage from '@/app/components/pages/projectPage'
-import MainPage from '@/app/components/pages/mainPage'
-import ExperiencePage from '@/app/components/pages/experiencePage'
-import ContactPage from '@/app/components/pages/contactPage'
-import DialogModal from '@/app/components/dialogModal'
-import ScrollToTop from '@/app/components/scrollComponents/scrollToTop'
-import { Context } from '@/app/components/appWrapper'
+import ProjectPage from '@/app/(portfolio)/components/pages/projectPage'
+import MainPage from '@/app/(portfolio)/components/pages/mainPage'
+import ExperiencePage from '@/app/(portfolio)/components/pages/experiencePage'
+import ContactPage from '@/app/(portfolio)/components/pages/contactPage'
+import DialogModal from '@/app/(portfolio)/components/dialogModal'
+import ScrollToTop from '@/app/(portfolio)/components/scrollComponents/scrollToTop'
+import { Context } from '@/app/(portfolio)/components/appWrapper'
 
 export default function Page(): React.JSX.Element {
   const context = useContext(Context)

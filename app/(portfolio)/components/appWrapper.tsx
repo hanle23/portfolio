@@ -1,6 +1,6 @@
 'use client'
 import React, { createContext, useState, useEffect } from 'react'
-import { NextUIWrapper } from './nextUIWrapper'
+import { NextUIWrapper } from '../../components/nextUIWrapper'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 

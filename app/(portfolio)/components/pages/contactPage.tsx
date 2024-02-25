@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import BlockContainer from '@/app/components/specialComponent/BlockContainer'
+import BlockContainer from '@/app/(portfolio)/components/specialComponent/BlockContainer'
 import githubLogo from '@/public/svg/githubIcon.svg'
 import linkedInLogo from '@/public/svg/linkedInIcon.svg'
 import Image from 'next/image'

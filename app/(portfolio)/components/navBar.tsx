@@ -15,8 +15,8 @@ import {
   DropdownMenu,
   Button,
 } from '@nextui-org/react'
-import { Context } from '@/app/components/appWrapper'
-import scrollToSection from '@/app/components/scrollComponents/scrollToSection'
+import { Context } from '@/app/(portfolio)/components/appWrapper'
+import scrollToSection from '@/app/(portfolio)/components/scrollComponents/scrollToSection'
 
 export default function NavBar(): React.JSX.Element {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

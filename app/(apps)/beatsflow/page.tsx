@@ -25,7 +25,6 @@ export default function Page(): React.JSX.Element {
         if ('error' in responseJSON) {
           return null
         }
-        console.log(responseJSON)
         return responseJSON
       }
     }
@@ -56,7 +55,7 @@ export default function Page(): React.JSX.Element {
   }
 
   return (
-    <div className="grid content-center justify-items-center gap-y-10 w-full h-full ">
+    <div className="flex content-center justify-items-center gap-y-10 w-full h-full ">
       {profile === null && (
         <div>
           <button

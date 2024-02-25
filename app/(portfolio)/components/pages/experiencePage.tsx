@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from 'react'
 import { experiencesData } from '@/lib/data'
-import BlockContainer from '@/app/components/specialComponent/BlockContainer'
+import BlockContainer from '@/app/(portfolio)/components/specialComponent/BlockContainer'
 import ResumeLogo from '@/public/js/resumeIcon'
-import DialogModal from '@/app/components/dialogModal'
+import DialogModal from '@/app/(portfolio)/components/dialogModal'
 
 interface Project {
   title: string
