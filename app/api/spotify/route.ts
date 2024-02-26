@@ -20,8 +20,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 export async function POST(
   req: Request,
 ): Promise<NextResponse<{ accessToken: string }>> {
-  const { code, verifier }: { code: string; verifier: string } =
-    await req.json()
+  const {
+    code,
+    verifier,
+    granType,
+  }: { code: string; verifier: string; granType: string } = await req.json()
   const clientId = getClientID()
   if (clientId === undefined) {
     throw new Error('Client ID not found')
@@ -34,7 +37,7 @@ export async function POST(
   }
   const params = new URLSearchParams()
   params.append('client_id', clientId)
-  params.append('grant_type', 'authorization_code')
+  params.append('grant_type', granType)
   params.append('code', code)
   params.append('redirect_uri', 'http://localhost:3000/beatsflow')
   params.append('code_verifier', verifier)
@@ -45,6 +48,5 @@ export async function POST(
     body: params,
   })
   const resJSON = await result.json()
-  const accessToken = resJSON.access_token
-  return NextResponse.json({ accessToken })
+  return NextResponse.json(resJSON)
 }
