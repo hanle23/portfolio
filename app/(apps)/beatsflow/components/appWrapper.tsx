@@ -37,7 +37,6 @@ export const BeatsflowAppWrapper = ({
       expiredDate !== null &&
       expiredDate > new Date()
     ) {
-      console.log('Access token is valid')
       setAccessToken(accessTokenLocal)
     } else if (
       accessToken === null &&
@@ -46,17 +45,18 @@ export const BeatsflowAppWrapper = ({
       expiredDate < new Date() &&
       refreshTokenLocal !== null
     ) {
-      console.log('Access token is expired, refreshing...')
-      fetch('/api/spotify', {
+      fetch('/api/spotify/authorization', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          refresh_token: refreshTokenLocal,
+          refreshToken: refreshTokenLocal,
           grantType: 'refresh_token',
         }),
       })
         .then(async (response) => await response.json())
         .then((data: AccessTokenSuccessData) => {
+          console.log(refreshTokenLocal)
+          console.log(data)
           if ('access_token' in data) {
             setAccessToken(data.access_token)
             setLocalStorageItem('access_token', data.access_token)
@@ -75,13 +75,12 @@ export const BeatsflowAppWrapper = ({
       accessTokenLocal === null &&
       code !== null
     ) {
-      console.log('No Access Token is found, creating a new one...')
       const url = new URL(window.location.toString())
       url.searchParams.delete('code')
       window.history.replaceState({}, document.title, url.toString())
 
       const verifier = getLocalStorageItem('verifier')
-      fetch('/api/spotify', {
+      fetch('/api/spotify/authorization', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
