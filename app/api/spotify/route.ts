@@ -23,8 +23,8 @@ export async function POST(
   const {
     code,
     verifier,
-    granType,
-  }: { code: string; verifier: string; granType: string } = await req.json()
+    grantType,
+  }: { code: string; verifier: string; grantType: string } = await req.json()
   const clientId = getClientID()
   if (clientId === undefined) {
     throw new Error('Client ID not found')
@@ -37,7 +37,7 @@ export async function POST(
   }
   const params = new URLSearchParams()
   params.append('client_id', clientId)
-  params.append('grant_type', granType)
+  params.append('grant_type', grantType)
   params.append('code', code)
   params.append('redirect_uri', 'http://localhost:3000/beatsflow')
   params.append('code_verifier', verifier)
