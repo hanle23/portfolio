@@ -1,7 +1,4 @@
-export const metadata = {
-  title: 'Beats Flow',
-  description: 'A music playlist manager for Spotify',
-}
+import '@/app/(apps)/globals.css'
 
 export default function RootLayout({
   children,
@@ -9,8 +6,8 @@ export default function RootLayout({
   children: React.ReactNode
 }): React.JSX.Element {
   return (
-    <html lang="en">
-      <body className="h-full w-full">{children}</body>
+    <html lang="en" className="h-full">
+      <body className="flex flex-col h-full w-full">{children}</body>
     </html>
   )
 }

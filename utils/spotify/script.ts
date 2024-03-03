@@ -12,7 +12,7 @@ export async function redirectToAuthCodeFlow(): Promise<void> {
   const params = new URLSearchParams()
   params.append('client_id', clientID)
   params.append('response_type', 'code')
-  params.append('redirect_uri', 'http://localhost:3000/beatsflow')
+  params.append('redirect_uri', `http://localhost:3000/beatsflow`)
   params.append('scope', 'user-read-private user-read-email')
   params.append('code_challenge_method', 'S256')
   params.append('code_challenge', challenge)

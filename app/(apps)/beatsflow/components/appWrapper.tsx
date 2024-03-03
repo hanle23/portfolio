@@ -1,8 +1,10 @@
 'use client'
 import React, { createContext, useState, useEffect } from 'react'
-import { NextUIWrapper } from '@/app/components/nextUIWrapper'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
+import { Header } from '@/app/(apps)/beatsflow/components/header'
+import { NextUIProvider } from '@nextui-org/react'
+import Login from '@/app/(apps)/beatsflow/components/login'
 
 interface BeatsFlowContextType {
   accessToken: string | null
@@ -23,6 +25,16 @@ export const BeatsflowAppWrapper = ({
   }
   const context = {
     accessToken,
+    isLoading,
+  }
+
+  const saveLocalData = (data: AccessTokenSuccessData): void => {
+    setLocalStorageItem('access_token', data.access_token)
+    setLocalStorageItem(
+      'expired_date',
+      new Date(Date.now() + data.expires_in * 1000).toISOString(),
+    )
+    setLocalStorageItem('refresh_token', data.refresh_token)
   }
 
   useEffect(() => {
@@ -55,16 +67,9 @@ export const BeatsflowAppWrapper = ({
       })
         .then(async (response) => await response.json())
         .then((data: AccessTokenSuccessData) => {
-          console.log(refreshTokenLocal)
-          console.log(data)
           if ('access_token' in data) {
             setAccessToken(data.access_token)
-            setLocalStorageItem('access_token', data.access_token)
-            setLocalStorageItem(
-              'expired_date',
-              new Date(Date.now() + data.expires_in * 1000).toISOString(),
-            )
-            setLocalStorageItem('refresh_token', data.refresh_token)
+            saveLocalData(data)
           }
         })
         .catch((error) => {
@@ -93,12 +98,7 @@ export const BeatsflowAppWrapper = ({
         .then((data: AccessTokenSuccessData) => {
           if ('access_token' in data && accessToken === null) {
             setAccessToken(data.access_token)
-            setLocalStorageItem('access_token', data.access_token)
-            setLocalStorageItem(
-              'expired_date',
-              new Date(Date.now() + data.expires_in * 1000).toISOString(),
-            )
-            setLocalStorageItem('refresh_token', data.refresh_token)
+            saveLocalData(data)
           }
         })
         .catch((error) => {
@@ -118,23 +118,20 @@ export const BeatsflowAppWrapper = ({
   }
 
   return (
-    <NextUIWrapper>
+    <NextUIProvider className="h-full w-full">
       <BeatsflowContext.Provider value={context}>
         {isLoading ? <div>Loading...</div> : null}
-        {accessToken === null && !isLoading ? (
-          <div>
-            <button
-              onClick={handlerAuthorization}
-              className="bg-green-500 text-white px-4 py-2 rounded-md"
-            >
-              Login with Spotify
-            </button>
+        {accessToken === null && !isLoading && (
+          <Login handlerAuthorization={handlerAuthorization} />
+        )}
+        {accessToken !== null && !isLoading && (
+          <div className="h-full w-full">
+            <Header accessToken={accessToken} setAccessToken={setAccessToken} />
+            {children}
           </div>
-        ) : (
-          children
         )}
       </BeatsflowContext.Provider>
-    </NextUIWrapper>
+    </NextUIProvider>
   )
 }
 
