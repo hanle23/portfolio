@@ -87,7 +87,7 @@ export default function NavBar(): React.JSX.Element {
               </DropdownTrigger>
             </NavbarItem>
             <DropdownMenu
-              aria-label="ACME features"
+              aria-label="Features"
               className="w-60 bg-main-light rounded-lg shadow-lg text-text-light"
               itemClasses={{
                 base: 'gap-4',

@@ -47,7 +47,7 @@ export function Header({
       <NavbarContent justify="start" className="flex w-fit">
         <Link href={'/'} className="flex gap-2 items-center w-fit">
           <Image src={leftarrow} alt="left arrow" width={18} />
-          Back to main menu
+          Back to portfolio
         </Link>
       </NavbarContent>
       <NavbarContent justify="center" className="w-fit">
