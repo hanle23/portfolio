@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useContext, Suspense } from 'react'
 import { removeAllServiceItems } from '@/utils/LocalStorage'
 import Image from 'next/image'
 import {
@@ -12,37 +12,23 @@ import {
   DropdownMenu,
   Avatar,
 } from '@nextui-org/react'
+import { BeatsflowContext } from './appWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 export function Header({
-  accessToken,
   setAccessToken,
 }: {
   accessToken: string
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
 }): React.JSX.Element {
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  useEffect(() => {
-    fetch('/api/spotify/profile', {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      .then(async (response) => await response.json())
-      .then((data: UserProfile) => {
-        console.log(data)
-        setProfile(data)
-      })
-      .catch((error) => {
-        console.error(error.message)
-      })
-  }, [accessToken])
+  const context = useContext(BeatsflowContext)
 
   const handleLogout = (): void => {
-    setProfile(null)
+    context?.setProfile(null)
     removeAllServiceItems()
     setAccessToken('')
     window.location.reload()
   }
-  return profile !== null ? (
+  return context?.profile !== null ? (
     <Navbar className="h-fit w-full" maxWidth="full">
       <NavbarContent justify="start" className="flex w-fit">
         <Link href={'/'} className="flex gap-2 items-center w-fit">
@@ -65,9 +51,12 @@ export function Header({
               isBordered
               as="button"
               className="transition-transform ring-[#1DB954]"
-              name={profile?.display_name}
+              name={context?.profile?.display_name}
               size="sm"
-              src={profile?.images?.find((img) => img.width === 300)?.url ?? ``}
+              src={
+                context?.profile?.images?.find((img) => img.width === 300)
+                  ?.url ?? ``
+              }
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -78,7 +67,9 @@ export function Header({
               >
                 <p className="font-semibold">Signed in as</p>
                 <Suspense fallback={<div>loading...</div>}>
-                  <p className="font-semibold">{profile?.display_name}</p>
+                  <p className="font-semibold">
+                    {context?.profile?.display_name}
+                  </p>
                 </Suspense>
               </Link>
             </DropdownItem>

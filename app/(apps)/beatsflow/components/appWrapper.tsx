@@ -8,6 +8,9 @@ import Login from '@/app/(apps)/beatsflow/components/login'
 
 interface BeatsFlowContextType {
   accessToken: string | null
+  isLoading: boolean
+  profile: UserProfile | null
+  setProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>
 }
 
 export const BeatsflowContext = createContext<BeatsFlowContextType | null>(null)
@@ -19,6 +22,7 @@ export const BeatsflowAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   let code: string | null = null
   if (typeof window !== 'undefined') {
     code = new URLSearchParams(window.location.search).get('code')
@@ -26,6 +30,8 @@ export const BeatsflowAppWrapper = ({
   const context = {
     accessToken,
     isLoading,
+    profile,
+    setProfile,
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {
@@ -107,6 +113,23 @@ export const BeatsflowAppWrapper = ({
     }
     setIsLoading(false)
   }, [accessToken, code]) // Include accessToken and code in the dependency array
+
+  useEffect(() => {
+    fetch('/api/spotify/profile', {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+      .then(async (response) => await response.json())
+      .then((data: UserProfile) => {
+        if ('display_name' in data) {
+          console.log(data)
+          setProfile(data)
+        }
+      })
+      .catch((error) => {
+        console.error(error.message)
+      })
+  }, [accessToken])
 
   const handlerAuthorization: React.MouseEventHandler<HTMLButtonElement> = (
     event,
