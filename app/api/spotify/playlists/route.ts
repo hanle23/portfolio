@@ -6,12 +6,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (authHeader === null || !authHeader?.startsWith('Bearer ')) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const accessToken = authHeader.slice(7)
   let response
+  const userName = req.nextUrl.searchParams.get('username')
   try {
     response = await fetch('https://api.spotify.com/v1/me/playlists', {
       method: 'GET',
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `${authHeader}` },
     })
   } catch (error) {
     console.error('Failed to fetch playlists:', error)
@@ -21,44 +21,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     )
   }
   const playlists = await response.json()
-  if (playlists.items.length === 0) {
-    return NextResponse.json(playlists)
-  }
-  const userName = req.nextUrl.searchParams.get('username')
-  const playlistsWithTracks = await Promise.allSettled(
-    playlists.items
-      .filter(
-        (playlist: PlaylistItem) => playlist.owner.display_name === userName,
-      )
-      .map(async (playlist: PlaylistItem) => {
-        let response
-        try {
-          response = await fetch(
-            `https://api.spotify.com/v1/playlists/${playlist.id}/tracks`,
-            {
-              method: 'GET',
-              headers: { Authorization: `Bearer ${accessToken}` },
-            },
-          )
-        } catch (error) {
-          return NextResponse.json(
-            {
-              error: `Failed to fetch tracks for playlist ${playlist.id}: ${
-                error as string
-              }`,
-            },
-            { status: 500 },
-          )
-        }
-        const tracks = await response.json()
-        return { ...playlist, tracks: tracks.items }
-      }),
+  const res = playlists.items.filter(
+    (playlist: PlaylistItem) => playlist.owner.display_name === userName,
   )
-  const fulfilledPlaylists = playlistsWithTracks
-    .filter(
-      (result): result is PromiseFulfilledResult<PlaylistItem> =>
-        result.status === 'fulfilled',
-    )
-    .map((result) => result.value)
-  return NextResponse.json(fulfilledPlaylists)
+  return NextResponse.json(res)
 }

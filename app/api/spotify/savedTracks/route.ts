@@ -6,18 +6,17 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (authHeader === null || !authHeader?.startsWith('Bearer ')) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const accessToken = authHeader.slice(7)
-  const limit = 20
+  const realLimit = 50
   let offset = 0
   let tracks: PlaylistItem[] = []
   while (true) {
     let response
     try {
       response = await fetch(
-        `https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`,
+        `https://api.spotify.com/v1/me/tracks?limit=${realLimit}&offset=${offset}`,
         {
           method: 'GET',
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: { Authorization: `${authHeader}` },
         },
       )
     } catch (error) {
@@ -35,7 +34,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       break
     }
 
-    offset += limit
+    offset += realLimit
   }
 
   return NextResponse.json(tracks)
