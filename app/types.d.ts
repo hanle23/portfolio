@@ -42,11 +42,11 @@ interface PlaylistItem {
   }
   href: string
   id: string
-  images: {
+  images: Array<{
     url: string
     height: number
     width: number
-  }
+  }>
   name: string
   owner: {
     external_urls: {

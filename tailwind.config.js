@@ -13,6 +13,8 @@ module.exports = {
         'main-light': '#f3edde',
         'nav-light': '#1f1d1e',
         'text-light': '#3a405c',
+        container: '#121212',
+        'spotify-background': '#000',
       },
     },
     darkMode: 'class',

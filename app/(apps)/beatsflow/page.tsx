@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect, useContext } from 'react'
 import { BeatsflowContext } from './components/appWrapper'
+import PlaylistGrid from './components/playlist/playlistGrid'
 
 export default function Page(): React.JSX.Element {
   const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
@@ -40,21 +41,16 @@ export default function Page(): React.JSX.Element {
   // }, [context?.accessToken])
   return (
     <>
-      <div className="grid w-2/6 h-3/5 gap-2 border grid-flow-col auto-cols-max">
-        {playlists.map((playlist) => (
-          <div
-            key={playlist.id}
-            style={{
-              backgroundImage: `url(${playlist.images[0].url})`,
-              backgroundSize: 'cover',
-            }}
-            className="border h-fit min-w-2/4"
-          >
-            <h3>{playlist.name}</h3>
-            <p>{playlist.description}</p>
-            <p>Tracks: {playlist.tracks.total}</p>
+      <div className="flex w-full h-full">
+        <div className="flex gap-12 w-full ">
+          <div className="flex rounded-lg bg-container h-3/4 w-1/4 shrink-0">
+            <p>Place holder</p>
           </div>
-        ))}
+          <PlaylistGrid
+            className="flex rounded-lg shrink-0 p-2.5 w-3/5 h-3/4 overflow-auto bg-container"
+            playlists={playlists}
+          />
+        </div>
       </div>
     </>
   )

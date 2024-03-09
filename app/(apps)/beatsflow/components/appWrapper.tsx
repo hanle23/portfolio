@@ -148,7 +148,7 @@ export const BeatsflowAppWrapper = ({
           <Login handlerAuthorization={handlerAuthorization} />
         )}
         {accessToken !== null && !isLoading && (
-          <div className="h-full w-full">
+          <div className="h-full w-full bg-spotify-background text-white">
             <Header accessToken={accessToken} setAccessToken={setAccessToken} />
             {children}
           </div>
