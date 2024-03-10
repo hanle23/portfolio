@@ -14,6 +14,7 @@ module.exports = {
         'nav-light': '#1f1d1e',
         'text-light': '#3a405c',
         container: '#121212',
+        'playlist-hover': '#2b2b2b',
         'spotify-background': '#000',
       },
     },

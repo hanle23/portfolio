@@ -23,13 +23,12 @@ export function Header({
   const context = useContext(BeatsflowContext)
 
   const handleLogout = (): void => {
-    context?.setProfile(null)
     removeAllServiceItems()
     setAccessToken('')
     window.location.reload()
   }
   return context?.profile !== null ? (
-    <Navbar className="h-fit w-full" maxWidth="full">
+    <Navbar className="h-[8%] w-full" maxWidth="full">
       <NavbarContent justify="start" className="flex w-fit">
         <Link href={'/'} className="flex gap-2 items-center w-fit">
           <Image src={leftarrow} alt="left arrow" width={18} />

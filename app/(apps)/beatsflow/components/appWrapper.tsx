@@ -1,5 +1,7 @@
 'use client'
 import React, { createContext, useState, useEffect } from 'react'
+import useSWR from 'swr'
+import type { Fetcher } from 'swr'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
 import { Header } from '@/app/(apps)/beatsflow/components/header'
@@ -9,8 +11,8 @@ import Login from '@/app/(apps)/beatsflow/components/login'
 interface BeatsFlowContextType {
   accessToken: string | null
   isLoading: boolean
-  profile: UserProfile | null
-  setProfile: React.Dispatch<React.SetStateAction<UserProfile | null>>
+  profile: UserProfile | null | undefined
+  fetcher: Fetcher<any> | undefined
 }
 
 export const BeatsflowContext = createContext<BeatsFlowContextType | null>(null)
@@ -22,7 +24,18 @@ export const BeatsflowAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const fetcher: Fetcher<any> = (url: string): any =>
+    fetch(url, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }).then(async (res) => await res.json())
+  const { data: profile } = useSWR<UserProfile | null>(
+    accessToken !== null ? `/api/spotify/profile` : null,
+    fetcher,
+  )
+
   let code: string | null = null
   if (typeof window !== 'undefined') {
     code = new URLSearchParams(window.location.search).get('code')
@@ -31,7 +44,7 @@ export const BeatsflowAppWrapper = ({
     accessToken,
     isLoading,
     profile,
-    setProfile,
+    fetcher,
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {
@@ -113,23 +126,6 @@ export const BeatsflowAppWrapper = ({
     }
     setIsLoading(false)
   }, [accessToken, code]) // Include accessToken and code in the dependency array
-
-  useEffect(() => {
-    fetch('/api/spotify/profile', {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      .then(async (response) => await response.json())
-      .then((data: UserProfile) => {
-        if ('display_name' in data) {
-          console.log(data)
-          setProfile(data)
-        }
-      })
-      .catch((error) => {
-        console.error(error.message)
-      })
-  }, [accessToken])
 
   const handlerAuthorization: React.MouseEventHandler<HTMLButtonElement> = (
     event,

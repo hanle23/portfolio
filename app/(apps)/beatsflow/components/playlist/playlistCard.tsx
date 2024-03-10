@@ -2,8 +2,10 @@ import React from 'react'
 import Image from 'next/image'
 export default function PlaylistCard({
   playlist,
+  setCurrPlaylist,
 }: {
   playlist: PlaylistItem
+  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -14,7 +16,12 @@ export default function PlaylistCard({
     }
   }
   return (
-    <div className="flex rounded-lg gap-2 overflow-hidden pr-2.5 min-h-1/4 min-w-2/4 shrink-0">
+    <div
+      className="flex rounded-lg gap-2 overflow-hidden cursor-pointer py-1 px-2.5 min-h-1/4 min-w-2/4 shrink-0 hover:bg-playlist-hover"
+      onClick={() => {
+        setCurrPlaylist(playlist)
+      }}
+    >
       <Image
         src={img.url}
         width={80}
