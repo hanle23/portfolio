@@ -139,7 +139,11 @@ export const BeatsflowAppWrapper = ({
   return (
     <NextUIProvider className="h-full w-full">
       <BeatsflowContext.Provider value={context}>
-        {isLoading ? <div>Loading...</div> : null}
+        {isLoading ? (
+          <div className="bg-spotify-background h-full w-full text-white">
+            Loading...
+          </div>
+        ) : null}
         {accessToken === null && !isLoading && (
           <Login handlerAuthorization={handlerAuthorization} />
         )}
