@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import React, { useState, useContext } from 'react'
 import { BeatsflowContext } from './components/appWrapper'
 import PlaylistGrid from './components/playlist/playlistGrid'
-import SelectMode from './components/selectMode'
+import SideBar from './components/sideBar'
 
 export default function Page(): React.JSX.Element {
   const context = useContext(BeatsflowContext)
@@ -38,12 +38,7 @@ export default function Page(): React.JSX.Element {
   return (
     <>
       <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
-        <div className="flex flex-col gap-6 w-1/4 h-full shrink-0">
-          <SelectMode className="flex p-3 rounded-lg h-1/6 bg-container" />
-          <div className="flex rounded-lg bg-container h-4/5 p-2.5">
-            <p className="font-bold text-lg">Liked Songs</p>
-          </div>
-        </div>
+        <SideBar />
         <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full overflow-auto bg-container">
           {playlistLoading ? (
             <div className="bg-container text-white">Loading...</div>
@@ -53,6 +48,7 @@ export default function Page(): React.JSX.Element {
               setCurrPlaylist={setCurrPlaylist}
             />
           )}
+          S
         </div>
       </div>
     </>
