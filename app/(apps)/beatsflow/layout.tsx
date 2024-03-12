@@ -6,8 +6,22 @@ export const metadata = {
 }
 export default function Layout({
   playlists,
+  beatsMap,
 }: {
   playlists: ReactNode
+  beatsMap: ReactNode
 }): React.JSX.Element {
-  return <BeatsflowAppWrapper>{playlists}</BeatsflowAppWrapper>
+  const allRoutes = [
+    { node: playlists, value: 'playlists', label: 'Playlists' },
+    { node: beatsMap, value: 'beatsMap', label: 'Beats Map' },
+  ]
+  return (
+    <BeatsflowAppWrapper allRoutes={allRoutes}>
+      {allRoutes !== undefined &&
+        (() => {
+          const route = allRoutes.find((route) => route.value === 'playlists')
+          return route !== null ? route?.node : null
+        })()}
+    </BeatsflowAppWrapper>
+  )
 }

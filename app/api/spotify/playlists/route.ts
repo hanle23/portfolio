@@ -21,6 +21,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     )
   }
   const playlists = await response.json()
+  if (playlists.items === undefined) {
+    return NextResponse.json(
+      { message: `Error while fetching playlists: ${playlists?.error}` },
+      { status: 404 },
+    )
+  }
   const res = playlists.items.filter(
     (playlist: PlaylistItem) => playlist.owner.display_name === userName,
   )

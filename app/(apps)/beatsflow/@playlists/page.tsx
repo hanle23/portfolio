@@ -2,7 +2,8 @@
 import useSWR from 'swr'
 import React, { useState, useContext } from 'react'
 import { BeatsflowContext } from '../components/appWrapper'
-import PlaylistGrid from '../components/playlist/playlistGrid'
+import PlaylistGrid from './components/playlistGrid'
+import PlaylistDetail from './components/playlistDetail/playlistDetail'
 
 export default function PlaylistPage(): React.JSX.Element {
   const context = useContext(BeatsflowContext)
@@ -34,12 +35,20 @@ export default function PlaylistPage(): React.JSX.Element {
   //       console.error(err)
   //     })
   // }, [context?.accessToken])
+
+  if (playlistLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <>
-      {playlistLoading ? (
-        <div className="text-white">Loading...</div>
-      ) : (
+      {currPlaylist === null ? (
         <PlaylistGrid playlists={playlists} setCurrPlaylist={setCurrPlaylist} />
+      ) : (
+        <PlaylistDetail
+          playlist={currPlaylist}
+          setCurrPlaylist={setCurrPlaylist}
+        />
       )}
     </>
   )

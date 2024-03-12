@@ -16,6 +16,8 @@ module.exports = {
         container: '#121212',
         'playlist-hover': '#2b2b2b',
         'spotify-background': '#000',
+        'spotify-item-background': '#27272a',
+        'spotify-item-hover': '#3c3c3e',
       },
     },
     darkMode: 'class',

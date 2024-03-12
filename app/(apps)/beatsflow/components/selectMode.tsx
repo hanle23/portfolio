@@ -2,33 +2,34 @@
 import { Select, SelectItem } from '@nextui-org/react'
 export default function SelectMode({
   className,
+  allRoutes,
 }: {
   className: string
+  allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
 }): React.JSX.Element {
-  const modes = [{ value: 'playlist', label: 'Playlist' }]
   return (
     <div className={className}>
       <div className="flex flex-col w-full h-fit">
         <div className="h-fit font-semibold px-2.5 w-full">Select Mode:</div>
         <Select
-          items={modes}
-          defaultSelectedKeys={['playlist']}
+          items={allRoutes}
+          defaultSelectedKeys={['playlists']}
           aria-label="Select mode"
-          className="text-lg"
+          className="text-lg mt-auto"
           disallowEmptySelection={true}
           size="lg"
           listboxProps={{
-            className: 'bg-[#27272a] text-white h-fit rounded-md',
+            className: 'bg-spotify-item-background text-white h-fit rounded-md',
           }}
           selectionMode="single"
           labelPlacement="inside"
         >
-          {modes.map((mode) => (
+          {allRoutes.map((route) => (
             <SelectItem
-              className="text-white hover:bg-[#3c3c3e]"
-              key={mode.value}
+              className="text-white hover:bg-spotify-item-hover"
+              key={route.value}
             >
-              {mode.label}
+              {route.label}
             </SelectItem>
           ))}
         </Select>

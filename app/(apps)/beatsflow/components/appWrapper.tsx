@@ -21,8 +21,10 @@ export const BeatsflowContext = createContext<BeatsFlowContextType | null>(null)
 
 export const BeatsflowAppWrapper = ({
   children,
+  allRoutes,
 }: {
   children: React.ReactNode
+  allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -154,7 +156,9 @@ export const BeatsflowAppWrapper = ({
           <div className="h-full w-full bg-spotify-background text-white">
             <Header />
             <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
-              {pathname !== '/beatsflow/profile' && <SideBar />}
+              {pathname !== '/beatsflow/profile' && (
+                <SideBar allRoutes={allRoutes} />
+              )}
               <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full overflow-auto bg-container">
                 {children}
               </div>
