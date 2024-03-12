@@ -155,7 +155,9 @@ export const BeatsflowAppWrapper = ({
             <Header />
             <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
               {pathname !== '/beatsflow/profile' && <SideBar />}
-              {children}
+              <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full overflow-auto bg-container">
+                {children}
+              </div>
             </div>
           </div>
         )}
