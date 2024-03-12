@@ -15,20 +15,18 @@ import {
 import { BeatsflowContext } from './appWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 export function Header({
-  setAccessToken,
+  className,
 }: {
-  accessToken: string
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
+  className?: string
 }): React.JSX.Element {
   const context = useContext(BeatsflowContext)
 
   const handleLogout = (): void => {
     removeAllServiceItems()
-    setAccessToken('')
     window.location.reload()
   }
   return context?.profile !== null ? (
-    <Navbar className="h-[8%] w-full" maxWidth="full">
+    <Navbar className={className ?? 'h-[8%] w-full'} maxWidth="full">
       <NavbarContent justify="start" className="flex w-fit">
         <Link href={'/'} className="flex gap-2 items-center w-fit">
           <Image src={leftarrow} alt="left arrow" width={18} />
@@ -36,7 +34,7 @@ export function Header({
         </Link>
       </NavbarContent>
       <NavbarContent justify="center" className="w-fit">
-        <Link href={'/beatsflow'} className="text-xl">
+        <Link href={'/beatsflow'} className="text-2xl font-bold">
           Beats Flow
         </Link>
       </NavbarContent>
@@ -53,16 +51,19 @@ export function Header({
               name={context?.profile?.display_name}
               size="sm"
               src={
-                context?.profile?.images?.find((img) => img.width === 300)
-                  ?.url ?? ``
+                context?.profile?.images?.find((img) => img.width === 300)?.url
               }
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-fit">
+            <DropdownItem
+              key="profile"
+              className="h-fit"
+              textValue="Sign in as"
+            >
               <Link
                 className="flex flex-col gap-1 items-start"
-                href={'beatsflow/profile'}
+                href={'/beatsflow/profile'}
               >
                 <p className="font-semibold">Signed in as</p>
                 <Suspense fallback={<div>loading...</div>}>

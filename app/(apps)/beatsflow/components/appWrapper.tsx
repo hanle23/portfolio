@@ -4,9 +4,11 @@ import useSWR from 'swr'
 import type { Fetcher } from 'swr'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
-import { Header } from '@/app/(apps)/beatsflow/components/header'
+import SideBar from './sideBar'
+import { Header } from './header'
 import { NextUIProvider } from '@nextui-org/react'
 import Login from '@/app/(apps)/beatsflow/components/login'
+import { usePathname } from 'next/navigation'
 
 interface BeatsFlowContextType {
   accessToken: string | null
@@ -24,6 +26,7 @@ export const BeatsflowAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const pathname = usePathname()
   const fetcher: Fetcher<any> = (url: string): any =>
     fetch(url, {
       headers: {
@@ -149,8 +152,11 @@ export const BeatsflowAppWrapper = ({
         )}
         {accessToken !== null && !isLoading && (
           <div className="h-full w-full bg-spotify-background text-white">
-            <Header accessToken={accessToken} setAccessToken={setAccessToken} />
-            {children}
+            <Header />
+            <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
+              {pathname !== '/beatsflow/profile' && <SideBar />}
+              {children}
+            </div>
           </div>
         )}
       </BeatsflowContext.Provider>

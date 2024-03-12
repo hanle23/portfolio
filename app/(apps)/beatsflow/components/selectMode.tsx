@@ -1,3 +1,4 @@
+'use client'
 import { Select, SelectItem } from '@nextui-org/react'
 export default function SelectMode({
   className,
@@ -7,11 +8,12 @@ export default function SelectMode({
   const modes = [{ value: 'playlist', label: 'Playlist' }]
   return (
     <div className={className}>
-      <div className="flex flex-col w-full h-full">
-        <div className="px-2.5">Select Mode:</div>
+      <div className="flex flex-col w-full h-fit">
+        <div className="h-fit font-semibold px-2.5 w-full">Select Mode:</div>
         <Select
           items={modes}
           defaultSelectedKeys={['playlist']}
+          aria-label="Select mode"
           className="text-lg"
           disallowEmptySelection={true}
           size="lg"
@@ -31,12 +33,6 @@ export default function SelectMode({
           ))}
         </Select>
       </div>
-
-      {/* <select className="flex w-full rounded-lg p-2.5 h-full bg-[#27272a]">
-        {modes.map((mode) => (
-          <option key={mode.value}>{mode.label}</option>
-        ))}
-      </select> */}
     </div>
   )
 }
