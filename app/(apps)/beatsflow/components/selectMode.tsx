@@ -3,9 +3,11 @@ import { Select, SelectItem } from '@nextui-org/react'
 export default function SelectMode({
   className,
   allRoutes,
+  setCurrentRoute,
 }: {
   className: string
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
+  setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
 }): React.JSX.Element {
   return (
     <div className={className}>
@@ -17,6 +19,9 @@ export default function SelectMode({
           aria-label="Select mode"
           className="text-lg mt-auto"
           disallowEmptySelection={true}
+          onSelectionChange={(e) => {
+            setCurrentRoute(Array.from(e)[0] as string)
+          }}
           size="lg"
           listboxProps={{
             className: 'bg-spotify-item-background text-white h-fit rounded-md',
