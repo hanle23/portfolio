@@ -10,6 +10,7 @@ export default function PlaylistDetail({
   return (
     <div className="w-full h-full">
       <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
+      <div></div>
     </div>
   )
 }
