@@ -18,7 +18,6 @@ export default function PlaylistHeader({
       img = playlist?.images?.find((image) => image?.width < 1000) ?? img
     }
   }
-  console.log(playlist)
   return (
     <div className="flex gap-5 w-full h-fit overflow-hidden">
       <Image

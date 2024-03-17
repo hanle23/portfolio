@@ -18,6 +18,7 @@ module.exports = {
         'spotify-background': '#000',
         'spotify-item-background': '#27272a',
         'spotify-item-hover': '#3c3c3e',
+        'spotify-color': '#1DB954',
       },
     },
     darkMode: 'class',

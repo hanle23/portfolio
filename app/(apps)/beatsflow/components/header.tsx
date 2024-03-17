@@ -47,7 +47,7 @@ export function Header({
             <Avatar
               isBordered
               as="button"
-              className="transition-transform ring-[#1DB954]"
+              className="transition-transform ring-spotify-color"
               name={context?.profile?.display_name}
               size="sm"
               src={
