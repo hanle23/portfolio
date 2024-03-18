@@ -20,13 +20,16 @@ export default function PlaylistHeader({
   }
   return (
     <div className="flex gap-5 w-full h-fit overflow-hidden">
-      <Image
-        alt=""
-        className="rounded-md flex-shrink-0"
-        src={img.url}
-        width={200}
-        height={200}
-      />
+      <div className="max-w-[200px] max-h-[200px] w-96 h-96 relative">
+        <Image
+          alt=""
+          className="rounded-md object-cover"
+          src={img.url}
+          layout="fill"
+          objectFit={'contain'}
+        />
+      </div>
+
       <div className="grid w-full gap-2 content-end">
         <h3 className="text-6xl font-bold">{playlist?.name}</h3>
         <p>{playlist?.description}</p>
