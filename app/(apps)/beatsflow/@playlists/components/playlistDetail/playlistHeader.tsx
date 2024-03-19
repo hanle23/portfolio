@@ -19,7 +19,7 @@ export default function PlaylistHeader({
     }
   }
   return (
-    <div className="flex gap-5 w-full h-fit overflow-hidden">
+    <div className="flex gap-5 w-full h-fit">
       <div className="max-w-[200px] max-h-[200px] w-96 h-96 relative">
         <Image
           alt=""

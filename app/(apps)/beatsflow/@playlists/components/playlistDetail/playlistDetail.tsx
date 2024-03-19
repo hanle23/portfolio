@@ -2,6 +2,7 @@
 import React, { useContext } from 'react'
 import useSWRInfinite from 'swr/infinite'
 import PlaylistHeader from './playlistHeader'
+import TracksTable from './tracksTable'
 import { BeatsflowContext } from '../../../components/appWrapper'
 import Pagination from '../../../components/pagination'
 export default function PlaylistDetail({
@@ -20,16 +21,15 @@ export default function PlaylistDetail({
       previousPageData?.limit + previousPageData?.offset
     }`
   }
-  const { data, setSize } = useSWRInfinite(getKey, fetcher)
-  console.log(data[data?.length - 1])
+  const { data, setSize } = useSWRInfinite<Playlists>(getKey, fetcher)
   return (
     <div className="relative w-full h-full flex flex-col overflow-y-auto">
       <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
       <div className="flex flex-col grow">
         <div className="grow">
-          <TracksTable />
+          <TracksTable allTrackPages={data} />
         </div>
-        <Pagination
+        {/* <Pagination
           className="flex justify-center absolute bottom-0 left-0 w-full space-x-3 bg-transparent"
           total={Math.ceil(playlist.tracks.total / 50)}
           initialPage={1}
@@ -38,12 +38,8 @@ export default function PlaylistDetail({
               console.log(e)
             })
           }}
-        />
+        /> */}
       </div>
     </div>
   )
-}
-
-function TracksTable({ tracks }: { tracks: PlaylistItem }): React.JSX.Element {
-  return <div></div>
 }
