@@ -14,7 +14,9 @@ interface CurrentUserContextType {
   pressing: boolean
   contactOpen: boolean
   setContactOpen: React.Dispatch<React.SetStateAction<boolean>>
-  selectedElementSet: (element: React.SetStateAction<SelectedElement>) => void
+  selectedElementSet: React.Dispatch<
+    React.SetStateAction<SelectedElement | null>
+  >
   removeSelectedElement: () => void
 }
 
@@ -38,9 +40,8 @@ export const AppWrapper = ({
   children: React.ReactNode
 }): React.JSX.Element => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [selectedElement, selectedElementSet] = useState<SelectedElement>(
-    initialSelectedElement,
-  )
+  const [selectedElement, selectedElementSet] =
+    useState<SelectedElement | null>(initialSelectedElement)
   const [contactOpen, setContactOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [pressing, setPressing] = useState(false)
@@ -50,12 +51,26 @@ export const AppWrapper = ({
 
   const context = {
     pos: mousePos,
-    selectedElementSet: (element: React.SetStateAction<SelectedElement>) => {
-      selectedElementSet(element)
-      if (element !== null && 'el' in element && element.el !== null) {
-        setStatus('entering')
+    selectedElementSet: (
+      element: React.SetStateAction<SelectedElement | null>,
+    ) => {
+      if (typeof element === 'function') {
+        selectedElementSet((prevState) => {
+          const newElement = element(prevState)
+          if (newElement?.el !== null) {
+            setStatus('entering')
+          } else {
+            setStatus('shifting')
+          }
+          return newElement
+        })
       } else {
-        setStatus('shifting')
+        selectedElementSet(element)
+        if (element?.el !== null) {
+          setStatus('entering')
+        } else {
+          setStatus('shifting')
+        }
       }
     },
     removeSelectedElement: () => {
@@ -68,6 +83,7 @@ export const AppWrapper = ({
     setStatus,
     selectedElement,
     pressing,
+    setPressing,
   }
 
   useEffect(() => {
@@ -87,10 +103,11 @@ export const AppWrapper = ({
       // Start a new timeout that will call disableScroll after 1 second of inactivity
       timeoutId = setTimeout(disableScroll, 1000)
     }
-
-    document.body.addEventListener('wheel', enableScrolling)
-    document.body.addEventListener('click', enableScrolling)
-    document.body.addEventListener('mousemove', enableScrolling)
+    if (window.matchMedia('(min-width: 640px)').matches) {
+      document.body.addEventListener('wheel', enableScrolling)
+      document.body.addEventListener('click', enableScrolling)
+      document.body.addEventListener('mousemove', enableScrolling)
+    }
 
     // Clean up the event listeners and the timeout when the component unmounts
     return () => {
