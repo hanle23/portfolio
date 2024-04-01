@@ -4,7 +4,6 @@ import useSWRInfinite from 'swr/infinite'
 import PlaylistHeader from './playlistHeader'
 import TracksTable from './tracksTable'
 import { BeatsflowContext } from '../../../components/appWrapper'
-import Pagination from '../../../components/pagination'
 export default function PlaylistDetail({
   playlist,
   setCurrPlaylist,
@@ -21,24 +20,21 @@ export default function PlaylistDetail({
       previousPageData?.limit + previousPageData?.offset
     }`
   }
-  const { data, setSize } = useSWRInfinite<Playlists>(getKey, fetcher)
+  const { data, size, setSize } = useSWRInfinite<Playlists>(getKey, fetcher)
+  console.log(data)
   return (
     <div className="relative w-full h-full flex flex-col overflow-y-auto">
       <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
       <div className="flex flex-col grow">
         <div className="grow">
-          <TracksTable allTrackPages={data} />
+          <TracksTable
+            allTrackPages={data}
+            hasNextPage={data?.[data?.length - 1]?.next !== null}
+            setSize={setSize}
+            size={size}
+            totalItems={data?.[data?.length - 1]?.total ?? 0}
+          />
         </div>
-        {/* <Pagination
-          className="flex justify-center absolute bottom-0 left-0 w-full space-x-3 bg-transparent"
-          total={Math.ceil(playlist.tracks.total / 50)}
-          initialPage={1}
-          onChange={(page) => {
-            setSize(page).catch((e) => {
-              console.log(e)
-            })
-          }}
-        /> */}
       </div>
     </div>
   )
