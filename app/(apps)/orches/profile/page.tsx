@@ -12,11 +12,11 @@ import toast, { Toaster } from 'react-hot-toast'
 import QRCode from 'qrcode'
 import copy from '@/public/svg/copy.svg'
 
-import { BeatsflowContext } from '../components/appWrapper'
+import { OrchesContext } from '../components/appWrapper'
 export default function Page(): React.JSX.Element {
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null)
   const { isOpen, onOpenChange } = useDisclosure()
-  const context = useContext(BeatsflowContext)
+  const context = useContext(OrchesContext)
 
   const onOpen = async (): Promise<void> => {
     try {

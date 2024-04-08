@@ -12,14 +12,14 @@ import {
   DropdownMenu,
   Avatar,
 } from '@nextui-org/react'
-import { BeatsflowContext } from './appWrapper'
+import { OrchesContext } from './appWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 export function Header({
   className,
 }: {
   className?: string
 }): React.JSX.Element {
-  const context = useContext(BeatsflowContext)
+  const context = useContext(OrchesContext)
 
   const handleLogout = (): void => {
     removeAllServiceItems()
@@ -34,7 +34,7 @@ export function Header({
         </Link>
       </NavbarContent>
       <NavbarContent justify="center" className="w-fit">
-        <Link href={'/beatsflow'} className="text-2xl font-bold">
+        <Link href={'/orches'} className="text-2xl font-bold">
           Beats Flow
         </Link>
       </NavbarContent>
@@ -63,7 +63,7 @@ export function Header({
             >
               <Link
                 className="flex flex-col gap-1 items-start"
-                href={'/beatsflow/profile'}
+                href={'/orches/profile'}
               >
                 <p className="font-semibold">Signed in as</p>
                 <Suspense fallback={<div>loading...</div>}>

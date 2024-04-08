@@ -1,12 +1,12 @@
 'use client'
 import useSWR from 'swr'
 import React, { useState, useContext } from 'react'
-import { BeatsflowContext } from '../components/appWrapper'
+import { OrchesContext } from '../components/appWrapper'
 import PlaylistGrid from './components/playlistGrid'
 import PlaylistDetail from './components/playlistDetail/playlistDetail'
 
 export default function PlaylistPage(): React.JSX.Element {
-  const context = useContext(BeatsflowContext)
+  const context = useContext(OrchesContext)
   const [currPlaylist, setCurrPlaylist] = useState<PlaylistItem | null>(null)
   const fetcher = context?.fetcher !== undefined ? context.fetcher : null
   const { data: playlists, isLoading: playlistLoading } = useSWR<

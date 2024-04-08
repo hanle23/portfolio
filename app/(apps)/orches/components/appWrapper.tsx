@@ -7,19 +7,19 @@ import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
 import SideBar from './sideBar'
 import { Header } from './header'
 import { NextUIProvider } from '@nextui-org/react'
-import Login from '@/app/(apps)/beatsflow/components/login'
+import Login from '@/app/(apps)/orches/components/login'
 import { usePathname } from 'next/navigation'
 
-interface BeatsFlowContextType {
+interface OrchesContextType {
   accessToken: string | null
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
 }
 
-export const BeatsflowContext = createContext<BeatsFlowContextType | null>(null)
+export const OrchesContext = createContext<OrchesContextType | null>(null)
 
-export const BeatsflowAppWrapper = ({
+export const OrchesAppWrapper = ({
   children,
   allRoutes,
   setCurrentRoute,
@@ -38,9 +38,15 @@ export const BeatsflowAppWrapper = ({
         'Content-Type': 'application/json',
       },
     }).then(async (res) => await res.json())
+
   const { data: profile } = useSWR<UserProfile | null>(
     accessToken !== null ? `/api/spotify/profile` : null,
     fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   )
 
   let code: string | null = null
@@ -145,7 +151,7 @@ export const BeatsflowAppWrapper = ({
 
   return (
     <NextUIProvider className="h-full w-full">
-      <BeatsflowContext.Provider value={context}>
+      <OrchesContext.Provider value={context}>
         {isLoading ? (
           <div className="bg-spotify-background h-full w-full text-white">
             Loading...
@@ -158,7 +164,7 @@ export const BeatsflowAppWrapper = ({
           <div className="h-full w-full bg-spotify-background text-white">
             <Header />
             <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
-              {pathname !== '/beatsflow/profile' && (
+              {pathname !== '/orches/profile' && (
                 <SideBar
                   allRoutes={allRoutes}
                   setCurrentRoute={setCurrentRoute}
@@ -170,9 +176,9 @@ export const BeatsflowAppWrapper = ({
             </div>
           </div>
         )}
-      </BeatsflowContext.Provider>
+      </OrchesContext.Provider>
     </NextUIProvider>
   )
 }
 
-export default BeatsflowAppWrapper
+export default OrchesAppWrapper

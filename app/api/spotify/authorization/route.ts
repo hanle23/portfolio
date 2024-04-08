@@ -42,7 +42,7 @@ export async function POST(req: Request): Promise<NextResponse<any>> {
     }
     params.append('grant_type', grantType)
     params.append('code', code)
-    params.append('redirect_uri', 'http://localhost:3000/beatsflow')
+    params.append('redirect_uri', 'http://localhost:3000/orches')
     params.append('code_verifier', verifier)
   } else if (grantType === 'refresh_token') {
     if (refreshToken === undefined) {

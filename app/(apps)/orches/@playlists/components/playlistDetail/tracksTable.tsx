@@ -81,7 +81,7 @@ export default function TracksTable({
         itemCount={totalItems}
         loadMoreItems={loadMoreItems}
       >
-        {({ onItemsRendered, ref }) => (
+        {({ onItemsRendered, ref }: List['props']) => (
           <List
             onItemsRendered={onItemsRendered}
             itemCount={totalItems}
@@ -90,9 +90,9 @@ export default function TracksTable({
             width="100%"
             itemSize={50}
             outerElementType="tbody"
-            innerRef={(ref) => {
+            innerRef={(ref: React.RefObject<any>) => {
               if (ref !== null) {
-                ref.style.display = 'table-row-group'
+                ref.current.style.display = 'table-row-group'
               }
             }}
           >
