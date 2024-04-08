@@ -162,15 +162,15 @@ export const OrchesAppWrapper = ({
         )}
         {accessToken !== null && !isLoading && (
           <div className="h-full w-full bg-spotify-background text-white">
-            <Header />
-            <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
+            <Header className="h-[8%] absolute top-0  w-full overflow-hidden" />
+            <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
               {pathname !== '/orches/profile' && (
                 <SideBar
                   allRoutes={allRoutes}
                   setCurrentRoute={setCurrentRoute}
                 />
               )}
-              <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full overflow-auto bg-container">
+              <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
                 {children}
               </div>
             </div>
