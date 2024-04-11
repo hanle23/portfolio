@@ -3,18 +3,11 @@ import Image from 'next/image'
 
 export default function TrackItem({
   index,
-  style,
-  isItemLoaded,
   track,
 }: {
   index: number
-  style: object
-  isItemLoaded: (index: number) => boolean
   track: PlaylistTrackObject
 }): React.JSX.Element {
-  if (!isItemLoaded(index)) {
-    return <div style={style}>Loading...</div>
-  }
   let img = { url: '', width: 0, height: 0 }
   if (track?.track?.album?.images !== null) {
     if (track?.track?.album?.images.length === 1) {
@@ -25,25 +18,20 @@ export default function TrackItem({
       }
     } else {
       img =
-        track?.track?.album?.images?.find((image) => image?.width < 1000) ?? img
+        track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
     }
   }
-  console.log(track)
 
   return (
-    <div
-      style={style}
-      key={track.track.id}
-      className="grid grid-cols-8 md:grid-cols-10 lg:grid-cols-12"
-    >
+    <div className="grid grid-cols-8 md:grid-cols-10 lg:grid-cols-12">
       <div className="flex items-center w-fit">{index + 1}</div>
       <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
         <Image
           alt={track?.track?.name}
           className="object-cover"
           src={img.url}
-          layout="fill"
-          objectFit={'contain'}
+          width={img.width}
+          height={img.height}
         />
       </div>
       <div className="flex flex-col col-span-3">

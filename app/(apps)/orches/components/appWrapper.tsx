@@ -10,7 +10,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import Login from '@/app/(apps)/orches/components/login'
 import { usePathname } from 'next/navigation'
 
-interface OrchesContextType {
+export interface OrchesContextType {
   accessToken: string | null
   isLoading: boolean
   profile: UserProfile | null | undefined

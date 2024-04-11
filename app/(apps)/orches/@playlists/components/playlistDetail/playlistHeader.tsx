@@ -15,11 +15,11 @@ export default function PlaylistHeader({
     if (playlist?.images.length === 1) {
       img = { url: playlist.images[0].url, width: 250, height: 250 }
     } else {
-      img = playlist?.images?.find((image) => image?.width < 1000) ?? img
+      img = playlist?.images?.find((image) => image?.width < 500) ?? img
     }
   }
   return (
-    <div className="flex gap-5 items-center w-full h-fit border-b border-spotify-background">
+    <div className="flex gap-5 items-center w-full h-fit sticky top-0 z-30 bg-white/30 backdrop-blur-md rounded-t-md px-2">
       <button
         className="flex p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {

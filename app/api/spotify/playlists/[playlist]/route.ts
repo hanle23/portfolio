@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { type NextRequest } from 'next/server'
+import { LIMIT, BASE_URL } from '@/constants/spotify/playlist'
 
 export async function GET(
   req: NextRequest,
@@ -11,11 +12,10 @@ export async function GET(
   }
   let response
   const playlistID = params.playlist
-  const realLimit = 50
   const offset = req.nextUrl.searchParams.get('offset')
   try {
     response = await fetch(
-      `https://api.spotify.com/v1/playlists/${playlistID}/tracks?limit=${realLimit}&offset=${offset}`,
+      `${BASE_URL}/${playlistID}/tracks?limit=${LIMIT}&offset=${offset}`,
       {
         method: 'GET',
         headers: { Authorization: `${authHeader}` },
