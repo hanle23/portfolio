@@ -11,13 +11,17 @@ export default function SideBar({
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
 }): React.JSX.Element {
   return (
-    <div className={className ?? 'flex flex-col gap-6 w-1/4 h-full shrink-0'}>
+    <div
+      className={
+        className ?? 'flex flex-col gap-6 w-1/4 h-full shrink-0 relative'
+      }
+    >
       <SelectMode
-        className="flex items-center rounded-lg h-[10%] bg-container"
+        className="flex items-center rounded-lg h-[10%] bg-container overflow-x-hidden"
         allRoutes={allRoutes}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="flex rounded-lg bg-container h-[90%] p-2.5">
+      <div className="flex rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden">
         <p className="font-bold text-lg">Liked Songs</p>
       </div>
     </div>

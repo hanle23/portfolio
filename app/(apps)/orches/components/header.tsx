@@ -26,8 +26,11 @@ export function Header({
     window.location.reload()
   }
   return context?.profile !== null ? (
-    <Navbar className={className ?? 'h-[8%] w-full'} maxWidth="full">
-      <NavbarContent justify="start" className="flex w-fit">
+    <Navbar
+      className={className ?? 'h-[8%] w-full overflow-hidden'}
+      maxWidth="full"
+    >
+      <NavbarContent justify="start" className="flex w-fit ">
         <Link href={'/'} className="flex gap-2 items-center w-fit">
           <Image src={leftarrow} alt="left arrow" width={18} />
           Back to portfolio
