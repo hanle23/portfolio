@@ -1,6 +1,5 @@
 'use client'
 import React, { createContext, useState, useEffect } from 'react'
-import { NextUIProvider } from '@nextui-org/react'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 
@@ -32,11 +31,11 @@ const initialSelectedElement: SelectedElement = {
 
 export const Context = createContext<CurrentUserContextType | null>(null)
 
-export const AppWrapper = ({
+export default function AppWrapper({
   children,
 }: {
   children: React.ReactNode
-}): React.JSX.Element => {
+}): React.JSX.Element {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [selectedElement, selectedElementSet] =
     useState<SelectedElement | null>(initialSelectedElement)
@@ -118,23 +117,21 @@ export const AppWrapper = ({
   }, [])
 
   return (
-    <NextUIProvider>
-      <Context.Provider value={context}>
-        <div
-          className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
-          onMouseMove={changePosition}
-          onMouseDown={() => {
-            setPressing(true)
-          }}
-          onMouseUp={() => {
-            setPressing(false)
-          }}
-        >
-          <Cursor />
-          <NavBar />
-          {children}
-        </div>
-      </Context.Provider>
-    </NextUIProvider>
+    <Context.Provider value={context}>
+      <div
+        className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
+        onMouseMove={changePosition}
+        onMouseDown={() => {
+          setPressing(true)
+        }}
+        onMouseUp={() => {
+          setPressing(false)
+        }}
+      >
+        <Cursor />
+        <NavBar />
+        {children}
+      </div>
+    </Context.Provider>
   )
 }

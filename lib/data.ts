@@ -1,4 +1,4 @@
-interface Project {
+interface Experience {
   title: string
   company: string
   location: string
@@ -6,9 +6,9 @@ interface Project {
   startDate: Date
   endDate: Date
 }
-export const experiencesData: Project[] = [
+export const experiencesData: Experience[] = [
   {
-    title: 'Programmer',
+    title: 'Information Technology Assistant (Work/Study)',
     company: 'York University School of Continuing Studies',
     location: 'Toronto, ON',
     description:
@@ -17,21 +17,21 @@ export const experiencesData: Project[] = [
     endDate: new Date('2023-04-28'),
   },
   {
+    title: 'Information Technology Assistant',
+    company: 'York University School of Continuing Studies',
+    location: 'Toronto, ON',
+    description:
+      'After working here as an intern, I came back to the same department as a first real job out of university. This time I was given the opportunity to try out other roles within our department, including Business Analysis, Project Management. Although since it was only a small part of my tasks, I have developed a full application that deploy Virtual Machine to students in the Big Data program. The application has been running for 4 semesters till we decided to retired it.',
+    startDate: new Date('2023-07-28'),
+    endDate: new Date('2024-03-28'),
+  },
+  {
     title: 'Full Stack Engineer',
     company: 'Tesoract Inc',
     location: 'Toronto, ON',
     description:
       'Working as one of the first Full Stack Engineer at Tesoract Inc and building everything from ground up. We have an extreme flexibility in voicing our wants in using a new library, or technology if it helps to build the app in a short amount of time. This experience has helped me many in realizing how much of an important to have a good system design prior to writing any line of code.',
     startDate: new Date('2023-04-09'),
-    endDate: new Date(),
-  },
-  {
-    title: 'Software Developer',
-    company: 'York University School of Continuing Studies',
-    location: 'Toronto, ON',
-    description:
-      'After working here as an intern, I came back to the same department as a first real job out of university. This time I was given the opportunity to try out other roles within our department, including Business Analysis, Project Management. Although since it was only a small part of my tasks, I have developed a full application that deploy Virtual Machine to students in the Big Data program. The application has been running for 4 semesters till we decided to retired it.',
-    startDate: new Date('2023-07-28'),
     endDate: new Date(),
   },
 ] as const
