@@ -1,5 +1,4 @@
 'use client'
-import { Select, SelectItem } from '@nextui-org/react'
 export default function SelectMode({
   className,
   allRoutes,
@@ -13,7 +12,7 @@ export default function SelectMode({
     <div className={className}>
       <div className="flex flex-col w-full h-fit">
         <div className="h-fit font-semibold px-2.5 w-full">Select Mode:</div>
-        <Select
+        {/* <Select
           items={allRoutes}
           defaultSelectedKeys={['playlists']}
           aria-label="Select mode"
@@ -37,7 +36,7 @@ export default function SelectMode({
               {route.label}
             </SelectItem>
           ))}
-        </Select>
+        </Select> */}
       </div>
     </div>
   )

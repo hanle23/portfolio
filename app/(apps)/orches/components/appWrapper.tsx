@@ -6,7 +6,6 @@ import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
 import SideBar from './sideBar'
 import { Header } from './header'
-import { NextUIProvider } from '@nextui-org/react'
 import Login from '@/app/(apps)/orches/components/login'
 import { usePathname } from 'next/navigation'
 
@@ -150,34 +149,32 @@ export const OrchesAppWrapper = ({
   }
 
   return (
-    <NextUIProvider className="h-full w-full">
-      <OrchesContext.Provider value={context}>
-        {isLoading ? (
-          <div className="bg-spotify-background h-full w-full text-white">
-            Loading...
-          </div>
-        ) : null}
-        {accessToken === null && !isLoading && (
-          <Login handlerAuthorization={handlerAuthorization} />
-        )}
-        {accessToken !== null && !isLoading && (
-          <div className="h-full w-full bg-spotify-background text-white">
-            <Header className="h-[8%] absolute top-0  w-full overflow-hidden" />
-            <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
-              {pathname !== '/orches/profile' && (
-                <SideBar
-                  allRoutes={allRoutes}
-                  setCurrentRoute={setCurrentRoute}
-                />
-              )}
-              <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
-                {children}
-              </div>
+    <OrchesContext.Provider value={context}>
+      {isLoading ? (
+        <div className="bg-spotify-background h-full w-full text-white">
+          Loading...
+        </div>
+      ) : null}
+      {accessToken === null && !isLoading && (
+        <Login handlerAuthorization={handlerAuthorization} />
+      )}
+      {accessToken !== null && !isLoading && (
+        <div className="h-full w-full bg-spotify-background text-white">
+          <Header className="h-[8%] absolute top-0  w-full overflow-hidden" />
+          <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
+            {pathname !== '/orches/profile' && (
+              <SideBar
+                allRoutes={allRoutes}
+                setCurrentRoute={setCurrentRoute}
+              />
+            )}
+            <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
+              {children}
             </div>
           </div>
-        )}
-      </OrchesContext.Provider>
-    </NextUIProvider>
+        </div>
+      )}
+    </OrchesContext.Provider>
   )
 }
 
