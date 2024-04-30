@@ -6,6 +6,9 @@ import { LIMIT } from '@/constants/spotify/playlist'
 interface ExtendedSWRInfiniteResponse<Data, Error>
   extends SWRInfiniteResponse<Data, Error> {
   setNextPage: () => Promise<void>
+  isLoading: boolean
+  size: number
+  data: Playlists[]
 }
 
 export default function useFetchPlaylistDetails(

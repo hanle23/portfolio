@@ -36,7 +36,7 @@ export default function PlaylistPage(): React.JSX.Element {
   //     })
   // }, [context?.accessToken])
 
-  if (playlistLoading) {
+  if (playlistLoading === true) {
     return <div>Loading...</div>
   }
 

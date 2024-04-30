@@ -17,7 +17,7 @@ export default function PlaylistDetail({
     context,
     playlist,
   )
-  const items = data?.flatMap((trackPage) => trackPage.items) ?? []
+  const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
 
   useEffect(() => {
     if (!isLoading)
@@ -33,7 +33,7 @@ export default function PlaylistDetail({
       <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
       <div className="flex flex-col w-full h-full px-2 mt-4">
         {data !== undefined &&
-          items.map((track, index) => (
+          items.map((track: PlaylistTrackObject, index: number) => (
             <TrackItem key={track?.track?.id} index={index} track={track} />
           ))}
       </div>
