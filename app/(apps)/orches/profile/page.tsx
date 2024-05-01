@@ -1,13 +1,8 @@
 'use client'
 import React, { useContext, useState } from 'react'
 import Image from 'next/image'
-import {
-  Modal,
-  ModalContent,
-  ModalBody,
-  useDisclosure,
-  Skeleton,
-} from '@nextui-org/react'
+import Skeleton from '@mui/material/Skeleton'
+import Dialog from '@mui/material/Dialog'
 import toast, { Toaster } from 'react-hot-toast'
 import QRCode from 'qrcode'
 import copy from '@/public/svg/copy.svg'
