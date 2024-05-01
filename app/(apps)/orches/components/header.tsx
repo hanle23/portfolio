@@ -17,7 +17,6 @@ import Link from 'next/link'
 import { OrchesContext } from './appWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 import Logout from '@mui/icons-material/Logout'
-import { HideOnScroll } from '@/app/components/scrollComponents/hideOnScroll'
 
 export function Header({
   className,
@@ -111,17 +110,22 @@ export function Header({
         zIndex: '1',
       }}
     >
-      <Toolbar sx={{ justifyContent: 'center' }}>
-        <Link href={'/'} className="flex gap-2 items-center w-fit mr-4">
-          <Image src={leftarrow} alt="left arrow" width={18} />
-        </Link>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1, color: 'text' }}
-        >
-          Orches
-        </Typography>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex' }}>
+          <Link href={'/'} className="flex items-center w-fit mr-6">
+            <Image src={leftarrow} alt="left arrow" width={18} />
+          </Link>
+          <Link href={'/orches'}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, color: 'text' }}
+            >
+              Orches
+            </Typography>
+          </Link>
+        </Box>
+
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
