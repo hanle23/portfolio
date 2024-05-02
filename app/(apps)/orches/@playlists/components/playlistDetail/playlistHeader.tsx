@@ -19,7 +19,7 @@ export default function PlaylistHeader({
     }
   }
   return (
-    <div className="flex gap-5 items-center w-full h-fit sticky top-0 z-30 bg-white/30 backdrop-blur-md rounded-t-md px-2">
+    <div className="flex gap-5 backdrop-blur backdrop-filter bg-black/[.3] items-center w-full sticky h-fit top-0 z-30 rounded-t-md px-2">
       <button
         className="flex p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {
@@ -36,7 +36,7 @@ export default function PlaylistHeader({
       <div className="max-w-[200px] max-h-[200px] w-24 h-24 relative">
         <Image
           alt=""
-          className="object-cover"
+          className="object-cover rounded-lg"
           src={img.url}
           layout="fill"
           objectFit={'contain'}

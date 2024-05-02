@@ -1,43 +1,53 @@
-'use client'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+
 export default function SelectMode({
   className,
   allRoutes,
   setCurrentRoute,
+  currentRoute,
 }: {
   className: string
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
+  currentRoute: string
 }): React.JSX.Element {
   return (
-    <div className={className}>
-      <div className="flex flex-col w-full h-fit">
-        <div className="h-fit font-semibold px-2.5 w-full">Select Mode:</div>
-        {/* <Select
-          items={allRoutes}
-          defaultSelectedKeys={['playlists']}
-          aria-label="Select mode"
-          className="text-lg mt-auto"
-          disallowEmptySelection={true}
-          onSelectionChange={(e) => {
-            setCurrentRoute(Array.from(e)[0] as string)
-          }}
-          size="lg"
-          listboxProps={{
-            className: 'bg-spotify-item-background text-white h-fit rounded-md',
-          }}
-          selectionMode="single"
-          labelPlacement="inside"
-        >
-          {allRoutes.map((route) => (
-            <SelectItem
-              className="text-white hover:bg-spotify-item-hover"
-              key={route.value}
-            >
-              {route.label}
-            </SelectItem>
-          ))}
-        </Select> */}
-      </div>
-    </div>
+    <FormControl className="bg-container rounded-md" sx={{ color: '#fff' }}>
+      <InputLabel sx={{ color: '#fff', '&.Mui-focused': { color: '#1DB954' } }}>
+        Mode
+      </InputLabel>
+      <Select
+        value={currentRoute}
+        sx={{
+          color: '#fff',
+          overflow: 'hidden',
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#1DB954',
+          },
+          '.MuiSvgIcon-root ': {
+            fill: '#fff',
+          },
+        }}
+        MenuProps={{
+          PaperProps: { style: { backgroundColor: '#121212', color: '#fff' } },
+        }}
+        onChange={(e: SelectChangeEvent<string>) => {
+          console.log(e.target.value)
+          setCurrentRoute(e.target.value)
+        }}
+        label="Mode"
+        defaultValue="playlists"
+        variant="outlined"
+      >
+        {allRoutes.map((route) => (
+          <MenuItem key={route.value} value={route.value}>
+            {route.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   )
 }

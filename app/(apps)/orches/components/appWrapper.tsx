@@ -22,10 +22,12 @@ export const OrchesAppWrapper = ({
   children,
   allRoutes,
   setCurrentRoute,
+  currentRoute,
 }: {
   children: React.ReactNode
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
+  currentRoute: string
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -165,6 +167,7 @@ export const OrchesAppWrapper = ({
             {pathname !== '/orches/profile' && (
               <SideBar
                 allRoutes={allRoutes}
+                currentRoute={currentRoute}
                 setCurrentRoute={setCurrentRoute}
               />
             )}

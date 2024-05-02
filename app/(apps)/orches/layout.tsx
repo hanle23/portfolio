@@ -17,13 +17,17 @@ export default function Layout({
   beatsMap: ReactNode
 }): React.JSX.Element {
   const pathname = usePathname()
-  const [currentRoute, setCurrentRoute] = useState('playlists')
+  const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const allRoutes = [
     { node: playlists, value: 'playlists', label: 'Playlists' },
     { node: beatsMap, value: 'beatsMap', label: 'Beats Map' },
   ]
   return (
-    <OrchesAppWrapper allRoutes={allRoutes} setCurrentRoute={setCurrentRoute}>
+    <OrchesAppWrapper
+      allRoutes={allRoutes}
+      currentRoute={currentRoute}
+      setCurrentRoute={setCurrentRoute}
+    >
       {allRoutes !== undefined && pathname !== '/orches/profile'
         ? (() => {
             const route = allRoutes.find(

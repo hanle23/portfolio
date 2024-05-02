@@ -23,15 +23,14 @@ export default function TrackItem({
   }
 
   return (
-    <div className="grid grid-cols-8 md:grid-cols-10 lg:grid-cols-12">
+    <div className="grid grid-cols-8 gap-2 md:grid-cols-10 lg:grid-cols-12">
       <div className="flex items-center w-fit">{index + 1}</div>
-      <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
+      <div className=" max-w-[200px] max-h-[200px] w-full h-full relative">
         <Image
           alt={track?.track?.name}
-          className="object-cover"
+          className="overflow-hidden"
           src={img.url}
-          width={img.width}
-          height={img.height}
+          fill={true}
         />
       </div>
       <div className="flex flex-col col-span-3">
@@ -52,7 +51,7 @@ export default function TrackItem({
           ))}
         </div>
       </div>
-      <div className="truncate text-sm  hidden md:table-cell md:col-span-2">
+      <div className="truncate text-sm text-left align-middle hidden md:table-cell md:col-span-2">
         {track.track.album.name}
       </div>
       <div className="text-center text-sm hidden lg:table-cell lg:col-span-2">

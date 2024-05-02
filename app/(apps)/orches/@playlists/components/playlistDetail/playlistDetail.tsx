@@ -31,7 +31,8 @@ export default function PlaylistDetail({
   return (
     <div className="relative w-full h-full flex flex-col overflow-y-auto">
       <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
-      <div className="flex flex-col w-full h-full px-2 mt-4">
+
+      <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
         {data !== undefined &&
           items.map((track: PlaylistTrackObject, index: number) => (
             <TrackItem key={track?.track?.id} index={index} track={track} />
