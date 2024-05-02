@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import PlaylistHeader from './playlistHeader'
 import { OrchesContext } from '../../../components/appWrapper'
 import useFetchPlaylistDetails from './actions/fetchPlaylistDetails'
@@ -18,6 +18,7 @@ export default function PlaylistDetail({
     playlist,
   )
   const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
+  const scrollableElementRef = useRef(null)
 
   useEffect(() => {
     if (!isLoading)
@@ -29,8 +30,15 @@ export default function PlaylistDetail({
   console.log(data, size)
 
   return (
-    <div className="relative w-full h-full flex flex-col overflow-y-auto">
-      <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
+    <div
+      ref={scrollableElementRef}
+      className="w-full h-full flex flex-col overflow-y-auto"
+    >
+      <PlaylistHeader
+        scrollableElementRef={scrollableElementRef}
+        playlist={playlist}
+        setCurrPlaylist={setCurrPlaylist}
+      />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
         {data !== undefined &&

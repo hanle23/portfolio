@@ -41,7 +41,7 @@ export default function PlaylistPage(): React.JSX.Element {
   }
 
   return (
-    <>
+    <div className="w-full h-full relative">
       {currPlaylist === null ? (
         <PlaylistGrid playlists={playlists} setCurrPlaylist={setCurrPlaylist} />
       ) : (
@@ -50,6 +50,6 @@ export default function PlaylistPage(): React.JSX.Element {
           setCurrPlaylist={setCurrPlaylist}
         />
       )}
-    </>
+    </div>
   )
 }

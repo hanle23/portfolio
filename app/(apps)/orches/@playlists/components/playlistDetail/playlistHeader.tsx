@@ -1,14 +1,19 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
+import AppBar from '@mui/material/AppBar'
 import ExternalLink from '@/public/svg/externalLink.svg'
 import LeftArrowNotail from '@/public/svg/leftArrowNotail.svg'
+import useScrollTrigger from '@mui/material/useScrollTrigger'
 
 export default function PlaylistHeader({
   playlist,
   setCurrPlaylist,
+  scrollableElementRef,
 }: {
   playlist: PlaylistItem | null
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  scrollableElementRef: React.RefObject<HTMLDivElement>
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -18,8 +23,28 @@ export default function PlaylistHeader({
       img = playlist?.images?.find((image) => image?.width < 500) ?? img
     }
   }
+
+  const trigger = useScrollTrigger({
+    target: scrollableElementRef.current,
+    disableHysteresis: true,
+    threshold: 10,
+  })
+  console.log(scrollableElementRef.current)
+
   return (
-    <div className="flex gap-5 backdrop-blur backdrop-filter bg-black/[.3] items-center w-full sticky h-fit top-0 z-30 rounded-t-md px-2">
+    <AppBar
+      position={trigger ? 'absolute' : 'static'}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(5px)',
+        gap: '5px',
+        alignItems: 'center',
+        borderTopRightRadius: '10px',
+        borderTopLeftRadius: '10px',
+      }}
+    >
       <button
         className="flex p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {
@@ -38,8 +63,8 @@ export default function PlaylistHeader({
           alt=""
           className="object-cover rounded-lg"
           src={img.url}
-          layout="fill"
-          objectFit={'contain'}
+          height={img.height}
+          width={img.width}
         />
       </div>
 
@@ -64,6 +89,6 @@ export default function PlaylistHeader({
           </a>
         </p>
       </div>
-    </div>
+    </AppBar>
   )
 }

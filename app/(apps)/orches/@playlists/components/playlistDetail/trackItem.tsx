@@ -30,7 +30,8 @@ export default function TrackItem({
           alt={track?.track?.name}
           className="overflow-hidden"
           src={img.url}
-          fill={true}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       <div className="flex flex-col col-span-3">
