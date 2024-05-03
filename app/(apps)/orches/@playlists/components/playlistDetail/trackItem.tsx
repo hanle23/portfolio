@@ -8,10 +8,13 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 export default function TrackItem({
   index,
   track,
+  playlist,
 }: {
   index: number
   track: PlaylistTrackObject
+  playlist: PlaylistItem
 }): React.JSX.Element {
+  console.log(playlist)
   let img = { url: '', width: 0, height: 0 }
   const [isHover, setIsHover] = useState<boolean>(false)
   if (track?.track?.album?.images !== null) {

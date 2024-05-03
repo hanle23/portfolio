@@ -32,7 +32,7 @@ export default function PlaylistHeader({
 
   return (
     <AppBar
-      position={trigger === true ? 'absolute' : 'static'}
+      position={trigger ? 'absolute' : 'static'}
       sx={{
         display: 'flex',
         flexDirection: 'row',
