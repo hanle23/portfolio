@@ -25,28 +25,26 @@ export default function PlaylistHeader({
   }
 
   const trigger = useScrollTrigger({
-    target: scrollableElementRef.current,
+    target: scrollableElementRef?.current ?? undefined,
     disableHysteresis: true,
-    threshold: 10,
+    threshold: 125,
   })
-  console.log(scrollableElementRef.current)
 
   return (
     <AppBar
-      position={trigger ? 'absolute' : 'static'}
+      position={trigger === true ? 'absolute' : 'static'}
       sx={{
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
         backdropFilter: 'blur(5px)',
-        gap: '5px',
         alignItems: 'center',
         borderTopRightRadius: '10px',
         borderTopLeftRadius: '10px',
       }}
     >
       <button
-        className="flex p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
+        className="flex mx-5 p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {
           setCurrPlaylist(null)
         }}
@@ -58,7 +56,7 @@ export default function PlaylistHeader({
           src={LeftArrowNotail}
         />
       </button>
-      <div className="max-w-[200px] max-h-[200px] w-24 h-24 relative">
+      <div className="flex items-center mr-5 max-w-[200px] max-h-[200px] w-24 h-24">
         <Image
           alt=""
           className="object-cover rounded-lg"
