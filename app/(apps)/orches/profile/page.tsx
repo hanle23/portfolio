@@ -82,29 +82,6 @@ export default function Page(): React.JSX.Element {
       ) : (
         <Skeleton variant="rectangular" height={50} width={100} />
       )}
-
-      {/* <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        backdrop="blur"
-        hideCloseButton={true}
-      >
-        <ModalContent
-          className="bg-[#282828] rounded-lg h-fit w-fit px-0 py-0"
-          onClick={onOpenChange}
-        >
-          <ModalBody>
-            <Skeleton isLoaded={qrCodeUrl !== null}>
-              <Image
-                src={qrCodeUrl ?? ''}
-                width={300}
-                height={300}
-                alt="QR Code"
-              />
-            </Skeleton>
-          </ModalBody>
-        </ModalContent>
-      </Modal> */}
       <Dialog
         open={open}
         onClose={() => {

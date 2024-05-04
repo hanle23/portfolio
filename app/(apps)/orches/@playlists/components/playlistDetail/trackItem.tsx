@@ -8,15 +8,15 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 export default function TrackItem({
   index,
   track,
-  playlist,
+  handleRemoveTrack,
 }: {
   index: number
   track: PlaylistTrackObject
-  playlist: PlaylistItem
+  handleRemoveTrack: (trackUri: string) => Promise<void>
 }): React.JSX.Element {
-  console.log(playlist)
-  let img = { url: '', width: 0, height: 0 }
   const [isHover, setIsHover] = useState<boolean>(false)
+
+  let img = { url: '', width: 0, height: 0 }
   if (track?.track?.album?.images !== null) {
     if (track?.track?.album?.images.length === 1) {
       img = {
@@ -41,7 +41,13 @@ export default function TrackItem({
       }}
     >
       <div className="flex items-center w-full h-full justify-center">
-        {isHover ? <PlayArrowIcon /> : index + 1}
+        {isHover ? (
+          <button className="h-fit w-fit hover:text-spotify-color">
+            <PlayArrowIcon />
+          </button>
+        ) : (
+          index + 1
+        )}
       </div>
       <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
         <Image
@@ -84,14 +90,19 @@ export default function TrackItem({
           })}
         </div>
       </div>
-      <div className="h-full w-full">
-        <div
+      <div className="flex h-full w-full items-center justify-end">
+        <button
           className={`${
-            isHover ? 'flex' : 'hidden'
-          } truncate items-center text-sm justify-end h-full w-full`}
+            !isHover && 'hidden'
+          } truncate text-sm h-fit w-fit hover:text-danger-color`}
+          onClick={() => {
+            handleRemoveTrack(track.track.uri).catch((e) => {
+              console.log(e)
+            })
+          }}
         >
           <RemoveCircleOutlineIcon />
-        </div>
+        </button>
       </div>
       <div className="text-center text-sm">
         <div className="truncate items-center text-sm justify-center h-full w-full flex">
@@ -101,14 +112,14 @@ export default function TrackItem({
             .padStart(2, '0')}
         </div>
       </div>
-      <div className="w-full h-full">
-        <div
+      <div className="flex w-full h-full justify-center items-center">
+        <button
           className={`${
-            isHover ? 'flex' : 'hidden'
-          } truncate items-center text-sm justify-center h-full w-full`}
+            !isHover && 'hidden'
+          } truncate text-sm h-fit w-fit hover:text-spotify-color`}
         >
           <MoreHorizIcon />
-        </div>
+        </button>
       </div>
     </div>
   )

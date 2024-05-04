@@ -9,34 +9,18 @@ export default function PlaylistPage(): React.JSX.Element {
   const context = useContext(OrchesContext)
   const [currPlaylist, setCurrPlaylist] = useState<PlaylistItem | null>(null)
   const fetcher = context?.fetcher !== undefined ? context.fetcher : null
-  const { data: playlists, isLoading: playlistLoading } = useSWR<
-    PlaylistItem[] | undefined
-  >(
+  const {
+    data: playlists,
+    isLoading: playlistLoading,
+    mutate: playlistMutate,
+  } = useSWR<PlaylistItem[] | undefined>(
     fetcher !== null && context?.accessToken !== null
       ? `/api/spotify/playlists?username=${context?.profile?.display_name}`
       : null,
     fetcher,
   )
 
-  // const [savedTracks, setSavedTracks] = useState<TrackItem[]>([])
-
-  // useEffect(() => {
-  //   fetch('/api/spotify/savedTracks', {
-  //     method: 'GET',
-  //     headers: { Authorization: `Bearer ${context?.accessToken}` },
-  //   })
-  //     .then(async (response) => await response.json())
-  //     .then((data: TrackItem[]) => {
-  //       if (data.length !== 0) {
-  //         setSavedTracks(data)
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error(err)
-  //     })
-  // }, [context?.accessToken])
-
-  if (playlistLoading === true) {
+  if (playlistLoading) {
     return <div>Loading...</div>
   }
 
@@ -48,6 +32,7 @@ export default function PlaylistPage(): React.JSX.Element {
         <PlaylistDetail
           playlist={currPlaylist}
           setCurrPlaylist={setCurrPlaylist}
+          playlistMutate={playlistMutate}
         />
       )}
     </div>
