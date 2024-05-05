@@ -21,6 +21,7 @@ export default function PlaylistDetail({
     useFetchPlaylistDetails(context, playlist)
   const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
   const scrollableElementRef = useRef(null)
+  const trackAudio = context?.trackAudio
 
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
     const res = await useDeletePlaylistItem(
@@ -60,6 +61,7 @@ export default function PlaylistDetail({
         scrollableElementRef={scrollableElementRef}
         playlist={playlist}
         setCurrPlaylist={setCurrPlaylist}
+        trackAudio={trackAudio}
       />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
@@ -71,6 +73,9 @@ export default function PlaylistDetail({
               handleRemoveTrack={useHandleRemoveTrack}
               index={index}
               track={track}
+              currentTrack={context?.currentTrack}
+              setCurrentTrack={context?.setCurrentTrack}
+              trackAudio={trackAudio}
             />
           ))}
       </div>

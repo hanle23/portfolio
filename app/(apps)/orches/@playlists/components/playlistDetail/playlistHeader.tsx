@@ -10,10 +10,12 @@ export default function PlaylistHeader({
   playlist,
   setCurrPlaylist,
   scrollableElementRef,
+  trackAudio,
 }: {
   playlist: PlaylistItem | null
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
   scrollableElementRef: React.RefObject<HTMLDivElement>
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -46,6 +48,10 @@ export default function PlaylistHeader({
       <button
         className="flex mx-5 p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {
+          if (trackAudio?.current !== undefined) {
+            trackAudio.current.currentTime = 0
+            trackAudio.current.pause()
+          }
           setCurrPlaylist(null)
         }}
       >

@@ -3,16 +3,22 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import MediaPreviewButton from '../../../components/mediaPreviewButton'
 
 export default function TrackItem({
   index,
   track,
   handleRemoveTrack,
+  currentTrack,
+  setCurrentTrack,
+  trackAudio,
 }: {
   index: number
   track: PlaylistTrackObject
   handleRemoveTrack: (trackUri: string) => Promise<void>
+  currentTrack: string | null
+  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   const [isHover, setIsHover] = useState<boolean>(false)
 
@@ -29,7 +35,6 @@ export default function TrackItem({
         track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
     }
   }
-
   return (
     <div
       className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
@@ -42,9 +47,12 @@ export default function TrackItem({
     >
       <div className="flex items-center w-full h-full justify-center">
         {isHover ? (
-          <button className="h-fit w-fit hover:text-spotify-color">
-            <PlayArrowIcon />
-          </button>
+          <MediaPreviewButton
+            currentTrack={currentTrack}
+            setCurrentTrack={setCurrentTrack}
+            trackAudio={trackAudio}
+            trackUrl={track.track.preview_url}
+          />
         ) : (
           index + 1
         )}

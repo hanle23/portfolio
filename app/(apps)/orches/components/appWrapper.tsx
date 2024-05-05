@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useRef } from 'react'
 import useSWR from 'swr'
 import type { Fetcher } from 'swr'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
@@ -14,6 +14,9 @@ export interface OrchesContextType {
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
+  currentTrack: string | null
+  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
 }
 
 export const OrchesContext = createContext<OrchesContextType | null>(null)
@@ -31,6 +34,10 @@ export const OrchesAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [currentTrack, setCurrentTrack] = useState<string | null>(null)
+  const trackAudio = useRef(
+    typeof Audio !== 'undefined' ? new Audio() : undefined,
+  )
   const pathname = usePathname()
   const fetcher: Fetcher<any> = (url: string): any =>
     fetch(url, {
@@ -59,6 +66,9 @@ export const OrchesAppWrapper = ({
     isLoading,
     profile,
     fetcher,
+    currentTrack,
+    setCurrentTrack,
+    trackAudio,
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {
