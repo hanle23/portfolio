@@ -1,11 +1,10 @@
-const { nextui } = require('@nextui-org/react')
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}', // Note the addition of the `app` directory.
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    // Or if using `src` directory:
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -18,9 +17,10 @@ module.exports = {
         'spotify-background': '#000',
         'spotify-item-background': '#27272a',
         'spotify-item-hover': '#3c3c3e',
+        'spotify-color': '#1DB954',
+        'danger-color': '#ff0000',
       },
     },
-    darkMode: 'class',
-    plugins: [nextui()],
+    plugins: [],
   },
 }

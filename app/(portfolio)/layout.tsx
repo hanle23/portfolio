@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import { AppWrapper } from './components/appWrapper'
+import AppWrapper from './components/appWrapper'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import '@/app/(portfolio)/globals.css'

@@ -1,35 +1,43 @@
 'use client'
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, useRef } from 'react'
 import useSWR from 'swr'
 import type { Fetcher } from 'swr'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
 import SideBar from './sideBar'
 import { Header } from './header'
-import { NextUIProvider } from '@nextui-org/react'
-import Login from '@/app/(apps)/beatsflow/components/login'
+import Login from '@/app/(apps)/orches/components/login'
 import { usePathname } from 'next/navigation'
 
-interface BeatsFlowContextType {
+export interface OrchesContextType {
   accessToken: string | null
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
+  currentTrack: string | null
+  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
 }
 
-export const BeatsflowContext = createContext<BeatsFlowContextType | null>(null)
+export const OrchesContext = createContext<OrchesContextType | null>(null)
 
-export const BeatsflowAppWrapper = ({
+export const OrchesAppWrapper = ({
   children,
   allRoutes,
   setCurrentRoute,
+  currentRoute,
 }: {
   children: React.ReactNode
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
+  currentRoute: string
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [currentTrack, setCurrentTrack] = useState<string | null>(null)
+  const trackAudio = useRef(
+    typeof Audio !== 'undefined' ? new Audio() : undefined,
+  )
   const pathname = usePathname()
   const fetcher: Fetcher<any> = (url: string): any =>
     fetch(url, {
@@ -38,9 +46,15 @@ export const BeatsflowAppWrapper = ({
         'Content-Type': 'application/json',
       },
     }).then(async (res) => await res.json())
+
   const { data: profile } = useSWR<UserProfile | null>(
     accessToken !== null ? `/api/spotify/profile` : null,
     fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   )
 
   let code: string | null = null
@@ -52,6 +66,9 @@ export const BeatsflowAppWrapper = ({
     isLoading,
     profile,
     fetcher,
+    currentTrack,
+    setCurrentTrack,
+    trackAudio,
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {
@@ -144,35 +161,34 @@ export const BeatsflowAppWrapper = ({
   }
 
   return (
-    <NextUIProvider className="h-full w-full">
-      <BeatsflowContext.Provider value={context}>
-        {isLoading ? (
-          <div className="bg-spotify-background h-full w-full text-white">
-            Loading...
-          </div>
-        ) : null}
-        {accessToken === null && !isLoading && (
-          <Login handlerAuthorization={handlerAuthorization} />
-        )}
-        {accessToken !== null && !isLoading && (
-          <div className="h-full w-full bg-spotify-background text-white">
-            <Header />
-            <div className="flex gap-8 w-full h-[92%] p-3 justify-center">
-              {pathname !== '/beatsflow/profile' && (
-                <SideBar
-                  allRoutes={allRoutes}
-                  setCurrentRoute={setCurrentRoute}
-                />
-              )}
-              <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full overflow-auto bg-container">
-                {children}
-              </div>
+    <OrchesContext.Provider value={context}>
+      {isLoading ? (
+        <div className="bg-spotify-background h-full w-full text-white">
+          Loading...
+        </div>
+      ) : null}
+      {accessToken === null && !isLoading && (
+        <Login handlerAuthorization={handlerAuthorization} />
+      )}
+      {accessToken !== null && !isLoading && (
+        <div className="h-full w-full bg-spotify-background text-white">
+          <Header className="h-[8%] absolute top-0  w-full overflow-hidden" />
+          <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
+            {pathname !== '/orches/profile' && (
+              <SideBar
+                allRoutes={allRoutes}
+                currentRoute={currentRoute}
+                setCurrentRoute={setCurrentRoute}
+              />
+            )}
+            <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
+              {children}
             </div>
           </div>
-        )}
-      </BeatsflowContext.Provider>
-    </NextUIProvider>
+        </div>
+      )}
+    </OrchesContext.Provider>
   )
 }
 
-export default BeatsflowAppWrapper
+export default OrchesAppWrapper
