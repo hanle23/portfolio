@@ -47,7 +47,7 @@ export default function MediaPreviewButton({
   }
 
   return (
-    <button onClick={handleOnClick}>
+    <button onClick={handleOnClick} className="hover:text-spotify-color">
       {currentTrack === trackUrl &&
       trackAudio?.current !== undefined &&
       !trackAudio.current.paused ? (
