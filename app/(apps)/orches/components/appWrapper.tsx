@@ -14,6 +14,8 @@ export interface OrchesContextType {
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
+  currPlaylist: PlaylistItem | null
+  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
 }
 
 export const OrchesContext = createContext<OrchesContextType | null>(null)
@@ -31,6 +33,7 @@ export const OrchesAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [currPlaylist, setCurrPlaylist] = useState<PlaylistItem | null>(null)
   const pathname = usePathname()
   const fetcher: Fetcher<any> = (url: string): any =>
     fetch(url, {
@@ -59,6 +62,8 @@ export const OrchesAppWrapper = ({
     isLoading,
     profile,
     fetcher,
+    currPlaylist,
+    setCurrPlaylist,
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {

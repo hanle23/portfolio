@@ -10,7 +10,9 @@ export default function PlaylistDetail({
   setCurrPlaylist,
 }: {
   playlist: PlaylistItem
-  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<PlaylistItem | null>
+  > | null
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
   const { data, size, setNextPage, isLoading } = useFetchPlaylistDetails(

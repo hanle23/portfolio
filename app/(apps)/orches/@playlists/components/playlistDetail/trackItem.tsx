@@ -13,8 +13,7 @@ export default function TrackItem({
   index: number
   track: PlaylistTrackObject
   playlist: PlaylistItem
-}): React.JSX.Element {
-  console.log(playlist)
+}): React.JSX.Element | null {
   let img = { url: '', width: 0, height: 0 }
   const [isHover, setIsHover] = useState<boolean>(false)
   if (track?.track?.album?.images !== null) {
@@ -30,7 +29,7 @@ export default function TrackItem({
     }
   }
 
-  return (
+  return track?.track !== null ? (
     <div
       className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
       onMouseEnter={() => {
@@ -53,9 +52,9 @@ export default function TrackItem({
         />
       </div>
       <div className="flex flex-col col-span-3">
-        <p className="truncate">{track.track.name}</p>
+        <p className="truncate">{track?.track?.name}</p>
         <div className="truncate text-small">
-          {track.track.artists.map((artist, index) => (
+          {track?.track?.artists.map((artist, index) => (
             <React.Fragment key={artist.id}>
               <a
                 href={artist.external_urls.spotify}
@@ -65,14 +64,14 @@ export default function TrackItem({
               >
                 {artist.name}
               </a>{' '}
-              {index < track.track.artists.length - 1 && ', '}
+              {index < track?.track?.artists.length - 1 && ', '}
             </React.Fragment>
           ))}
         </div>
       </div>
       <div className="hidden md:table-cell md:col-span-2">
         <div className="truncate items-center text-sm text-left h-full w-full flex">
-          {track.track.album.name}
+          {track?.track?.album.name}
         </div>
       </div>
       <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
@@ -95,8 +94,8 @@ export default function TrackItem({
       </div>
       <div className="text-center text-sm">
         <div className="truncate items-center text-sm justify-center h-full w-full flex">
-          {Math.floor(track.track.duration_ms / 60000)}:
-          {((track.track.duration_ms % 60000) / 1000)
+          {Math.floor(track?.track?.duration_ms / 60000)}:
+          {((track?.track?.duration_ms % 60000) / 1000)
             .toFixed(0)
             .padStart(2, '0')}
         </div>
@@ -111,5 +110,5 @@ export default function TrackItem({
         </div>
       </div>
     </div>
-  )
+  ) : null
 }
