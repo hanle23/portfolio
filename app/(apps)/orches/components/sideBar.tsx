@@ -6,7 +6,6 @@ import SelectMode from './selectMode'
 import { OrchesContext } from '../components/appWrapper'
 import PlaylistCard from './sidebarComponents/playlistCard'
 
-
 export default function SideBar({
   className,
   allRoutes,
@@ -18,12 +17,9 @@ export default function SideBar({
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
 }): React.JSX.Element {
-
   const context = useContext(OrchesContext)
   const fetcher = context?.fetcher !== undefined ? context.fetcher : null
-  const { data: playlists, isLoading: playlistLoading } = useSWR<
-    PlaylistItem[] | undefined
-  >(
+  const { data: playlists } = useSWR<PlaylistItem[] | undefined>(
     fetcher !== null && context?.accessToken !== null
       ? `/api/spotify/playlists?username=${context?.profile?.display_name}`
       : null,
@@ -50,7 +46,6 @@ export default function SideBar({
             setCurrPlaylist={context?.setCurrPlaylist}
           />
         ))}
-
       </div>
     </div>
   )
