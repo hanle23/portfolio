@@ -36,4 +36,41 @@ export async function GET(
     offset: res.offset,
     total: res.total,
   })
+
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { playlist: string } },
+): Promise<NextResponse> {
+  const authHeader: string | null = request.headers.get('authorization')
+  if (authHeader === null || !authHeader?.startsWith('Bearer ')) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const body = await request.json()
+  try {
+    const response = await fetch(`${BASE_URL}/${params.playlist}/tracks`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `${authHeader}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+    if (response.status !== 200) {
+      return NextResponse.json({
+        message: 'Failed to delete playlist item',
+        status: response.status,
+      })
+    }
+    return NextResponse.json({
+      message: 'DELETE',
+      status: response.status,
+    })
+  } catch (error) {
+    return NextResponse.json({
+      message: 'Failed to delete playlist item',
+      status: 404,
+    })
+  }
 }

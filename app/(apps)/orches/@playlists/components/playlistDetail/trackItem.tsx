@@ -3,19 +3,27 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import MediaPreviewButton from '../../../components/mediaPreviewButton'
 
 export default function TrackItem({
   index,
   track,
-  playlist,
+
+  handleRemoveTrack,
+  currentTrack,
+  setCurrentTrack,
+  trackAudio,
 }: {
   index: number
   track: PlaylistTrackObject
-  playlist: PlaylistItem
-}): React.JSX.Element | null {
-  let img = { url: '', width: 0, height: 0 }
+  handleRemoveTrack: (trackUri: string) => Promise<void>
+  currentTrack: string | null
+  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
+}): React.JSX.Element {
   const [isHover, setIsHover] = useState<boolean>(false)
+
+  let img = { url: '', width: 0, height: 0 }
   if (track?.track?.album?.images !== null) {
     if (track?.track?.album?.images.length === 1) {
       img = {
@@ -28,8 +36,8 @@ export default function TrackItem({
         track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
     }
   }
-
   return track?.track !== null ? (
+
     <div
       className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
       onMouseEnter={() => {
@@ -40,7 +48,18 @@ export default function TrackItem({
       }}
     >
       <div className="flex items-center w-full h-full justify-center">
-        {isHover ? <PlayArrowIcon /> : index + 1}
+
+        {isHover ? (
+          <MediaPreviewButton
+            currentTrack={currentTrack}
+            setCurrentTrack={setCurrentTrack}
+            trackAudio={trackAudio}
+            trackUrl={track.track.preview_url}
+          />
+        ) : (
+          index + 1
+        )}
+
       </div>
       <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
         <Image
@@ -55,6 +74,7 @@ export default function TrackItem({
         <p className="truncate">{track?.track?.name}</p>
         <div className="truncate text-small">
           {track?.track?.artists.map((artist, index) => (
+
             <React.Fragment key={artist.id}>
               <a
                 href={artist.external_urls.spotify}
@@ -65,13 +85,16 @@ export default function TrackItem({
                 {artist.name}
               </a>{' '}
               {index < track?.track?.artists.length - 1 && ', '}
+
             </React.Fragment>
           ))}
         </div>
       </div>
       <div className="hidden md:table-cell md:col-span-2">
         <div className="truncate items-center text-sm text-left h-full w-full flex">
+
           {track?.track?.album.name}
+
         </div>
       </div>
       <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
@@ -83,14 +106,20 @@ export default function TrackItem({
           })}
         </div>
       </div>
-      <div className="h-full w-full">
-        <div
+
+      <div className="flex h-full w-full items-center justify-end">
+        <button
           className={`${
-            isHover ? 'flex' : 'hidden'
-          } truncate items-center text-sm justify-end h-full w-full`}
+            !isHover && 'hidden'
+          } truncate text-sm h-fit w-fit hover:text-danger-color`}
+          onClick={() => {
+            handleRemoveTrack(track?.track?.uri).catch((e) => {
+              console.log(e)
+            })
+          }}
         >
           <RemoveCircleOutlineIcon />
-        </div>
+        </button>
       </div>
       <div className="text-center text-sm">
         <div className="truncate items-center text-sm justify-center h-full w-full flex">
@@ -100,15 +129,17 @@ export default function TrackItem({
             .padStart(2, '0')}
         </div>
       </div>
-      <div className="w-full h-full">
-        <div
+
+      <div className="flex w-full h-full justify-center items-center">
+        <button
           className={`${
-            isHover ? 'flex' : 'hidden'
-          } truncate items-center text-sm justify-center h-full w-full`}
+            !isHover && 'hidden'
+          } truncate text-sm h-fit w-fit hover:text-spotify-color`}
         >
           <MoreHorizIcon />
-        </div>
+        </button>
       </div>
     </div>
-  ) : null
+  ): null
+
 }

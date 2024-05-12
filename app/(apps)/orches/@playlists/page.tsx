@@ -2,6 +2,7 @@
 
 import React, { useContext } from 'react'
 import { OrchesContext } from '../components/appWrapper'
+
 import PlaylistDetail from './components/playlistDetail/playlistDetail'
 
 export default function PlaylistPage(): React.JSX.Element {
@@ -13,6 +14,7 @@ export default function PlaylistPage(): React.JSX.Element {
         <PlaylistDetail
           playlist={context?.currPlaylist}
           setCurrPlaylist={context?.setCurrPlaylist}
+
         />
       )}
     </div>
