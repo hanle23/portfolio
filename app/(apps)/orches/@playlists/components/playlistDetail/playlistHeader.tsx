@@ -16,6 +16,7 @@ export default function PlaylistHeader({
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
   scrollableElementRef: React.RefObject<HTMLDivElement>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
+
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -52,6 +53,7 @@ export default function PlaylistHeader({
             trackAudio.current.currentTime = 0
             trackAudio.current.pause()
           }
+
           setCurrPlaylist(null)
         }}
       >

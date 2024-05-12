@@ -1,5 +1,10 @@
-import React from 'react'
+'use client'
+
+import useSWR from 'swr'
+import React, { useContext } from 'react'
 import SelectMode from './selectMode'
+import { OrchesContext } from '../components/appWrapper'
+import PlaylistCard from './sidebarComponents/playlistCard'
 
 export default function SideBar({
   className,
@@ -12,6 +17,14 @@ export default function SideBar({
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
 }): React.JSX.Element {
+  const context = useContext(OrchesContext)
+  const fetcher = context?.fetcher !== undefined ? context.fetcher : null
+  const { data: playlists } = useSWR<PlaylistItem[] | undefined>(
+    fetcher !== null && context?.accessToken !== null
+      ? `/api/spotify/playlists?username=${context?.profile?.display_name}`
+      : null,
+    fetcher,
+  )
   return (
     <div
       className={
@@ -24,8 +37,15 @@ export default function SideBar({
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="flex rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden">
-        <p className="font-bold text-lg">Playlists</p>
+      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto">
+        {playlists?.map((playlist: PlaylistItem) => (
+          <PlaylistCard
+            key={playlist.id}
+            playlist={playlist}
+            currentPlaylist={context?.currPlaylist}
+            setCurrPlaylist={context?.setCurrPlaylist}
+          />
+        ))}
       </div>
     </div>
   )

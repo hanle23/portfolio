@@ -1,4 +1,5 @@
 'use client'
+
 import React, { createContext, useState, useEffect, useRef } from 'react'
 import useSWR from 'swr'
 import type { Fetcher } from 'swr'
@@ -14,9 +15,12 @@ export interface OrchesContextType {
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
+  currPlaylist: PlaylistItem | null
+  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
+
 }
 
 export const OrchesContext = createContext<OrchesContextType | null>(null)
@@ -34,6 +38,7 @@ export const OrchesAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [currPlaylist, setCurrPlaylist] = useState<PlaylistItem | null>(null)
   const [currentTrack, setCurrentTrack] = useState<string | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
@@ -66,9 +71,12 @@ export const OrchesAppWrapper = ({
     isLoading,
     profile,
     fetcher,
+    currPlaylist,
+    setCurrPlaylist,
     currentTrack,
     setCurrentTrack,
     trackAudio,
+
   }
 
   const saveLocalData = (data: AccessTokenSuccessData): void => {

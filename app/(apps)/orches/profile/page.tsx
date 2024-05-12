@@ -82,6 +82,7 @@ export default function Page(): React.JSX.Element {
       ) : (
         <Skeleton variant="rectangular" height={50} width={100} />
       )}
+
       <Dialog
         open={open}
         onClose={() => {

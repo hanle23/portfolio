@@ -8,6 +8,7 @@ import MediaPreviewButton from '../../../components/mediaPreviewButton'
 export default function TrackItem({
   index,
   track,
+
   handleRemoveTrack,
   currentTrack,
   setCurrentTrack,
@@ -35,7 +36,8 @@ export default function TrackItem({
         track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
     }
   }
-  return (
+  return track?.track !== null ? (
+
     <div
       className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
       onMouseEnter={() => {
@@ -46,6 +48,7 @@ export default function TrackItem({
       }}
     >
       <div className="flex items-center w-full h-full justify-center">
+
         {isHover ? (
           <MediaPreviewButton
             currentTrack={currentTrack}
@@ -56,6 +59,7 @@ export default function TrackItem({
         ) : (
           index + 1
         )}
+
       </div>
       <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
         <Image
@@ -67,9 +71,10 @@ export default function TrackItem({
         />
       </div>
       <div className="flex flex-col col-span-3">
-        <p className="truncate">{track.track.name}</p>
+        <p className="truncate">{track?.track?.name}</p>
         <div className="truncate text-small">
-          {track.track.artists.map((artist, index) => (
+          {track?.track?.artists.map((artist, index) => (
+
             <React.Fragment key={artist.id}>
               <a
                 href={artist.external_urls.spotify}
@@ -79,14 +84,17 @@ export default function TrackItem({
               >
                 {artist.name}
               </a>{' '}
-              {index < track.track.artists.length - 1 && ', '}
+              {index < track?.track?.artists.length - 1 && ', '}
+
             </React.Fragment>
           ))}
         </div>
       </div>
       <div className="hidden md:table-cell md:col-span-2">
         <div className="truncate items-center text-sm text-left h-full w-full flex">
-          {track.track.album.name}
+
+          {track?.track?.album.name}
+
         </div>
       </div>
       <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
@@ -98,13 +106,14 @@ export default function TrackItem({
           })}
         </div>
       </div>
+
       <div className="flex h-full w-full items-center justify-end">
         <button
           className={`${
             !isHover && 'hidden'
           } truncate text-sm h-fit w-fit hover:text-danger-color`}
           onClick={() => {
-            handleRemoveTrack(track.track.uri).catch((e) => {
+            handleRemoveTrack(track?.track?.uri).catch((e) => {
               console.log(e)
             })
           }}
@@ -114,12 +123,13 @@ export default function TrackItem({
       </div>
       <div className="text-center text-sm">
         <div className="truncate items-center text-sm justify-center h-full w-full flex">
-          {Math.floor(track.track.duration_ms / 60000)}:
-          {((track.track.duration_ms % 60000) / 1000)
+          {Math.floor(track?.track?.duration_ms / 60000)}:
+          {((track?.track?.duration_ms % 60000) / 1000)
             .toFixed(0)
             .padStart(2, '0')}
         </div>
       </div>
+
       <div className="flex w-full h-full justify-center items-center">
         <button
           className={`${
@@ -130,5 +140,6 @@ export default function TrackItem({
         </button>
       </div>
     </div>
-  )
+  ): null
+
 }

@@ -3,12 +3,14 @@ import type { OrchesContextType } from '@/app/(apps)/orches/components/appWrappe
 import type { SWRInfiniteResponse } from 'swr/infinite'
 import { LIMIT } from '@/constants/spotify/playlist'
 
+
 interface ExtendedSWRInfiniteResponse<Playlists, Error>
   extends SWRInfiniteResponse<Playlists, Error> {
   setNextPage: () => Promise<void>
   isLoading: boolean
   size: number
   data: Playlists[] | undefined
+
 }
 
 export default function useFetchPlaylistDetails(

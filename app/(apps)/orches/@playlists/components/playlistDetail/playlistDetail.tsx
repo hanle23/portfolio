@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef } from 'react'
 import PlaylistHeader from './playlistHeader'
 import { OrchesContext } from '../../../components/appWrapper'
 import useFetchPlaylistDetails from './actions/fetchPlaylistDetails'
+
 import useDeletePlaylistItem from './actions/deletePlaylistItem'
 import TrackItem from './trackItem'
 import toast, { Toaster } from 'react-hot-toast'
@@ -10,6 +11,7 @@ import toast, { Toaster } from 'react-hot-toast'
 export default function PlaylistDetail({
   playlist,
   setCurrPlaylist,
+
   playlistMutate,
 }: {
   playlist: PlaylistItem
@@ -45,12 +47,14 @@ export default function PlaylistDetail({
     }
   }
 
+
   useEffect(() => {
     if (!isLoading)
       setNextPage().catch((e) => {
         console.log(e)
       })
   }, [data, isLoading, setNextPage, size])
+
 
   return (
     <div
@@ -61,11 +65,13 @@ export default function PlaylistDetail({
         scrollableElementRef={scrollableElementRef}
         playlist={playlist}
         setCurrPlaylist={setCurrPlaylist}
+
         trackAudio={trackAudio}
       />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
         {data !== undefined &&
+
           context !== null &&
           items.map((track: PlaylistTrackObject, index: number) => (
             <TrackItem
@@ -89,6 +95,7 @@ export default function PlaylistDetail({
           },
         }}
       />
+
     </div>
   )
 }
