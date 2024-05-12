@@ -39,12 +39,12 @@ export default function SideBar({
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden">
-        <p className="font-bold text-lg">Playlists</p>
+      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto">
         {playlists?.map((playlist: PlaylistItem) => (
           <PlaylistCard
             key={playlist.id}
             playlist={playlist}
+            currentPlaylist={context?.currPlaylist}
             setCurrPlaylist={context?.setCurrPlaylist}
           />
         ))}
