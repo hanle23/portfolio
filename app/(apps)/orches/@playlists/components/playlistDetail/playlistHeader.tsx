@@ -12,7 +12,9 @@ export default function PlaylistHeader({
   scrollableElementRef,
 }: {
   playlist: PlaylistItem | null
-  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<PlaylistItem | null>
+  > | null
   scrollableElementRef: React.RefObject<HTMLDivElement>
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
