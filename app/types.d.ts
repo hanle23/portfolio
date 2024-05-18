@@ -79,6 +79,21 @@ interface PlaylistTrackObject {
   track: TrackDetail
 }
 
+interface SavedTracks {
+  href: string
+  limit: number
+  next: string
+  offset: number
+  previous: string
+  total: number
+  items: SavedTracksObject[]
+}
+
+interface SavedTracksObject {
+  added_at: string
+  track: TrackDetail
+}
+
 interface TrackDetail {
   album: {
     album_type: string

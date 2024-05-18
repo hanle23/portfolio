@@ -36,7 +36,6 @@ export async function GET(
     offset: res.offset,
     total: res.total,
   })
-
 }
 
 export async function DELETE(

@@ -11,12 +11,9 @@ import toast, { Toaster } from 'react-hot-toast'
 export default function PlaylistDetail({
   playlist,
   setCurrPlaylist,
-
-  playlistMutate,
 }: {
   playlist: PlaylistItem
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
-  playlistMutate: () => Promise<PlaylistItem[] | undefined>
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
   const { data, size, setNextPage, isLoading, mutate } =
@@ -37,7 +34,7 @@ export default function PlaylistDetail({
       mutate().catch((e) => {
         console.log(e)
       })
-      playlistMutate().catch((e) => {
+      mutate().catch((e) => {
         console.log(e)
       })
     } else {
@@ -47,14 +44,12 @@ export default function PlaylistDetail({
     }
   }
 
-
   useEffect(() => {
     if (!isLoading)
       setNextPage().catch((e) => {
         console.log(e)
       })
   }, [data, isLoading, setNextPage, size])
-
 
   return (
     <div
@@ -65,13 +60,11 @@ export default function PlaylistDetail({
         scrollableElementRef={scrollableElementRef}
         playlist={playlist}
         setCurrPlaylist={setCurrPlaylist}
-
         trackAudio={trackAudio}
       />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
         {data !== undefined &&
-
           context !== null &&
           items.map((track: PlaylistTrackObject, index: number) => (
             <TrackItem
@@ -95,7 +88,6 @@ export default function PlaylistDetail({
           },
         }}
       />
-
     </div>
   )
 }
