@@ -1,11 +1,12 @@
 'use client'
 import React, { createContext, useState, useRef } from 'react'
-import useSWR from 'swr'
 import type { Fetcher } from 'swr'
 import SideBar from './sideBar'
 import { Header } from './header'
 import { usePathname } from 'next/navigation'
 import AuthorizationWrapper from './wrappers/authorizationWrapper'
+import useFetchPlaylists from './actions/useFetchPlaylists'
+import useFetchProfile from './actions/useFetchProfile'
 
 export interface OrchesContextType {
   accessToken: string | null
@@ -47,16 +48,8 @@ export const OrchesAppWrapper = ({
         'Content-Type': 'application/json',
       },
     }).then(async (res) => await res.json())
-
-  const { data: profile } = useSWR<UserProfile | null>(
-    accessToken !== null ? `/api/spotify/profile` : null,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
-  )
+  const profile = useFetchProfile(fetcher, accessToken)
+  const playlists = useFetchPlaylists(fetcher, accessToken, profile)
 
   const context = {
     accessToken,
@@ -86,6 +79,9 @@ export const OrchesAppWrapper = ({
                 allRoutes={allRoutes}
                 currentRoute={currentRoute}
                 setCurrentRoute={setCurrentRoute}
+                playlists={playlists}
+                currPlaylist={currPlaylist}
+                setCurrPlaylist={setCurrPlaylist}
               />
             )}
             <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
