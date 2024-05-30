@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import AuthorizationWrapper from './wrappers/authorizationWrapper'
 import useFetchPlaylists from './actions/useFetchPlaylists'
 import useFetchProfile from './actions/useFetchProfile'
+import useFetchSavedTracks from './actions/useFetchSavedTracks'
 
 export interface OrchesContextType {
   accessToken: string | null
@@ -49,6 +50,7 @@ export const OrchesAppWrapper = ({
       },
     }).then(async (res) => await res.json())
   const profile = useFetchProfile(fetcher, accessToken)
+  const savedTracks = useFetchSavedTracks(fetcher, accessToken)
   const playlists = useFetchPlaylists(fetcher, accessToken, profile)
 
   const context = {
