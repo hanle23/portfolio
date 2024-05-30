@@ -50,7 +50,7 @@ export const OrchesAppWrapper = ({
       },
     }).then(async (res) => await res.json())
   const profile = useFetchProfile(fetcher, accessToken)
-  const savedTracks = useFetchSavedTracks(fetcher, accessToken)
+  const savedTracks = useFetchSavedTracks(fetcher)
   const playlists = useFetchPlaylists(fetcher, accessToken, profile)
 
   const context = {
