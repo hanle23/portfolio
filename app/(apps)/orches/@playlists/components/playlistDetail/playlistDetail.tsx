@@ -16,7 +16,7 @@ export default function PlaylistDetail({
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
-  const { data, size, setNextPage, isLoading, mutate } =
+  const { data, size, setNextPage, isLoading, mutate, isValidating } =
     useFetchPlaylistDetails(context, playlist)
   const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
   const scrollableElementRef = useRef(null)
@@ -45,11 +45,11 @@ export default function PlaylistDetail({
   }
 
   useEffect(() => {
-    if (!isLoading)
+    if (!isLoading && !isValidating)
       setNextPage().catch((e) => {
         console.log(e)
       })
-  }, [data, isLoading, setNextPage, size])
+  }, [isLoading, setNextPage, isValidating])
 
   return (
     <div
