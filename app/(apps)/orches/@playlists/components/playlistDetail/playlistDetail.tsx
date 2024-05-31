@@ -16,7 +16,7 @@ export default function PlaylistDetail({
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
-  const { data, size, setNextPage, isLoading, mutate, isValidating } =
+  const { data, setNextPage, isLoading, mutate, isValidating } =
     useFetchPlaylistDetails(context, playlist)
   const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
   const scrollableElementRef = useRef(null)

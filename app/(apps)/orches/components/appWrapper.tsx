@@ -19,6 +19,13 @@ export interface OrchesContextType {
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
+  savedTracksFunc: {
+    data: SavedTracks[] | undefined
+    setNextPage: () => Promise<void>
+    savedTracksIsLoading: boolean
+    mutate: () => void
+    isValidating: boolean
+  }
 }
 
 export const OrchesContext = createContext<OrchesContextType | null>(null)
@@ -42,15 +49,35 @@ export const OrchesAppWrapper = ({
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
   const pathname = usePathname()
-  const fetcher: Fetcher<any> = (url: string): any =>
-    fetch(url, {
+  const fetcher: Fetcher<any | null> = (url: string): any | null => {
+    if (accessToken === null || accessToken === undefined) {
+      return null
+    }
+
+    return fetch(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     }).then(async (res) => await res.json())
+  }
+
   const profile = useFetchProfile(fetcher, accessToken)
-  const savedTracks = useFetchSavedTracks(fetcher)
+  const {
+    data,
+    setNextPage,
+    isLoading: savedTracksIsLoading,
+    mutate,
+    isValidating,
+  } = useFetchSavedTracks(fetcher, accessToken)
+  const savedTracksFunc = {
+    data,
+    setNextPage,
+    savedTracksIsLoading,
+    mutate,
+    isValidating,
+  }
+  console.log(data)
   const playlists = useFetchPlaylists(fetcher, accessToken, profile)
 
   const context = {
@@ -63,6 +90,7 @@ export const OrchesAppWrapper = ({
     currentTrack,
     setCurrentTrack,
     trackAudio,
+    savedTracksFunc,
   }
 
   return (

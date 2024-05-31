@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { type NextRequest } from 'next/server'
-import { LIMIT, BASE_URL } from '@/constants/spotify/savedTracks'
+import { BASE_URL } from '@/constants/spotify/savedTracks'
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const authHeader: string | null = req.headers.get('authorization')
@@ -8,11 +8,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
   const offset = req.nextUrl.searchParams.get('offset')
+  const limit = req.nextUrl.searchParams.get('limit')
 
   let response
   try {
     response = await fetch(
-      `${BASE_URL}/tracks?limit=${LIMIT}&offset=${offset}`,
+      `${BASE_URL}/tracks?limit=${limit}&offset=${offset}`,
       {
         method: 'GET',
         headers: { Authorization: `${authHeader}` },
