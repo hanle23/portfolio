@@ -1,11 +1,11 @@
 'use client'
-import React, { useContext, useEffect, useRef } from 'react'
-import PlaylistHeader from './playlistHeader'
+import React, { useContext, useEffect } from 'react'
+import PlaylistHeader from './components/playlistHeader'
 import { OrchesContext } from '../../../components/appWrapper'
 import useFetchPlaylistDetails from './actions/fetchPlaylistDetails'
 
 import useDeletePlaylistItem from './actions/deletePlaylistItem'
-import TrackItem from './trackItem'
+import TrackItem from './components/trackItem'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function PlaylistDetail({
@@ -19,7 +19,6 @@ export default function PlaylistDetail({
   const { data, setNextPage, isLoading, mutate, isValidating } =
     useFetchPlaylistDetails(context, playlist)
   const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
-  const scrollableElementRef = useRef(null)
   const trackAudio = context?.trackAudio
 
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
@@ -52,12 +51,8 @@ export default function PlaylistDetail({
   }, [isLoading, setNextPage, isValidating])
 
   return (
-    <div
-      ref={scrollableElementRef}
-      className="w-full h-full flex flex-col overflow-y-auto"
-    >
+    <div className="w-full h-full flex flex-col overflow-y-auto">
       <PlaylistHeader
-        scrollableElementRef={scrollableElementRef}
         playlist={playlist}
         setCurrPlaylist={setCurrPlaylist}
         trackAudio={trackAudio}

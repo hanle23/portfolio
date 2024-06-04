@@ -1,20 +1,16 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import AppBar from '@mui/material/AppBar'
 import ExternalLink from '@/public/svg/externalLink.svg'
 import LeftArrowNotail from '@/public/svg/leftArrowNotail.svg'
-import useScrollTrigger from '@mui/material/useScrollTrigger'
 
 export default function PlaylistHeader({
   playlist,
   setCurrPlaylist,
-  scrollableElementRef,
   trackAudio,
 }: {
   playlist: PlaylistItem | null
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
-  scrollableElementRef: React.RefObject<HTMLDivElement>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
@@ -26,25 +22,8 @@ export default function PlaylistHeader({
     }
   }
 
-  const trigger = useScrollTrigger({
-    target: scrollableElementRef?.current ?? undefined,
-    disableHysteresis: true,
-    threshold: 125,
-  })
-
   return (
-    <AppBar
-      position={trigger ? 'absolute' : 'static'}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        backdropFilter: 'blur(5px)',
-        alignItems: 'center',
-        borderTopRightRadius: '10px',
-        borderTopLeftRadius: '10px',
-      }}
-    >
+    <div className="sticky flex top-0 rounded-t-lg items-center bg-spotify-header-background w-full z-10">
       <button
         className="flex mx-5 p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
         onClick={() => {
@@ -73,7 +52,7 @@ export default function PlaylistHeader({
         <h3 className="text-xl font-bold">{playlist?.name}</h3>
         <p>{playlist?.description}</p>
 
-        <p className="flex h-full justify-start items-center w-fit whitespace-nowrap gap-1">
+        <p className="flex h-full text-spotify-subtext justify-start items-center w-fit whitespace-nowrap gap-1">
           {playlist?.tracks.total} songs •{' '}
           <a
             className="flex w-fit items-center h-fit gap-1 underline underline-offset-2"
@@ -90,6 +69,6 @@ export default function PlaylistHeader({
           </a>
         </p>
       </div>
-    </AppBar>
+    </div>
   )
 }

@@ -44,8 +44,12 @@ export default function PlaylistCard({
       />
       <div className="flex flex-col shrink-0">
         <p className="truncate text-md font-bold">{playlist.name}</p>
-        <p className="truncate text-sm">{playlist.description}</p>
-        <p className="truncate text-sm">{playlist.tracks.total} songs</p>
+        <p className="truncate text-sm text-spotify-subtext">
+          {playlist.description}
+        </p>
+        <p className="truncate text-sm text-spotify-subtext">
+          {playlist.tracks.total} songs
+        </p>
       </div>
     </div>
   )
