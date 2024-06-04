@@ -4,12 +4,14 @@ export default function PlaylistCard({
   playlist,
   setCurrPlaylist,
   currPlaylist,
+  index,
 }: {
   playlist: PlaylistItem
   setCurrPlaylist:
     | React.Dispatch<React.SetStateAction<PlaylistItem | null>>
     | undefined
   currPlaylist: PlaylistItem | null | undefined
+  index: number
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -19,7 +21,6 @@ export default function PlaylistCard({
       img = playlist?.images?.find((image) => image?.width < 1000) ?? img
     }
   }
-  console.log(currPlaylist)
   return (
     <div
       className={`flex rounded-lg gap-2 ${
@@ -39,6 +40,7 @@ export default function PlaylistCard({
         height={80}
         alt=""
         className="shrink-0 p-1 rounded-lg"
+        priority={index === 0}
       />
       <div className="flex flex-col shrink-0">
         <p className="truncate text-md font-bold">{playlist.name}</p>

@@ -6,10 +6,6 @@ export default async function useDeletePlaylistItem(
   playlistId: string,
   snapshotId: string,
 ): Promise<{ message: string; status: number }> {
-  console.log('Delete function')
-  console.log(trackUri)
-  console.log(playlistId)
-  console.log(snapshotId)
   try {
     const response = await fetch(`/api/spotify/playlists/${playlistId}`, {
       method: 'DELETE',

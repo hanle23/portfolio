@@ -37,7 +37,6 @@ export default function TrackItem({
     }
   }
   return track?.track !== null ? (
-
     <div
       className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
       onMouseEnter={() => {
@@ -48,7 +47,6 @@ export default function TrackItem({
       }}
     >
       <div className="flex items-center w-full h-full justify-center">
-
         {isHover ? (
           <MediaPreviewButton
             currentTrack={currentTrack}
@@ -59,9 +57,8 @@ export default function TrackItem({
         ) : (
           index + 1
         )}
-
       </div>
-      <div className="max-w-[200px] max-h-[200px] w-full h-full relative">
+      <div className="flex min-w-[40px] min-h-[40px]">
         <Image
           alt={track?.track?.name}
           className="overflow-hidden"
@@ -70,11 +67,10 @@ export default function TrackItem({
           height={img.height}
         />
       </div>
-      <div className="flex flex-col col-span-3">
+      <div className="flex flex-col col-span-3 overflow-hidden">
         <p className="truncate">{track?.track?.name}</p>
         <div className="truncate text-small">
           {track?.track?.artists.map((artist, index) => (
-
             <React.Fragment key={artist.id}>
               <a
                 href={artist.external_urls.spotify}
@@ -85,16 +81,13 @@ export default function TrackItem({
                 {artist.name}
               </a>{' '}
               {index < track?.track?.artists.length - 1 && ', '}
-
             </React.Fragment>
           ))}
         </div>
       </div>
       <div className="hidden md:table-cell md:col-span-2">
         <div className="truncate items-center text-sm text-left h-full w-full flex">
-
           {track?.track?.album.name}
-
         </div>
       </div>
       <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
@@ -140,6 +133,7 @@ export default function TrackItem({
         </button>
       </div>
     </div>
-  ): null
-
+  ) : (
+    <></>
+  )
 }

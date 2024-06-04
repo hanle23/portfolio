@@ -19,12 +19,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         headers: { Authorization: `${authHeader}` },
       },
     )
+    response = await response.json()
+    return NextResponse.json(response, { status: 200 })
   } catch (error) {
-    console.error('Failed to fetch tracks:', error)
     return NextResponse.json(
       { message: 'Failed to fetch tracks' },
       { status: 500 },
     )
   }
-  return NextResponse.json(response)
 }

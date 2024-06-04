@@ -77,7 +77,6 @@ export const OrchesAppWrapper = ({
     mutate,
     isValidating,
   }
-  console.log(data)
   const playlists = useFetchPlaylists(fetcher, accessToken, profile)
 
   const context = {
@@ -114,7 +113,7 @@ export const OrchesAppWrapper = ({
                 setCurrPlaylist={setCurrPlaylist}
               />
             )}
-            <div className="flex rounded-lg shrink-0 p-4 w-4/6 h-full bg-container overflow-hidden">
+            <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
               {children}
             </div>
           </div>

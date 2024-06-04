@@ -16,7 +16,6 @@ export default function PlaylistHeader({
   setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
   scrollableElementRef: React.RefObject<HTMLDivElement>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
-
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }
   if (playlist?.images !== null) {
@@ -57,12 +56,7 @@ export default function PlaylistHeader({
           setCurrPlaylist(null)
         }}
       >
-        <Image
-          height={20}
-          width={20}
-          alt="Return to all playlist"
-          src={LeftArrowNotail}
-        />
+        <Image height={20} width={20} alt="Return" src={LeftArrowNotail} />
       </button>
       <div className="flex items-center mr-5 max-w-[200px] max-h-[200px] w-24 h-24">
         <Image
@@ -71,6 +65,7 @@ export default function PlaylistHeader({
           src={img.url}
           height={img.height}
           width={img.width}
+          priority
         />
       </div>
 

@@ -1,21 +1,44 @@
 'use client'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { OrchesContext } from '../../../components/appWrapper'
+import SavedTracksHeader from './components/savedTracksHeader'
 export default function SavedTracksDetail(): JSX.Element {
   const context = useContext(OrchesContext)
+  const scrollableElementRef = useRef(null)
+  const { savedTracksFunc } = context ?? {}
+  const savedTracks =
+    savedTracksFunc?.data?.flatMap(
+      (trackPage: SavedTracks) => trackPage.items,
+    ) ?? []
 
   useEffect(() => {
     if (
-      context?.savedTracksFunc?.savedTracksIsLoading !== false &&
-      context?.savedTracksFunc?.isValidating !== false
+      savedTracksFunc?.savedTracksIsLoading === false &&
+      !savedTracksFunc?.isValidating
     )
-      context?.savedTracksFunc?.setNextPage().catch((e) => {
+      savedTracksFunc?.setNextPage().catch((e: any) => {
         console.log(e)
       })
   }, [
-    context?.savedTracksFunc,
-    context?.savedTracksFunc?.setNextPage,
-    context?.savedTracksFunc?.isValidating,
+    savedTracksFunc,
+    savedTracksFunc?.setNextPage,
+    savedTracksFunc?.isValidating,
+    savedTracksFunc?.savedTracksIsLoading,
   ])
-  return <></>
+  return (
+    <div
+      ref={scrollableElementRef}
+      className="flex flex-col h-full w-full overflow-y-auto"
+    >
+      <SavedTracksHeader
+        scrollableElementRef={scrollableElementRef}
+        total={savedTracksFunc?.data?.[0]?.total}
+      />
+      {savedTracks.map((track) => (
+        <div key={track.track.id}>
+          <div>{track.track.name}</div>
+        </div>
+      ))}
+    </div>
+  )
 }

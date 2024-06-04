@@ -13,7 +13,7 @@ interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
 
 export default function useFetchSavedTracks(
   fetcher: Fetcher<any>,
-  accessToken: string,
+  accessToken: string | null,
 ): ExtendedSWRInfiniteResponse<SavedTracks, any> {
   const getKey = (pageIndex: number, previousPageData: any): string | null => {
     if (accessToken === null || fetcher === null) return null
@@ -29,11 +29,10 @@ export default function useFetchSavedTracks(
     useSWRInfinite<SavedTracks>(getKey, fetcher, {
       revalidateFirstPage: false,
     })
-  console.log(data)
 
   const setNextPage = async (): Promise<void> => {
     if (data === undefined || data === null) return
-    const limit = Math.ceil(data?.total / LIMIT)
+    const limit = Math.ceil(data?.[0].total / LIMIT)
     if (size < limit) {
       await setSize(size + 1).catch((e) => {
         console.log(e)
