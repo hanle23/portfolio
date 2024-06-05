@@ -1,11 +1,11 @@
 'use client'
 import React, { useContext, useEffect } from 'react'
-import PlaylistHeader from './components/playlistHeader'
 import { OrchesContext } from '../../../components/appWrapper'
-import useFetchPlaylistDetails from './actions/fetchPlaylistDetails'
+import PlaylistHeader from './components/playlistHeader'
+import PlaylistTrackItem from './components/playlistTrackItem'
 
+import useFetchPlaylistDetails from './actions/fetchPlaylistDetails'
 import useDeletePlaylistItem from './actions/deletePlaylistItem'
-import TrackItem from './components/trackItem'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function PlaylistDetail({
@@ -62,7 +62,7 @@ export default function PlaylistDetail({
         {data !== undefined &&
           context !== null &&
           items.map((track: PlaylistTrackObject, index: number) => (
-            <TrackItem
+            <PlaylistTrackItem
               key={track?.track?.id}
               handleRemoveTrack={useHandleRemoveTrack}
               index={index}

@@ -32,15 +32,16 @@ export default function SideBar({
         setCurrentRoute={setCurrentRoute}
       />
       <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto">
-        {playlists?.map((playlist: PlaylistItem, index: number) => (
-          <PlaylistCard
-            key={playlist.id}
-            index={index}
-            playlist={playlist}
-            setCurrPlaylist={setCurrPlaylist}
-            currPlaylist={currPlaylist}
-          />
-        ))}
+        {playlists !== null &&
+          playlists?.map((playlist: PlaylistItem, index: number) => (
+            <PlaylistCard
+              key={playlist.id}
+              index={index}
+              playlist={playlist}
+              setCurrPlaylist={setCurrPlaylist}
+              currPlaylist={currPlaylist}
+            />
+          ))}
       </div>
     </div>
   )

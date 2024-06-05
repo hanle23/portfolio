@@ -5,7 +5,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import MediaPreviewButton from '../../../../components/mediaPreviewButton'
 
-export default function TrackItem({
+export default function PlaylistTrackItem({
   index,
   track,
 
