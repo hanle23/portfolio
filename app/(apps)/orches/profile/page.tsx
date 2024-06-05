@@ -28,7 +28,7 @@ export default function Page(): React.JSX.Element {
   }
 
   return (
-    <div className="flex flex-col content-center items-center justify-items-center gap-y-10 w-full h-auto ">
+    <div className="flex flex-col p-4 content-center items-center justify-items-center gap-y-10 w-full h-auto ">
       {context?.profile?.images !== undefined ? (
         <Image
           className="h-fit w-fit rounded-full"

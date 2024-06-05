@@ -51,7 +51,7 @@ export default function PlaylistDetail({
   }, [isLoading, setNextPage, isValidating])
 
   return (
-    <div className="w-full h-full flex flex-col overflow-y-auto">
+    <div className="w-full h-full flex flex-col overscroll-none overflow-y-auto">
       <PlaylistHeader
         playlist={playlist}
         setCurrPlaylist={setCurrPlaylist}

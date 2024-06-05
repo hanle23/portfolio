@@ -25,7 +25,7 @@ export default function SavedTracksDetail(): JSX.Element {
     savedTracksFunc?.savedTracksIsLoading,
   ])
   return (
-    <div className="flex flex-col h-full w-full overflow-y-auto">
+    <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
       <SavedTracksHeader total={savedTracksFunc?.data?.[0]?.total} />
       {savedTracks.map((track) => (
         <div key={track.track.id}>
