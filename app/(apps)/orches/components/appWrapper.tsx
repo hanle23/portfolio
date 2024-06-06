@@ -8,6 +8,7 @@ import AuthorizationWrapper from './wrappers/authorizationWrapper'
 import useFetchPlaylists from './actions/useFetchPlaylists'
 import useFetchProfile from './actions/useFetchProfile'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
+import useFetchPlaylistDetails from './actions/useFetchPlaylistDetail'
 
 export interface OrchesContextType {
   accessToken: string | null
@@ -78,6 +79,8 @@ export const OrchesAppWrapper = ({
     isValidating,
   }
   const playlists = useFetchPlaylists(fetcher, accessToken, profile)
+  const playlistsTest = useFetchPlaylistDetails(fetcher, playlists)
+  console.log(playlistsTest)
 
   const context = {
     accessToken,
