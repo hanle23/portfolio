@@ -6,9 +6,9 @@ export default function PlaylistCard({
   currPlaylist,
   index,
 }: {
-  playlist: PlaylistItem
+  playlist: DetailsPlaylistItem
   setCurrPlaylist:
-    | React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+    | React.Dispatch<React.SetStateAction<DetailsPlaylistItem | null>>
     | undefined
   currPlaylist: PlaylistItem | null | undefined
   index: number

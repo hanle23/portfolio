@@ -1,22 +1,31 @@
 'use client'
-import React, { createContext, useState, useRef } from 'react'
+import React, {
+  createContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react'
 import type { Fetcher } from 'swr'
 import SideBar from './sideBar'
 import { Header } from './header'
 import { usePathname } from 'next/navigation'
 import AuthorizationWrapper from './wrappers/authorizationWrapper'
-import useFetchPlaylists from './actions/useFetchPlaylists'
+import FetchPlaylists from './actions/fetchPlaylists'
 import useFetchProfile from './actions/useFetchProfile'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
-import useFetchPlaylistDetails from './actions/useFetchPlaylistDetail'
+import FetchPlaylistDetails from './actions/fetchPlaylistDetail'
 
 export interface OrchesContextType {
   accessToken: string | null
   isLoading: boolean
   profile: UserProfile | null | undefined
   fetcher: Fetcher<any> | undefined
-  currPlaylist: PlaylistItem | null
-  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  currPlaylist: DetailsPlaylistItem | null
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<DetailsPlaylistItem | null>
+  >
+  playlists: PlaylistItem[] | null
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
@@ -44,7 +53,10 @@ export const OrchesAppWrapper = ({
 }): React.JSX.Element => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [currPlaylist, setCurrPlaylist] = useState<PlaylistItem | null>(null)
+  const [playlists, setPlaylists] = useState<DetailsPlaylistItem[] | null>(null)
+  const [currPlaylist, setCurrPlaylist] = useState<DetailsPlaylistItem | null>(
+    null,
+  )
   const [currentTrack, setCurrentTrack] = useState<string | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
@@ -78,9 +90,27 @@ export const OrchesAppWrapper = ({
     mutate,
     isValidating,
   }
-  const playlists = useFetchPlaylists(fetcher, accessToken, profile)
-  const playlistsTest = useFetchPlaylistDetails(fetcher, playlists)
-  console.log(playlistsTest)
+  const fetchData = useCallback(
+    async (
+      mode: 'All' | 'Playlist',
+      playlist?: PlaylistItem,
+    ): Promise<void> => {
+      const playlists = await FetchPlaylists(accessToken, profile)
+      if (playlists !== undefined) {
+        const details = await FetchPlaylistDetails(accessToken, playlists)
+        if (details !== undefined) {
+          setPlaylists(details)
+        }
+      }
+    },
+    [accessToken, profile, setPlaylists],
+  )
+
+  useEffect(() => {
+    fetchData('All').catch((e) => {
+      console.error(e)
+    })
+  }, [fetchData, accessToken, profile])
 
   const context = {
     accessToken,
@@ -89,6 +119,7 @@ export const OrchesAppWrapper = ({
     fetcher,
     currPlaylist,
     setCurrPlaylist,
+    playlists,
     currentTrack,
     setCurrentTrack,
     trackAudio,

@@ -10,7 +10,9 @@ export default function PlaylistHeader({
   trackAudio,
 }: {
   playlist: PlaylistItem | null
-  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<DetailsPlaylistItem | null>
+  >
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   let img = { url: '', width: 0, height: 0 }

@@ -15,9 +15,11 @@ export default function SideBar({
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
-  playlists: PlaylistItem[] | undefined
+  playlists: DetailsPlaylistItem[] | null
   currPlaylist: PlaylistItem | null
-  setCurrPlaylist: React.Dispatch<React.SetStateAction<PlaylistItem | null>>
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<DetailsPlaylistItem | null>
+  >
 }): React.JSX.Element {
   return (
     <div
@@ -32,16 +34,15 @@ export default function SideBar({
         setCurrentRoute={setCurrentRoute}
       />
       <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto">
-        {playlists !== null &&
-          playlists?.map((playlist: PlaylistItem, index: number) => (
-            <PlaylistCard
-              key={playlist.id}
-              index={index}
-              playlist={playlist}
-              setCurrPlaylist={setCurrPlaylist}
-              currPlaylist={currPlaylist}
-            />
-          ))}
+        {playlists?.map((playlist: DetailsPlaylistItem, index: number) => (
+          <PlaylistCard
+            key={playlist.id}
+            index={index}
+            playlist={playlist}
+            setCurrPlaylist={setCurrPlaylist}
+            currPlaylist={currPlaylist}
+          />
+        ))}
       </div>
     </div>
   )

@@ -72,6 +72,10 @@ interface PlaylistItem {
   uri: string
 }
 
+interface DetailsPlaylistItem extends PlaylistItem {
+  tracksDetails: PlaylistTrackObject[]
+}
+
 interface PlaylistTrackObject {
   added_at: string
   added_by: UserProfile
