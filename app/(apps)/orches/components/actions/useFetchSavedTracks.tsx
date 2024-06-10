@@ -24,12 +24,10 @@ export default function useFetchSavedTracks(
       previousPageData?.limit + previousPageData?.offset
     }&limit=${LIMIT}`
   }
-
   const { data, size, setSize, mutate, isValidating, error } =
     useSWRInfinite<SavedTracks>(getKey, fetcher, {
       revalidateFirstPage: false,
     })
-
   const setNextPage = async (): Promise<void> => {
     if (data === undefined || data === null) return
     const limit = Math.ceil(data?.[0].total / LIMIT)

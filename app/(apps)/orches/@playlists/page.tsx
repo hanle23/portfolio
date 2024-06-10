@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useContext } from 'react'
-import { OrchesContext } from '../components/appWrapper'
+import { OrchesContext } from '../components/orchesAppWrapper'
 import PlaylistDetail from './components/playlistDetail/playlistDetail'
 import SavedTracksDetail from './components/savedTracksDetail/savedTracksDetail'
 

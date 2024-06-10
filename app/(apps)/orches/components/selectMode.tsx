@@ -36,7 +36,6 @@ export default function SelectMode({
           PaperProps: { style: { backgroundColor: '#121212', color: '#fff' } },
         }}
         onChange={(e: SelectChangeEvent<string>) => {
-          console.log(e.target.value)
           setCurrentRoute(e.target.value)
         }}
         label="Mode"

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/LocalStorage'
-import Login from '@/app/(apps)/orches/components/login'
+import Login from '@/app/(apps)/orches/components/auth/login'
 import { redirectToAuthCodeFlow } from '@/utils/spotify/script'
 
 export default function AuthorizationWrapper({

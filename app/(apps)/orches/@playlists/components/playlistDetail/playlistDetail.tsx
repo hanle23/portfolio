@@ -1,6 +1,6 @@
 'use client'
 import React, { useContext } from 'react'
-import { OrchesContext } from '../../../components/appWrapper'
+import { OrchesContext } from '../../../components/orchesAppWrapper'
 import PlaylistHeader from './components/playlistHeader'
 import PlaylistTrackItem from './components/playlistTrackItem'
 import useDeletePlaylistItem from './actions/deletePlaylistItem'

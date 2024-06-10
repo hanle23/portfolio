@@ -1,13 +1,13 @@
-'use client'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
-import { OrchesAppWrapper } from '@/app/(apps)/orches/components/appWrapper'
-import { usePathname } from 'next/navigation'
-// export const metadata = {
-//   title: 'Beats Flow',
-//   description: 'A music playlist manager for Spotify',
-// }
-export default function Layout({
+import OrchesAppWrapper from '@/app/(apps)/orches/components/orchesAppWrapper'
+import AuthSessionProvider from './components/wrappers/AuthSessionProvider'
+import authOptions from '@/app/api/auth/[...nextauth]/authOptions'
+import { getServerSession } from 'next-auth'
+export const metadata = {
+  title: 'Orches',
+  description: 'A playlist manager for Spotify',
+}
+export default async function Layout({
   children,
   playlists,
   beatsMap,
@@ -15,27 +15,16 @@ export default function Layout({
   children: React.ReactNode
   playlists: ReactNode
   beatsMap: ReactNode
-}): React.JSX.Element {
-  const pathname = usePathname()
-  const [currentRoute, setCurrentRoute] = useState<string>('playlists')
+}): Promise<React.JSX.Element> {
+  const session = await getServerSession(authOptions)
   const allRoutes = [
     { node: playlists, value: 'playlists', label: 'Playlists' },
     { node: beatsMap, value: 'beatsMap', label: 'Beats Map' },
   ]
+
   return (
-    <OrchesAppWrapper
-      allRoutes={allRoutes}
-      currentRoute={currentRoute}
-      setCurrentRoute={setCurrentRoute}
-    >
-      {allRoutes !== undefined && pathname !== '/orches/profile'
-        ? (() => {
-            const route = allRoutes.find(
-              (route) => route.value === currentRoute,
-            )
-            return route !== null ? route?.node : null
-          })()
-        : children}
-    </OrchesAppWrapper>
+    <AuthSessionProvider session={session}>
+      <OrchesAppWrapper allRoutes={allRoutes}>{children}</OrchesAppWrapper>
+    </AuthSessionProvider>
   )
 }

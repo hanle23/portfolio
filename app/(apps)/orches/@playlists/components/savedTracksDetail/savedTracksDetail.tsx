@@ -1,6 +1,6 @@
 'use client'
 import { useContext, useEffect } from 'react'
-import { OrchesContext } from '../../../components/appWrapper'
+import { OrchesContext } from '../../../components/orchesAppWrapper'
 import SavedTracksHeader from './components/savedTracksHeader'
 export default function SavedTracksDetail(): JSX.Element {
   const context = useContext(OrchesContext)
@@ -9,7 +9,7 @@ export default function SavedTracksDetail(): JSX.Element {
     savedTracksFunc?.data?.flatMap(
       (trackPage: SavedTracks) => trackPage.items,
     ) ?? []
-
+  console.log(savedTracks)
   useEffect(() => {
     if (
       savedTracksFunc?.savedTracksIsLoading === false &&

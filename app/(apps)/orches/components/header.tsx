@@ -14,15 +14,11 @@ import Avatar from '@mui/material/Avatar'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link'
-import { OrchesContext } from './appWrapper'
+import { OrchesContext } from './orchesAppWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 import Logout from '@mui/icons-material/Logout'
 
-export function Header({
-  className,
-}: {
-  className?: string
-}): React.JSX.Element {
+export function Header(): React.JSX.Element {
   const context = useContext(OrchesContext)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
@@ -89,11 +85,7 @@ export function Header({
               vertical: 'top',
               horizontal: 'right',
             }}
-            PaperProps={{
-              style: {
-                backgroundColor: '#27272a',
-              },
-            }}
+            slotProps={{ paper: { style: { backgroundColor: '#27272a' } } }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
@@ -102,6 +94,7 @@ export function Header({
                 <Link
                   className="flex flex-row items-center gap-3"
                   href={'/orches/profile'}
+                  onClick={handleCloseUserMenu}
                 >
                   <Suspense fallback={<div>loading...</div>}>
                     <Avatar

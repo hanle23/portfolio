@@ -7,13 +7,26 @@ interface UserProfile {
     filter_locked: boolean
   }
   external_urls: { spotify: string }
-  followers: { href: string; total: number }
+  followers: { href: string | null; total: number }
   href: string
   id: string
   images: Image[]
   product: string
   type: string
   uri: string
+}
+
+interface AuthUser {
+  name: string
+  email: string
+  image: string
+  access_token: string
+  token_type: string
+  expires_at: number
+  expires_in: number
+  refresh_token: string
+  scope: string
+  id: string
 }
 
 interface AccessTokenSuccessData {
