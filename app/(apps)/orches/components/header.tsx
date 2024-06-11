@@ -1,6 +1,5 @@
 'use client'
 import React, { useContext, Suspense, useState } from 'react'
-import { removeAllServiceItems } from '@/utils/LocalStorage'
 import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -17,15 +16,14 @@ import Link from 'next/link'
 import { OrchesContext } from './orchesAppWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 import Logout from '@mui/icons-material/Logout'
+import { signOut, useSession } from 'next-auth/react'
 
 export function Header(): React.JSX.Element {
+  const { data: session } = useSession()
+  console.log(session)
   const context = useContext(OrchesContext)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const handleLogout = (): void => {
-    removeAllServiceItems()
-    window.location.reload()
-  }
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorElUser(event.currentTarget)
   }
@@ -34,7 +32,7 @@ export function Header(): React.JSX.Element {
     setAnchorElUser(null)
   }
 
-  return context?.profile !== null ? (
+  return session?.user !== undefined ? (
     <AppBar
       position="absolute"
       color="transparent"
@@ -64,12 +62,7 @@ export function Header(): React.JSX.Element {
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt={context?.profile?.display_name}
-                src={
-                  context?.profile?.images?.find((img) => img.width < 300)?.url
-                }
-              />
+              <Avatar alt={session?.user?.name} src={session?.user?.image} />
             </IconButton>
           </Tooltip>
           <Menu
@@ -98,19 +91,23 @@ export function Header(): React.JSX.Element {
                 >
                   <Suspense fallback={<div>loading...</div>}>
                     <Avatar
-                      alt={context?.profile?.display_name}
-                      src={
-                        context?.profile?.images?.find((img) => img.width < 300)
-                          ?.url
-                      }
+                      alt={session?.user?.name}
+                      src={session?.user?.image}
                     />
                     <Typography className="font-semibold text-white">
-                      {context?.profile?.display_name}
+                      {session?.user?.name}
                     </Typography>
                   </Suspense>
                 </Link>
               </MenuItem>
-              <MenuItem key="logout" onClick={handleLogout}>
+              <MenuItem
+                key="logout"
+                onClick={() => {
+                  signOut().catch((err) => {
+                    console.error(err)
+                  })
+                }}
+              >
                 <ListItemIcon sx={{ color: 'rgb(220 38 38)' }}>
                   <Logout fontSize="small" />
                 </ListItemIcon>

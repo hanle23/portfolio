@@ -15,10 +15,12 @@ export const authOptions: AuthOptions = {
       token: JWT
       account: Account | null
     }): Promise<JWT> {
-      if (account !== undefined) {
+      if (account !== null && account !== undefined) {
+        console.log('On sign in: ', account, token)
         return token
       }
-      console.log(account)
+      console.log('On Session checking: ', token)
+      console.log('Date Now: ' + Date.now())
 
       const updatedToken = {
         ...token,
