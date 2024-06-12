@@ -36,8 +36,8 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const params = new URLSearchParams()
     params.append('grant_type', 'refresh_token')
-    if (typeof token.refreshToken === 'string') {
-      params.append('refresh_token', token.refreshToken)
+    if (typeof token.refresh_token === 'string') {
+      params.append('refresh_token', token.refresh_token)
     }
     const response = await fetch('https://accounts.spotify.com/api/token', {
       headers: {
@@ -59,14 +59,21 @@ export async function refreshAccessToken(token: JWT): Promise<JWT> {
     if (!response.ok) {
       throw refreshedTokens
     }
+    const currentTimeMs = Date.now()
+
+    // Convert expires_in to milliseconds (since it's provided in seconds)
+    const expiresInMs = refreshedTokens.expires_in * 1000
+
+    // Calculate expires_at in milliseconds by adding expiresInMs to the current time
+    const expiresAtMs = currentTimeMs + expiresInMs
 
     return {
       ...token,
-      accessToken: refreshedTokens.access_token,
-      tokenType: refreshedTokens.token_type,
-      expiresAt: refreshedTokens.expires_at,
-      expiresIn: (refreshedTokens.expires_at ?? 0) - Date.now() / 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+      access_token: refreshedTokens.access_token,
+      token_type: refreshedTokens.token_type,
+      expires_at: expiresAtMs / 1000,
+      expires_in: expiresInMs,
+      refresh_token: refreshedTokens.refresh_token ?? token.refresh_token,
       scope: refreshedTokens.scope,
     }
   } catch (error) {
