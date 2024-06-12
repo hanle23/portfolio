@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, Suspense, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -13,15 +13,12 @@ import Avatar from '@mui/material/Avatar'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import Link from 'next/link'
-import { OrchesContext } from './orchesAppWrapper'
 import leftarrow from '@/public/svg/leftarrow.svg'
 import Logout from '@mui/icons-material/Logout'
 import { signOut, useSession } from 'next-auth/react'
 
 export function Header(): React.JSX.Element {
   const { data: session } = useSession()
-  console.log(session)
-  const context = useContext(OrchesContext)
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>): void => {

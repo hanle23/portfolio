@@ -1,11 +1,5 @@
 'use client'
-import React, {
-  createContext,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react'
+import React, { createContext, useState, useRef, useEffect } from 'react'
 import type { Fetcher } from 'swr'
 import SideBar from './sideBar'
 import { Header } from './header'
@@ -17,10 +11,8 @@ import FetchPlaylists from './actions/fetchPlaylists'
 import useFetchProfile from './actions/useFetchProfile'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
 import FetchPlaylistDetails from './actions/fetchPlaylistDetail'
-import type { AuthUser } from '@/app/api/auth/[...nextauth]/authOptions'
 
 export interface OrchesContextType {
-  accessToken: string | null
   isLoading: boolean
   fetcher: Fetcher<any> | undefined
   currPlaylist: DetailsPlaylistItem | null
@@ -50,10 +42,8 @@ export default function OrchesAppWrapper({
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
 }): React.JSX.Element {
   const { data: session, status } = useSession()
-
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  // const [isLoading, setIsLoading] = useState<boolean>(true)
   const [playlists, setPlaylists] = useState<DetailsPlaylistItem[] | null>(null)
   const [currPlaylist, setCurrPlaylist] = useState<DetailsPlaylistItem | null>(
     null,
@@ -83,7 +73,6 @@ export default function OrchesAppWrapper({
     mutate,
     isValidating,
   } = useFetchSavedTracks(fetcher, accessToken)
-  console.log(data)
 
   const savedTracksFunc = {
     data,
@@ -120,7 +109,6 @@ export default function OrchesAppWrapper({
   }, [session])
 
   const context = {
-    // accessToken,
     // isLoading,
     // fetcher,
     currPlaylist,
