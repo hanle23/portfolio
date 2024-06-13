@@ -86,7 +86,7 @@ interface PlaylistItem {
 }
 
 interface DetailsPlaylistItem extends PlaylistItem {
-  tracksDetails: PlaylistTrackObject[]
+  tracksDetails?: PlaylistTrackObject[]
 }
 
 interface PlaylistTrackObject {

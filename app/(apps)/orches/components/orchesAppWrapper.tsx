@@ -4,7 +4,6 @@ import type { Fetcher } from 'swr'
 import SideBar from './sideBar'
 import { Header } from './header'
 import { usePathname } from 'next/navigation'
-// import AuthorizationWrapper from './wrappers/authorizationWrapper'
 import { useSession } from 'next-auth/react'
 import Login from './auth/login'
 import FetchPlaylists from './actions/fetchPlaylists'
@@ -81,6 +80,9 @@ export default function OrchesAppWrapper({
     mutate,
     isValidating,
   }
+  useEffect(() => {
+    FetchPlaylists(playlists, setPlaylists)
+  }, [accessToken, playlists])
   // const fetchData = useCallback(
   //   async (
   //     mode: 'All' | 'Playlist',
