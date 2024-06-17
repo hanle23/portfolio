@@ -7,9 +7,13 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Login from './auth/login'
 import FetchPlaylists from './actions/fetchPlaylists'
-import useFetchProfile from './actions/useFetchProfile'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
-import FetchPlaylistDetails from './actions/fetchPlaylistDetail'
+// import FetchPlaylistDetails from './actions/fetchPlaylistDetail'
+import type {
+  SavedTracks,
+  AuthUser,
+  DetailsPlaylistItem,
+} from '@/app/types/types'
 
 export interface OrchesContextType {
   isLoading: boolean
@@ -18,7 +22,7 @@ export interface OrchesContextType {
   setCurrPlaylist: React.Dispatch<
     React.SetStateAction<DetailsPlaylistItem | null>
   >
-  playlists: PlaylistItem[] | null
+  playlists: DetailsPlaylistItem[] | null
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
@@ -43,7 +47,8 @@ export default function OrchesAppWrapper({
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [playlists, setPlaylists] = useState<DetailsPlaylistItem[] | null>(null)
+  const [playlists, setPlaylists] = useState<DetailsPlaylistItem[] | []>([])
+  const [fetchIsRunning, setFetchIsRunning] = useState<boolean>(false)
   const [currPlaylist, setCurrPlaylist] = useState<DetailsPlaylistItem | null>(
     null,
   )
@@ -81,8 +86,17 @@ export default function OrchesAppWrapper({
     isValidating,
   }
   useEffect(() => {
-    FetchPlaylists(playlists, setPlaylists)
-  }, [accessToken, playlists])
+    if (
+      accessToken !== null &&
+      session?.user !== undefined &&
+      !fetchIsRunning
+    ) {
+      const profile: AuthUser = session?.user
+      FetchPlaylists(setPlaylists, profile, setFetchIsRunning).catch((e) => {
+        console.log(e)
+      })
+    }
+  }, [accessToken, playlists, session, fetchIsRunning, setPlaylists])
   // const fetchData = useCallback(
   //   async (
   //     mode: 'All' | 'Playlist',
@@ -107,7 +121,8 @@ export default function OrchesAppWrapper({
 
   useEffect(() => {
     if (session?.user?.access_token === undefined) return
-    setAccessToken(session?.user?.access_token)
+    const profile: AuthUser = session?.user
+    setAccessToken(profile.access_token)
   }, [session])
 
   const context = {
@@ -124,12 +139,6 @@ export default function OrchesAppWrapper({
 
   return (
     <OrchesContext.Provider value={context}>
-      {/* <AuthorizationWrapper
-        accessToken={accessToken}
-        setAccessToken={setAccessToken}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-      > */}
       {session === undefined || status !== 'authenticated' ? (
         <Login />
       ) : (
@@ -159,8 +168,6 @@ export default function OrchesAppWrapper({
           </div>
         </div>
       )}
-
-      {/* </AuthorizationWrapper> */}
     </OrchesContext.Provider>
   )
 }

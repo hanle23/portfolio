@@ -1,7 +1,7 @@
 import React from 'react'
 import SelectMode from './selectMode'
 import PlaylistCard from './sidebarComponents/playlistCard'
-
+import type { DetailsPlaylistItem } from '@/app/types/types'
 export default function SideBar({
   className,
   allRoutes,
@@ -16,7 +16,7 @@ export default function SideBar({
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
   playlists: DetailsPlaylistItem[] | null
-  currPlaylist: PlaylistItem | null
+  currPlaylist: DetailsPlaylistItem | null
   setCurrPlaylist: React.Dispatch<
     React.SetStateAction<DetailsPlaylistItem | null>
   >

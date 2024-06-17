@@ -2,6 +2,7 @@ import useSWRInfinite from 'swr/infinite'
 import type { Fetcher } from 'swr'
 import type { SWRInfiniteResponse } from 'swr/infinite'
 import { LIMIT } from '@/constants/spotify/savedTracks'
+import type { SavedTracks } from '@/app/types/types'
 
 interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
   extends SWRInfiniteResponse<SavedTracks, Error> {

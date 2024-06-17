@@ -1,32 +1,35 @@
 import sdk from '@/lib/spotify-sdk/ClientInstance'
+import type { AuthUser, DetailsPlaylistItem } from '@/app/types/types'
+import { LIMIT } from 'constants/spotify/playlist'
+import CanContinue from './helper/canContinue'
+import UniqueById from './helper/uniqueById'
 export default async function FetchPlaylists(
-  playlist: DetailsPlaylistItem[],
-  setPlaylist: React.Dispatch<React.SetStateAction<DetailsPlaylistItem[]>>,
-  // accessToken: string | null,
-  profile: UserProfile | null | undefined,
-): Promise<PlaylistItem[] | undefined> {
-  // try {
-  //   if (accessToken !== null && profile?.display_name !== undefined) {
-  //     const response = await fetch(
-  //       `/api/spotify/playlists?username=${profile?.display_name}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       },
-  //     )
+  setPlaylists: React.Dispatch<
+    React.SetStateAction<DetailsPlaylistItem[] | []>
+  >,
+  profile: AuthUser,
+  setFetchIsRunning: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<void> {
+  setFetchIsRunning(true)
+  let total = null
+  let offset = 0
+  let next = null
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`)
-  //     }
-
-  //     const data = await response.json()
-  //     return data
-  //   }
-  // } catch (error) {
-  //   console.error('Failed to fetch playlists:', error)
-  //   // TODO: Add error handling
-  // }
-  return undefined
+  while (CanContinue(total, offset, next)) {
+    const response = await sdk.currentUser.playlists.playlists(LIMIT, offset)
+    console.log(response)
+    if (response.total === undefined) {
+      break
+    }
+    const playlistsToPush = response.items.filter(
+      (playlist) => playlist.owner.display_name === profile?.name,
+    )
+    setPlaylists((prev: DetailsPlaylistItem[] | []) => {
+      return UniqueById([...(prev ?? []), ...playlistsToPush])
+    })
+    total = response.total
+    next = response.next
+    offset += LIMIT
+  }
+  setFetchIsRunning(false)
 }
