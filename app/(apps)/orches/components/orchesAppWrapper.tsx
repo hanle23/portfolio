@@ -6,9 +6,10 @@ import { Header } from './header'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Login from './auth/login'
-import FetchPlaylists from './actions/fetchPlaylists'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
-// import FetchPlaylistDetails from './actions/fetchPlaylistDetail'
+import useDetailedPlaylists from './actions/useDetailPlaylist'
+import fetcher from './actions/helper/fetchFunction'
+
 import type {
   SavedTracks,
   AuthUser,
@@ -47,28 +48,27 @@ export default function OrchesAppWrapper({
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [playlists, setPlaylists] = useState<DetailsPlaylistItem[] | []>([])
-  const [fetchIsRunning, setFetchIsRunning] = useState<boolean>(false)
   const [currPlaylist, setCurrPlaylist] = useState<DetailsPlaylistItem | null>(
     null,
   )
+  const { data: playlists } = useDetailedPlaylists(accessToken, setCurrPlaylist)
   const [currentTrack, setCurrentTrack] = useState<string | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
   const pathname = usePathname()
-  const fetcher: Fetcher<any | null> = (url: string): any | null => {
-    if (accessToken === null || accessToken === undefined) {
-      return null
-    }
+  // const fetcher: Fetcher<any | null> = (url: string): any | null => {
+  //   if (accessToken === null || accessToken === undefined) {
+  //     return null
+  //   }
 
-    return fetch(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }).then(async (res) => await res.json())
-  }
+  //   return fetch(url, {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }).then(async (res) => await res.json())
+  // }
 
   const {
     data,
@@ -85,18 +85,19 @@ export default function OrchesAppWrapper({
     mutate,
     isValidating,
   }
-  useEffect(() => {
-    if (
-      accessToken !== null &&
-      session?.user !== undefined &&
-      !fetchIsRunning
-    ) {
-      const profile: AuthUser = session?.user
-      FetchPlaylists(setPlaylists, profile, setFetchIsRunning).catch((e) => {
-        console.log(e)
-      })
-    }
-  }, [accessToken, playlists, session, fetchIsRunning, setPlaylists])
+  // const { data: playlists } = useSWR('/api/spotify/playlists', fetcher)
+  // useEffect(() => {
+  //   if (
+  //     accessToken !== null &&
+  //     session?.user !== undefined &&
+  //     !fetchIsRunning
+  //   ) {
+  //     const profile: AuthUser = session?.user
+  //     FetchPlaylists(setPlaylists, profile, setFetchIsRunning).catch((e) => {
+  //       console.log(e)
+  //     })
+  //   }
+  // }, [accessToken, playlists, session, fetchIsRunning, setPlaylists])
   // const fetchData = useCallback(
   //   async (
   //     mode: 'All' | 'Playlist',

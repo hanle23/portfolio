@@ -3,6 +3,7 @@ import type { Fetcher } from 'swr'
 import type { SWRInfiniteResponse } from 'swr/infinite'
 import { LIMIT } from '@/constants/spotify/savedTracks'
 import type { SavedTracks } from '@/app/types/types'
+import type { FetcherArgs } from './helper/fetchFunction'
 
 interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
   extends SWRInfiniteResponse<SavedTracks, Error> {
@@ -13,17 +14,27 @@ interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
 }
 
 export default function useFetchSavedTracks(
-  fetcher: Fetcher<any>,
+  fetcher: Fetcher<any, FetcherArgs>,
   accessToken: string | null,
 ): ExtendedSWRInfiniteResponse<SavedTracks, any> {
-  const getKey = (pageIndex: number, previousPageData: any): string | null => {
+  const getKey = (
+    pageIndex: number,
+    previousPageData: any,
+  ): FetcherArgs | null => {
     if (accessToken === null || fetcher === null) return null
     if (previousPageData !== null && previousPageData.next === null) return null
-    if (pageIndex === 0)
-      return `/api/spotify/savedTracks?offset=0&limit=${LIMIT}`
-    return `/api/spotify/savedTracks?offset=${
-      previousPageData?.limit + previousPageData?.offset
-    }&limit=${LIMIT}`
+    if (pageIndex === 0) {
+      return {
+        url: `/api/spotify/savedTracks?offset=0&limit=${LIMIT}`,
+        token: accessToken,
+      }
+    }
+    return {
+      url: `/api/spotify/savedTracks?offset=${
+        previousPageData?.limit + previousPageData?.offset
+      }&limit=${LIMIT}`,
+      token: accessToken,
+    }
   }
   const { data, size, setSize, mutate, isValidating, error } =
     useSWRInfinite<SavedTracks>(getKey, fetcher, {
