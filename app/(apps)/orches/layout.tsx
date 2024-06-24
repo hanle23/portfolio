@@ -10,16 +10,13 @@ export const metadata = {
 export default async function Layout({
   children,
   playlists,
-  beatsMap,
 }: {
   children: React.ReactNode
   playlists: ReactNode
-  beatsMap: ReactNode
 }): Promise<React.JSX.Element> {
   const session = await getServerSession(authOptions)
   const allRoutes = [
     { node: playlists, value: 'playlists', label: 'Playlists' },
-    { node: beatsMap, value: 'beatsMap', label: 'Beats Map' },
   ]
 
   return (

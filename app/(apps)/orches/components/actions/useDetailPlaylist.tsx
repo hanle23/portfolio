@@ -3,34 +3,36 @@ import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import fetcher from './helper/fetchFunction'
 import type { DetailsPlaylistItem } from '@/app/types/types'
+import { useSession } from 'next-auth/react'
+import { RETRY_AFTER_DEFAULT } from '@/constants/spotify/playlist'
 
-const fetchPlaylists = (token: string): any =>
-  fetcher({ url: 'https://api.spotify.com/v1/me/playlists', token })
+const fetchPlaylists = (url: string, token: string): any =>
+  fetcher({ url, token })
 const fetchPlaylistTracks = (playlistId: string, token: string): any =>
   fetcher({
     url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     token,
   })
 
-export default function useDetailedPlaylists(
-  token: string | null,
-  setPlaylist: any,
-): any {
+export default function useDetailedPlaylists(token: string | null): any {
+  const { data: session } = useSession()
   const {
     data: playlists,
     error: playlistsError,
     isValidating: isLoadingPlaylists,
     mutate: mutatePlaylists,
   } = useSWR(
-    token !== null ? ['https://api.spotify.com/v1/me/playlists', token] : null,
-    (token: string) => fetchPlaylists(token),
+    ['https://api.spotify.com/v1/me/playlists', session?.user?.access_token],
+    ([url, token]: string[]) => fetchPlaylists(url, token),
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         if (error.status === 429) {
           const retryAfter =
-            error.info?.retry_after !== undefined ? error.info?.retry_after : 60 // Default to 60 seconds if not provided
+            error.info?.retry_after !== undefined
+              ? error.info?.retry_after
+              : RETRY_AFTER_DEFAULT
           setTimeout(() => {
             const result = revalidate({ retryCount })
             if (result instanceof Promise) {
@@ -47,13 +49,16 @@ export default function useDetailedPlaylists(
   const [detailedPlaylists, setDetailedPlaylists] = useState<
     DetailsPlaylistItem[]
   >([])
-  console.log(playlists)
 
   useEffect(() => {
     if (playlists === undefined || token === null) return
 
     const fetchAllTracks = async (): Promise<void> => {
-      const detailedPlaylistsPromises = playlists.items.map(
+      const filteredPlaylists = playlists?.items.filter(
+        (playlist: DetailsPlaylistItem) =>
+          playlist?.owner?.display_name === session?.user?.name,
+      )
+      const detailedPlaylistsPromises = filteredPlaylists.map(
         async (playlist: DetailsPlaylistItem) => {
           const tracks = await fetchPlaylistTracks(playlist.id, token)
           return { ...playlist, tracks: tracks.items }
@@ -67,7 +72,7 @@ export default function useDetailedPlaylists(
     fetchAllTracks().catch((e) => {
       console.log(e)
     })
-  }, [playlists, token, setPlaylist])
+  }, [playlists, token, session?.user])
 
   return {
     data: detailedPlaylists,
