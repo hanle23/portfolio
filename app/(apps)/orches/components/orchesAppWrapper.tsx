@@ -61,6 +61,8 @@ export default function OrchesAppWrapper({
     isValidating,
   } = useFetchSavedTracks(fetcher, accessToken)
 
+  const { data: playlists } = useDetailedPlaylists(accessToken)
+
   const savedTracksFunc = {
     data,
     setNextPage,
@@ -68,7 +70,6 @@ export default function OrchesAppWrapper({
     mutate,
     isValidating,
   }
-  const { data: playlists } = useDetailedPlaylists(accessToken)
 
   useEffect(() => {
     if (session?.user?.access_token === undefined) return
