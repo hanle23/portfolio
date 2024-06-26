@@ -73,12 +73,17 @@ export default function OrchesAppWrapper({
   }
 
   useEffect(() => {
-    if (data !== undefined && playlists !== undefined) {
-      const updatedTracks = UpdateTracksWithPlaylistStatus(data, playlists)
-      savedTracksMutate(updatedTracks, false).catch((e) => {
-        console.log(e)
-      })
+    if (data === undefined || playlists === undefined) {
+      return
     }
+    if (data?.length === 0 || playlists?.length === 0) {
+      return
+    }
+    console.log('triggered')
+    const updatedTracks = UpdateTracksWithPlaylistStatus(data, playlists)
+    // savedTracksMutate(updatedTracks, false).catch((e) => {
+    //   console.log(e)
+    // })
   }, [data, playlists, savedTracksMutate])
 
   useEffect(() => {
