@@ -8,6 +8,7 @@ import Login from './auth/login'
 import useFetchSavedTracks from './actions/useFetchSavedTracks'
 import useDetailedPlaylists from './actions/useDetailPlaylist'
 import fetcher from './actions/helper/fetchFunction'
+import UpdateTracksWithPlaylistStatus from './actions/helper/updateTracksWithPlaylistStatus'
 
 import type {
   SavedTracks,
@@ -20,7 +21,7 @@ export interface OrchesContextType {
   setCurrPlaylist: React.Dispatch<
     React.SetStateAction<DetailsPlaylistItem | null>
   >
-  playlists: DetailsPlaylistItem[] | null
+  playlists: DetailsPlaylistItem[] | undefined
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
@@ -28,7 +29,7 @@ export interface OrchesContextType {
     data: SavedTracks[] | undefined
     setNextPage: () => Promise<void>
     savedTracksIsLoading: boolean
-    mutate: () => void
+    savedTracksMutate: () => void
     isValidating: boolean
   }
 }
@@ -57,7 +58,7 @@ export default function OrchesAppWrapper({
     data,
     setNextPage,
     isLoading: savedTracksIsLoading,
-    mutate,
+    mutate: savedTracksMutate,
     isValidating,
   } = useFetchSavedTracks(fetcher, accessToken)
 
@@ -67,9 +68,18 @@ export default function OrchesAppWrapper({
     data,
     setNextPage,
     savedTracksIsLoading,
-    mutate,
+    savedTracksMutate,
     isValidating,
   }
+
+  useEffect(() => {
+    if (data !== undefined && playlists !== undefined) {
+      const updatedTracks = UpdateTracksWithPlaylistStatus(data, playlists)
+      savedTracksMutate(updatedTracks, false).catch((e) => {
+        console.log(e)
+      })
+    }
+  }, [data, playlists, savedTracksMutate])
 
   useEffect(() => {
     if (session?.user?.access_token === undefined) return

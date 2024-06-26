@@ -156,4 +156,5 @@ interface TrackDetail {
   type: string
   uri: string
   is_local: boolean
+  isInPlaylist?: boolean
 }

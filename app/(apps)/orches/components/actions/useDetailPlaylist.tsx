@@ -5,6 +5,14 @@ import fetcher from './helper/fetchFunction'
 import type { DetailsPlaylistItem } from '@/app/types/types'
 import { useSession } from 'next-auth/react'
 import { RETRY_AFTER_DEFAULT } from '@/constants/spotify/playlist'
+import type { SWRResponse } from 'swr'
+
+interface UseDetailedPlaylistsReturn {
+  data: DetailsPlaylistItem[] | undefined
+  isLoading: boolean
+  isError: any // The type here depends on how errors are structured. It could be `Error | undefined` for simplicity.
+  mutate: SWRResponse['mutate'] // Using the mutate type from SWRResponse for accuracy
+}
 
 const fetchPlaylists = (url: string, token: string): any =>
   fetcher({ url, token })
@@ -14,7 +22,9 @@ const fetchPlaylistTracks = (playlistId: string, token: string): any =>
     token,
   })
 
-export default function useDetailedPlaylists(token: string | null): any {
+export default function useDetailedPlaylists(
+  token: string | null,
+): UseDetailedPlaylistsReturn {
   const { data: session } = useSession()
   const {
     data: playlists,

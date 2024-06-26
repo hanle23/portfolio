@@ -15,7 +15,7 @@ export default function SideBar({
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
-  playlists: DetailsPlaylistItem[] | null
+  playlists: DetailsPlaylistItem[] | undefined
   currPlaylist: DetailsPlaylistItem | null
   setCurrPlaylist: React.Dispatch<
     React.SetStateAction<DetailsPlaylistItem | null>
