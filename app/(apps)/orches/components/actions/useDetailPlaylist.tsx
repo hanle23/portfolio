@@ -2,17 +2,17 @@
 import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import fetcher from './helper/fetchFunction'
-import type { DetailsPlaylistItem } from '@/app/types/types'
 import { useSession } from 'next-auth/react'
 import { RETRY_AFTER_DEFAULT } from '@/constants/spotify/playlist'
-import type { SWRResponse } from 'swr'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type { KeyedMutator } from 'swr'
 
-// interface UseDetailedPlaylistsReturn {
-//   data: DetailsPlaylistItem[] | undefined
-//   isLoading: boolean
-//   isError: any // The type here depends on how errors are structured. It could be `Error | undefined` for simplicity.
-//   mutate: SWRResponse['mutate'] // Using the mutate type from SWRResponse for accuracy
-// }
+interface UseDetailedPlaylistsReturn {
+  data: SimplifiedPlaylistObject[] | undefined
+  isLoading: boolean
+  isError: Error | undefined
+  mutate: KeyedMutator<any>
+}
 
 const fetchPlaylists = (url: string, token: string): any =>
   fetcher({ url, token })
@@ -22,7 +22,9 @@ const fetchPlaylistTracks = (playlistId: string, token: string): any =>
     token,
   })
 
-export default function useDetailedPlaylists(token: string | null): any {
+export default function useDetailedPlaylists(
+  token: string | null,
+): UseDetailedPlaylistsReturn {
   const { data: session } = useSession()
   const {
     data: playlists,
@@ -55,7 +57,7 @@ export default function useDetailedPlaylists(token: string | null): any {
   )
 
   const [detailedPlaylists, setDetailedPlaylists] = useState<
-    DetailsPlaylistItem[]
+    SimplifiedPlaylistObject[]
   >([])
 
   useEffect(() => {
@@ -63,11 +65,11 @@ export default function useDetailedPlaylists(token: string | null): any {
 
     const fetchAllTracks = async (): Promise<void> => {
       const filteredPlaylists = playlists?.items.filter(
-        (playlist: DetailsPlaylistItem) =>
+        (playlist: SimplifiedPlaylistObject) =>
           playlist?.owner?.display_name === session?.user?.name,
       )
       const detailedPlaylistsPromises = filteredPlaylists.map(
-        async (playlist: DetailsPlaylistItem) => {
+        async (playlist: SimplifiedPlaylistObject) => {
           const tracks = await fetchPlaylistTracks(playlist.id, token)
           return { ...playlist, tracks: tracks.items }
         },

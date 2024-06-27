@@ -2,6 +2,7 @@
 import { useContext, useEffect } from 'react'
 import { OrchesContext } from '../../../components/orchesAppWrapper'
 import SavedTracksHeader from './components/savedTracksHeader'
+import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 export default function SavedTracksDetail(): JSX.Element {
   const context = useContext(OrchesContext)
   const { savedTracksFunc } = context ?? {}
@@ -9,6 +10,7 @@ export default function SavedTracksDetail(): JSX.Element {
     savedTracksFunc?.data?.flatMap(
       (trackPage: SavedTracks) => trackPage.items,
     ) ?? []
+  console.log(savedTracks)
   useEffect(() => {
     if (
       savedTracksFunc?.savedTracksIsLoading === false &&

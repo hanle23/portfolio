@@ -1,32 +1,39 @@
-import type {
-  SavedTracks,
-  DetailsPlaylistItem,
-  TrackDetail,
-} from '@/app/types/types'
+import type { SavedTracks } from '@/app/types/spotify/savedTracks'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 
 export default function updateTracksWithPlaylistStatus(
-  playlists: SavedTracks[],
-  savedTracks: DetailsPlaylistItem[],
-): DetailsPlaylistItem[] {
+  playlists: SimplifiedPlaylistObject[],
+  savedTracks: SavedTracks[],
+): SavedTracks[] {
   // Create a Set of all track IDs in playlists for efficient lookup
   const playlistTrackIds = new Set(
-    playlists.flatMap((playlist) =>
-      playlist.items.map((item) => item.track.id),
-    ),
+    playlists?.flatMap((playlist) => {
+      if (Array.isArray(playlist?.tracks)) {
+        return playlist.tracks.map((item) => item?.track?.id)
+      }
+      return []
+    }),
   )
 
   // Map over savedTracks to add isInPlaylist property
-  const updatedSavedTracks = savedTracks.map((savedTrack) => {
-    // Check if any of the tracks in the savedTrack.tracks array is in the playlist
-    const isInPlaylist = savedTrack?.tracks?.some((track: TrackDetail) =>
-      playlistTrackIds.has(String(track?.id)),
-    )
+  const updatedSavedTracks = savedTracks.map((savedTrack: SavedTracks) => {
+    const updatedItems = savedTrack?.items?.map((track) => {
+      const isInPlaylist = playlistTrackIds.has(String(track?.track?.id))
+
+      return {
+        ...track,
+        track: {
+          ...track.track,
+          isInPlaylist,
+        },
+      }
+    })
 
     return {
       ...savedTrack,
-      isInPlaylist,
+      items: updatedItems,
     }
   })
 
-  //   return updatedSavedTracks
+  return updatedSavedTracks
 }

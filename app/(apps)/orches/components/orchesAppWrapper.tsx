@@ -9,19 +9,16 @@ import useFetchSavedTracks from './actions/useFetchSavedTracks'
 import useDetailedPlaylists from './actions/useDetailPlaylist'
 import fetcher from './actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './actions/helper/updateTracksWithPlaylistStatus'
-
-import type {
-  SavedTracks,
-  AuthUser,
-  DetailsPlaylistItem,
-} from '@/app/types/types'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type { SavedTracks } from '@/app/types/spotify/savedTracks'
+import type { AuthUser } from '@/app/types/spotify/auth'
 
 export interface OrchesContextType {
-  currPlaylist: DetailsPlaylistItem | null
+  currPlaylist: SimplifiedPlaylistObject | null
   setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<DetailsPlaylistItem | null>
+    React.SetStateAction<SimplifiedPlaylistObject | null>
   >
-  playlists: DetailsPlaylistItem[] | undefined
+  playlists: SimplifiedPlaylistObject[] | undefined
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
@@ -46,9 +43,8 @@ export default function OrchesAppWrapper({
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [currPlaylist, setCurrPlaylist] = useState<DetailsPlaylistItem | null>(
-    null,
-  )
+  const [currPlaylist, setCurrPlaylist] =
+    useState<SimplifiedPlaylistObject | null>(null)
   const [currentTrack, setCurrentTrack] = useState<string | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
@@ -79,11 +75,10 @@ export default function OrchesAppWrapper({
     if (data?.length === 0 || playlists?.length === 0) {
       return
     }
-    console.log('triggered')
-    const updatedTracks = UpdateTracksWithPlaylistStatus(data, playlists)
-    // savedTracksMutate(updatedTracks, false).catch((e) => {
-    //   console.log(e)
-    // })
+    const updatedTracks = UpdateTracksWithPlaylistStatus(playlists, data)
+    savedTracksMutate(updatedTracks).catch((e) => {
+      console.log('error occurs')
+    })
   }, [data, playlists, savedTracksMutate])
 
   useEffect(() => {
