@@ -10,7 +10,6 @@ export default function SavedTracksDetail(): JSX.Element {
     savedTracksFunc?.data?.flatMap(
       (trackPage: SavedTracks) => trackPage.items,
     ) ?? []
-  console.log(savedTracks)
   useEffect(() => {
     if (
       savedTracksFunc?.savedTracksIsLoading === false &&
