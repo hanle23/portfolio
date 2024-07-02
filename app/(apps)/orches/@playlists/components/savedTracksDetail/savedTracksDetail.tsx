@@ -2,7 +2,11 @@
 import { useContext, useEffect } from 'react'
 import { OrchesContext } from '../../../components/orchesAppWrapper'
 import SavedTracksHeader from './components/savedTracksHeader'
-import type { SavedTracks } from '@/app/types/spotify/savedTracks'
+import SavedTracksItem from './components/savedTracksItem'
+import type {
+  SavedTracks,
+  SavedTracksObject,
+} from '@/app/types/spotify/savedTracks'
 export default function SavedTracksDetail(): JSX.Element {
   const context = useContext(OrchesContext)
   const { savedTracksFunc } = context ?? {}
@@ -27,11 +31,11 @@ export default function SavedTracksDetail(): JSX.Element {
   return (
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
       <SavedTracksHeader total={savedTracksFunc?.data?.[0]?.total} />
-      {savedTracks?.map((track) => (
-        <div key={track.track.id}>
-          <div>{track.track.name}</div>
-        </div>
-      ))}
+      <div>
+        {savedTracks?.map((track: SavedTracksObject, index: number) => (
+          <SavedTracksItem key={track.track.id} index={index} track={track} />
+        ))}
+      </div>
     </div>
   )
 }

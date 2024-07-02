@@ -5,14 +5,18 @@ import PlaylistHeader from './components/playlistHeader'
 import PlaylistTrackItem from './components/playlistTrackItem'
 import useDeletePlaylistItem from './actions/deletePlaylistItem'
 import toast, { Toaster } from 'react-hot-toast'
+import type {
+  SimplifiedPlaylistObject,
+  PlaylistTrackObject,
+} from '@/app/types/spotify/playlist'
 
 export default function PlaylistDetail({
   playlist,
   setCurrPlaylist,
 }: {
-  playlist: DetailsPlaylistItem
+  playlist: SimplifiedPlaylistObject
   setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<DetailsPlaylistItem | null>
+    React.SetStateAction<SimplifiedPlaylistObject | null>
   >
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
@@ -43,13 +47,6 @@ export default function PlaylistDetail({
     }
   }
 
-  // useEffect(() => {
-  //   if (!isLoading && !isValidating)
-  //     setNextPage().catch((e) => {
-  //       console.log(e)
-  //     })
-  // }, [isLoading, setNextPage, isValidating])
-
   return (
     <div className="w-full h-full flex flex-col overscroll-none overflow-y-auto">
       <PlaylistHeader
@@ -59,9 +56,8 @@ export default function PlaylistDetail({
       />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
-        {playlist !== undefined &&
-          context !== null &&
-          playlist?.tracksDetails?.map(
+        {Array.isArray(context?.currPlaylist?.tracks) &&
+          context?.currPlaylist?.tracks?.map(
             (track: PlaylistTrackObject, index: number) => (
               <PlaylistTrackItem
                 key={track?.track?.id}

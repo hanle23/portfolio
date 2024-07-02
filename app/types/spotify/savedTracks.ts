@@ -1,6 +1,6 @@
 import type { TrackObject } from './track'
 
-interface SavedTracksObject {
+export interface SavedTracksObject {
   added_at: string
   track: TrackObject
 }

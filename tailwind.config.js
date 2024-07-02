@@ -21,6 +21,7 @@ module.exports = {
         'spotify-item-hover': '#3c3c3e',
         'spotify-color': '#1DB954',
         'danger-color': '#ff0000',
+        'image-background': '#282828',
       },
     },
     plugins: [],
