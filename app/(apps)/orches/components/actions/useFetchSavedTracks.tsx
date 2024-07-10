@@ -1,7 +1,7 @@
 import useSWRInfinite from 'swr/infinite'
 import type { Fetcher } from 'swr'
 import type { SWRInfiniteResponse } from 'swr/infinite'
-import { LIMIT } from '@/constants/spotify/savedTracks'
+import { LIMIT, RETRY_AFTER_DEFAULT } from '@/constants/spotify/savedTracks'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import type { FetcherArgs } from './helper/fetchFunction'
 
@@ -43,10 +43,26 @@ export default function useFetchSavedTracks(
       revalidateAll: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        if (error.status === 429) {
+          const retryAfter =
+            error.info?.retry_after !== undefined
+              ? error.info?.retry_after
+              : RETRY_AFTER_DEFAULT
+          setTimeout(() => {
+            const result = revalidate({ retryCount })
+            if (result instanceof Promise) {
+              result.catch((e) => {
+                console.log(e)
+              })
+            }
+          }, retryAfter * 1000)
+        }
+      },
     })
   const setNextPage = async (): Promise<void> => {
     if (data === undefined || data === null) return
-    if (data?.[data.length - 1].next === null) return
+    if (data?.[data.length - 1]?.next === null) return
     await setSize(size + 1).catch((e) => {
       console.log(e)
     })

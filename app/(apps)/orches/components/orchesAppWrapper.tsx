@@ -42,7 +42,7 @@ export default function OrchesAppWrapper({
 }): React.JSX.Element {
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [allItemsFetched, setAllItemsFetched] = useState<number>(0)
+  const [allItemsFetched, setAllItemsFetched] = useState<boolean>(false)
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
@@ -70,22 +70,25 @@ export default function OrchesAppWrapper({
   }
 
   useEffect(() => {
-    if (data === undefined || playlists === undefined) {
+    if (data === undefined || playlists === undefined || allItemsFetched) {
       return
     }
     if (data?.length === 0 || playlists?.length === 0) {
       return
     }
     const fetchLimit = Math.ceil(data[0].total / data[0].limit)
-    if (allItemsFetched >= fetchLimit) {
-      return
+    if (data?.length === fetchLimit) {
+      const updatedTracks = UpdateTracksWithPlaylistStatus(playlists, data)
+      savedTracksMutate(updatedTracks).catch((e) => {
+        console.log('error occurs')
+      })
+      setAllItemsFetched(true)
     }
-    const updatedTracks = UpdateTracksWithPlaylistStatus(playlists, data)
-    savedTracksMutate(updatedTracks).catch((e) => {
-      console.log('error occurs')
-    })
-    setAllItemsFetched(data.length)
   }, [data, playlists, savedTracksMutate, allItemsFetched])
+
+  useEffect(() => {
+    setAllItemsFetched(false)
+  }, [data, playlists])
 
   useEffect(() => {
     if (session?.user?.access_token === undefined) return
