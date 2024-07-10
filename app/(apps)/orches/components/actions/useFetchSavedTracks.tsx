@@ -22,32 +22,34 @@ export default function useFetchSavedTracks(
     previousPageData: any,
   ): FetcherArgs | null => {
     if (accessToken === null || fetcher === null) return null
-    if (previousPageData !== null && previousPageData.next === null) return null
+    if (previousPageData !== null && previousPageData?.next === null) {
+      return null
+    }
     if (pageIndex === 0) {
       return {
         url: `/api/spotify/savedTracks?offset=0&limit=${LIMIT}`,
         token: accessToken,
       }
     }
+    const offset = LIMIT + previousPageData?.offset
     return {
-      url: `/api/spotify/savedTracks?offset=${
-        previousPageData?.limit + previousPageData?.offset
-      }&limit=${LIMIT}`,
+      url: `/api/spotify/savedTracks?offset=${offset}&limit=${LIMIT}`,
       token: accessToken,
     }
   }
   const { data, size, setSize, mutate, isValidating, error } =
     useSWRInfinite<SavedTracks>(getKey, fetcher, {
       revalidateFirstPage: false,
+      revalidateAll: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
     })
   const setNextPage = async (): Promise<void> => {
     if (data === undefined || data === null) return
-    const limit = Math.ceil(data?.[0].total / LIMIT)
-    if (size < limit) {
-      await setSize(size + 1).catch((e) => {
-        console.log(e)
-      })
-    }
+    if (data?.[data.length - 1].next === null) return
+    await setSize(size + 1).catch((e) => {
+      console.log(e)
+    })
   }
   const isLoading = isValidating && data !== undefined && data !== null
   return {

@@ -10,6 +10,7 @@ export const usePlaylists = (token: string): any => {
     {
       revalidateOnFocus: false,
       shouldRetryOnError: false,
+      revalidateOnMount: false,
       onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
         if (error.status === 429) {
           const retryAfter =
