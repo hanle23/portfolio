@@ -57,7 +57,7 @@ export default function OrchesAppWrapper({
     isLoading: savedTracksIsLoading,
     mutate: savedTracksMutate,
     isValidating,
-  } = useFetchSavedTracks(fetcher, accessToken)
+  } = useFetchSavedTracks(fetcher, accessToken, setAllItemsFetched)
 
   const { data: playlists } = useDetailedPlaylists(accessToken)
 
@@ -85,10 +85,6 @@ export default function OrchesAppWrapper({
       setAllItemsFetched(true)
     }
   }, [data, playlists, savedTracksMutate, allItemsFetched])
-
-  useEffect(() => {
-    setAllItemsFetched(false)
-  }, [data, playlists])
 
   useEffect(() => {
     if (session?.user?.access_token === undefined) return

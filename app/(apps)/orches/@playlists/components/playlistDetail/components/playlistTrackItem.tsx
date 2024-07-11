@@ -4,6 +4,7 @@ import Image from 'next/image'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import MediaPreviewButton from '../../../../components/mediaPreviewButton'
+import type { PlaylistTrackObject } from '@/app/types/spotify/playlist'
 
 export default function PlaylistTrackItem({
   index,
@@ -69,7 +70,7 @@ export default function PlaylistTrackItem({
       </div>
       <div className="flex flex-col col-span-3 overflow-hidden">
         <p className="truncate">{track?.track?.name}</p>
-        <div className="truncate text-small text-spotify-subtext">
+        <div className="truncate text-sm text-spotify-subtext">
           {track?.track?.artists.map((artist, index) => (
             <React.Fragment key={artist.id}>
               <a
@@ -92,7 +93,7 @@ export default function PlaylistTrackItem({
       </div>
       <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
         <div className="truncate items-center text-spotify-subtext text-sm justify-center h-full w-full flex">
-          {new Date(track.added_at).toLocaleDateString('en-US', {
+          {new Date(track?.added_at).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
