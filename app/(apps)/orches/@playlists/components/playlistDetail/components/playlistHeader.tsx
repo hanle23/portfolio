@@ -3,26 +3,28 @@ import React from 'react'
 import Image from 'next/image'
 import ExternalLink from '@/public/svg/externalLink.svg'
 import LeftArrowNotail from '@/public/svg/leftArrowNotail.svg'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 
 export default function PlaylistHeader({
   playlist,
   setCurrPlaylist,
   trackAudio,
 }: {
-  playlist: PlaylistItem | null
+  playlist: SimplifiedPlaylistObject | null
   setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<DetailsPlaylistItem | null>
+    React.SetStateAction<SimplifiedPlaylistObject | null>
   >
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
-  let img = { url: '', width: 0, height: 0 }
-  if (playlist?.images !== null) {
-    if (playlist?.images.length === 1) {
-      img = { url: playlist.images[0].url, width: 250, height: 250 }
-    } else {
-      img = playlist?.images?.find((image) => image?.width < 500) ?? img
-    }
-  }
+  const smallestImage = playlist?.images?.reduce((minImg, img) =>
+    img.width !== null &&
+    img.height !== null &&
+    minImg.width !== null &&
+    minImg.height !== null &&
+    img?.width * img?.height < minImg?.width * minImg?.height
+      ? img
+      : minImg,
+  )
 
   return (
     <div className="sticky flex top-0 rounded-t-lg items-center bg-spotify-header-background w-full z-10">
@@ -43,9 +45,9 @@ export default function PlaylistHeader({
         <Image
           alt=""
           className="object-cover rounded-lg"
-          src={img.url}
-          height={img.height}
-          width={img.width}
+          src={smallestImage?.url ?? ''}
+          height={smallestImage?.height ?? 0}
+          width={smallestImage?.width ?? 0}
           priority
         />
       </div>
@@ -55,7 +57,7 @@ export default function PlaylistHeader({
         <p>{playlist?.description}</p>
 
         <p className="flex h-full text-spotify-subtext justify-start items-center w-fit whitespace-nowrap gap-1">
-          {playlist?.tracks.total} songs •{' '}
+          {playlist?.tracks?.total} songs •{' '}
           <a
             className="flex w-fit items-center h-fit gap-1 underline underline-offset-2"
             href={playlist?.external_urls?.spotify}

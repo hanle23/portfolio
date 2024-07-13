@@ -20,9 +20,6 @@ export default function PlaylistDetail({
   >
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
-  // const { data, setNextPage, isLoading, mutate, isValidating } =
-  //   useFetchPlaylistDetails(context, playlist)
-  // const items = data?.flatMap((trackPage: Playlists) => trackPage.items) ?? []
   const trackAudio = context?.trackAudio
 
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
@@ -34,12 +31,6 @@ export default function PlaylistDetail({
     )
     if (res.status === 200) {
       toast.success(`Successfully removed track from playlist ${playlist.name}`)
-      // mutate().catch((e) => {
-      //   console.log(e)
-      // })
-      // mutate().catch((e) => {
-      //   console.log(e)
-      // })
     } else {
       toast.error(
         `Unable to remove track from playlist, please try again later`,

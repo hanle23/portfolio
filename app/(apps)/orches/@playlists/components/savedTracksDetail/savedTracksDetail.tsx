@@ -9,6 +9,7 @@ import type {
 } from '@/app/types/spotify/savedTracks'
 export default function SavedTracksDetail(): JSX.Element {
   const context = useContext(OrchesContext)
+  const trackAudio = context?.trackAudio
   const { savedTracksFunc } = context ?? {}
   const savedTracks =
     savedTracksFunc?.data?.flatMap(
@@ -31,9 +32,16 @@ export default function SavedTracksDetail(): JSX.Element {
   return (
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
       <SavedTracksHeader total={savedTracksFunc?.data?.[0]?.total} />
-      <div>
+      <div className="flex flex-col h-full w-full space-y-3 pt-3">
         {savedTracks?.map((track: SavedTracksObject, index: number) => (
-          <SavedTracksItem key={track.track.id} index={index} track={track} />
+          <SavedTracksItem
+            key={track.track.id}
+            index={index}
+            track={track}
+            currentTrack={context?.currentTrack}
+            setCurrentTrack={context?.setCurrentTrack}
+            trackAudio={trackAudio}
+          />
         ))}
       </div>
     </div>

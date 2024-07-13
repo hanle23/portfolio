@@ -9,7 +9,6 @@ import type { PlaylistTrackObject } from '@/app/types/spotify/playlist'
 export default function PlaylistTrackItem({
   index,
   track,
-
   handleRemoveTrack,
   currentTrack,
   setCurrentTrack,

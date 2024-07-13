@@ -1,25 +1,50 @@
+'use client'
 import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
+import MediaPreviewButton from '../../../../components/mediaPreviewButton'
 export default function SavedTracksItem({
   index,
   track,
+  currentTrack,
+  setCurrentTrack,
+  trackAudio,
 }: {
   index: number
   track: SavedTracksObject
+  currentTrack: string | null | undefined
+  setCurrentTrack:
+    | React.Dispatch<React.SetStateAction<string | null>>
+    | undefined
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): JSX.Element {
+  const [isHover, setIsHover] = useState<boolean>(false)
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
   )
-  console.log(track)
 
   return (
     <div
       key={track.track.id}
       className="grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
+      onMouseEnter={() => {
+        setIsHover(true)
+      }}
+      onMouseLeave={() => {
+        setIsHover(false)
+      }}
     >
-      <div className="col-span-1 flex justify-end text-spotify-subtext">
-        {index + 1}
+      <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
+        {isHover ? (
+          <MediaPreviewButton
+            currentTrack={currentTrack}
+            setCurrentTrack={setCurrentTrack}
+            trackAudio={trackAudio}
+            trackUrl={track.track.preview_url}
+          />
+        ) : (
+          index + 1
+        )}
       </div>
 
       <div className="col-span-6 lg:col-span-4 flex align-middle">
@@ -28,7 +53,7 @@ export default function SavedTracksItem({
           alt=""
           width={40}
           height={40}
-          className="mr-3 shrink-0 bg-image-background"
+          className="mr-3 shrink-0 bg-image-background rounded-md"
         />
         <div className="grid">
           <a
