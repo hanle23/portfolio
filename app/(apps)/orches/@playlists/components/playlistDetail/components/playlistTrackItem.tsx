@@ -38,7 +38,7 @@ export default function PlaylistTrackItem({
   }
   return track?.track !== null ? (
     <div
-      className="grid grid-cols-8 py-2 px-3 rounded-md gap-2 md:grid-cols-10 lg:grid-cols-12 hover:bg-spotify-item-hover"
+      className="grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
       onMouseEnter={() => {
         setIsHover(true)
       }}
@@ -46,7 +46,7 @@ export default function PlaylistTrackItem({
         setIsHover(false)
       }}
     >
-      <div className="flex items-center w-full h-full justify-center">
+      <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         {isHover ? (
           <MediaPreviewButton
             currentTrack={currentTrack}
@@ -58,39 +58,45 @@ export default function PlaylistTrackItem({
           index + 1
         )}
       </div>
-      <div className="flex min-w-[40px] min-h-[40px]">
+      <div className="col-span-6 lg:col-span-4 flex align-middle">
         <Image
-          alt={track?.track?.name}
-          className="overflow-hidden"
-          src={img.url}
-          width={img.width}
-          height={img.height}
+          src={img?.url}
+          alt=""
+          width={40}
+          height={40}
+          className="mr-3 shrink-0 bg-image-background rounded-md"
         />
-      </div>
-      <div className="flex flex-col col-span-3 overflow-hidden">
-        <p className="truncate">{track?.track?.name}</p>
-        <div className="truncate text-sm text-spotify-subtext">
-          {track?.track?.artists.map((artist, index) => (
-            <React.Fragment key={artist.id}>
-              <a
-                href={artist.external_urls.spotify}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {artist.name}
-              </a>{' '}
-              {index < track?.track?.artists.length - 1 && ', '}
-            </React.Fragment>
-          ))}
+        <div className="grid">
+          <a
+            href={track?.track?.external_urls?.spotify}
+            target="_blank"
+            className="truncate"
+          >
+            {track?.track?.name}
+          </a>
+          <span className="truncate text-sm text-spotify-subtext">
+            {track?.track?.artists.map((artist, index) => (
+              <React.Fragment key={artist.id}>
+                <a
+                  href={artist.external_urls.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {artist.name}
+                </a>{' '}
+                {index < track?.track?.artists.length - 1 && ', '}
+              </React.Fragment>
+            ))}
+          </span>
         </div>
       </div>
-      <div className="hidden md:table-cell md:col-span-2">
-        <div className="truncate items-center text-spotify-subtext text-sm text-left h-full w-full flex">
+      <div className="col-span-3">
+        <p className="truncate items-center text-spotify-subtext text-sm text-left h-full w-full flex">
           {track?.track?.album.name}
-        </div>
+        </p>
       </div>
-      <div className="h-full text-sm hidden lg:table-cell lg:col-span-2">
+      <div className="hidden lg:flex lg:col-span-2">
         <div className="truncate items-center text-spotify-subtext text-sm justify-center h-full w-full flex">
           {new Date(track?.added_at).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -100,11 +106,11 @@ export default function PlaylistTrackItem({
         </div>
       </div>
 
-      <div className="flex h-full w-full items-center justify-end">
+      <div className="col-span-2 flex items-center justify-around">
         <button
           className={`${
             !isHover && 'hidden'
-          } truncate text-sm h-fit w-fit hover:text-danger-color`}
+          } truncate text-sm hover:text-danger-color`}
           onClick={() => {
             handleRemoveTrack(track?.track?.uri).catch((e) => {
               console.log(e)
@@ -113,17 +119,12 @@ export default function PlaylistTrackItem({
         >
           <RemoveCircleOutlineIcon />
         </button>
-      </div>
-      <div className="text-center text-sm">
-        <div className="truncate items-center text-spotify-subtext text-sm justify-center h-full w-full flex">
+        <div className="truncate items-center text-spotify-subtext text-sm justify-center flex">
           {Math.floor(track?.track?.duration_ms / 60000)}:
           {((track?.track?.duration_ms % 60000) / 1000)
             .toFixed(0)
             .padStart(2, '0')}
         </div>
-      </div>
-
-      <div className="flex w-full h-full justify-center items-center">
         <button
           className={`${
             !isHover && 'hidden'

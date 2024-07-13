@@ -1,3 +1,4 @@
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
 export default function SavedTracksHeader({
   total,
 }: {
@@ -24,7 +25,9 @@ export default function SavedTracksHeader({
         <div className="hidden lg:flex lg:col-span-2 justify-center items-center">
           <p className="text-sm">Date Added</p>
         </div>
-        <div className="col-span-2 flex justify-center items-center">var 5</div>
+        <div className="col-span-2 flex justify-center items-center">
+          <AccessTimeIcon />
+        </div>
       </div>
     </div>
   )
