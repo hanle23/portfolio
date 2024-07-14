@@ -22,18 +22,14 @@ export default function SideBar({
   >
 }): React.JSX.Element {
   return (
-    <div
-      className={
-        className ?? 'flex flex-col gap-6 w-1/4 h-full shrink-0 relative'
-      }
-    >
+    <div className={className ?? 'flex flex-col gap-6 w-1/4 h-full relative'}>
       <SelectMode
-        className="flex items-center rounded-lg h-[10%] bg-container overflow-x-hidden"
+        className="flex items-center rounded-lg h-[10%] bg-container overflow-x-hidden shrink-0 min-w-36"
         allRoutes={allRoutes}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto">
+      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto shrink-0 min-w-36">
         {playlists?.map((playlist: DetailsPlaylistItem, index: number) => (
           <PlaylistCard
             key={playlist.id}

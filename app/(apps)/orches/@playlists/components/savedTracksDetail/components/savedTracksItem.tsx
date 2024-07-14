@@ -26,7 +26,7 @@ export default function SavedTracksItem({
   return (
     <div
       key={track.track.id}
-      className="grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
+      className="grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
       onMouseEnter={() => {
         setIsHover(true)
       }}
@@ -43,18 +43,21 @@ export default function SavedTracksItem({
             trackUrl={track.track.preview_url}
           />
         ) : (
-          index + 1
+          <p className="mr-2">{index + 1}</p>
         )}
       </div>
 
-      <div className="col-span-6 lg:col-span-4 flex align-middle">
-        <Image
-          src={smallestImage?.url}
-          alt=""
-          width={40}
-          height={40}
-          className="mr-3 shrink-0 bg-image-background rounded-md"
-        />
+      <div className="col-span-6 lg:col-span-4 flex align-middle space-x-3">
+        <div className="flex w-11 h-full items-center">
+          <Image
+            src={smallestImage?.url}
+            alt="track?.track?.name"
+            width={32}
+            height={32}
+            className="bg-image-background rounded-md w-full h-full"
+          />
+        </div>
+
         <div className="grid">
           <a
             href={track?.track?.external_urls?.spotify}

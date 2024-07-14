@@ -40,11 +40,7 @@ export default function PlaylistDetail({
 
   return (
     <div className="w-full h-full flex flex-col overscroll-none overflow-y-auto">
-      <PlaylistHeader
-        playlist={playlist}
-        setCurrPlaylist={setCurrPlaylist}
-        trackAudio={trackAudio}
-      />
+      <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
         {Array.isArray(context?.currPlaylist?.tracks) &&

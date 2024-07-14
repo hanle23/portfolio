@@ -9,13 +9,11 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime'
 export default function PlaylistHeader({
   playlist,
   setCurrPlaylist,
-  trackAudio,
 }: {
   playlist: SimplifiedPlaylistObject | null
   setCurrPlaylist: React.Dispatch<
     React.SetStateAction<SimplifiedPlaylistObject | null>
   >
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   const smallestImage = playlist?.images?.reduce((minImg, img) =>
     img.width !== null &&
@@ -33,11 +31,6 @@ export default function PlaylistHeader({
         <button
           className="flex mx-5 p-2 justify-center rounded-full items-center h-fit w-fit bg-spotify-item-background hover:bg-spotify-item-hover"
           onClick={() => {
-            if (trackAudio?.current !== undefined) {
-              trackAudio.current.currentTime = 0
-              trackAudio.current.pause()
-            }
-
             setCurrPlaylist(null)
           }}
         >

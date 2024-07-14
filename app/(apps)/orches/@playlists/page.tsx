@@ -13,7 +13,7 @@ export default function PlaylistPage(): React.JSX.Element {
       {context?.currPlaylist !== undefined && context?.currPlaylist !== null ? (
         <PlaylistDetail
           playlist={context?.currPlaylist}
-          setCurrPlaylist={context?.setCurrPlaylist}
+          setCurrPlaylist={context?.handleSetCurrPlaylist}
         />
       ) : (
         <SavedTracksDetail />

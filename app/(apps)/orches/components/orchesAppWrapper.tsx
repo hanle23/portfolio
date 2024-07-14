@@ -15,7 +15,7 @@ import type { AuthUser } from '@/app/types/spotify/auth'
 
 export interface OrchesContextType {
   currPlaylist: SimplifiedPlaylistObject | null
-  setCurrPlaylist: React.Dispatch<
+  handleSetCurrPlaylist: React.Dispatch<
     React.SetStateAction<SimplifiedPlaylistObject | null>
   >
   playlists: SimplifiedPlaylistObject[] | undefined
@@ -69,6 +69,14 @@ export default function OrchesAppWrapper({
     isValidating,
   }
 
+  const handleSetCurrPlaylist = (playlist: SimplifiedPlaylistObject): void => {
+    if (trackAudio?.current !== undefined) {
+      trackAudio.current.currentTime = 0
+      trackAudio.current.pause()
+    }
+    setCurrPlaylist(playlist)
+  }
+
   useEffect(() => {
     if (data === undefined || playlists === undefined || allItemsFetched) {
       return
@@ -79,7 +87,7 @@ export default function OrchesAppWrapper({
     const fetchLimit = Math.ceil(data[0].total / data[0].limit)
     if (data?.length === fetchLimit) {
       const updatedTracks = UpdateTracksWithPlaylistStatus(playlists, data)
-      savedTracksMutate(updatedTracks).catch((e) => {
+      savedTracksMutate(updatedTracks, { revalidate: false }).catch((e) => {
         console.log('error occurs')
       })
       setAllItemsFetched(true)
@@ -94,7 +102,7 @@ export default function OrchesAppWrapper({
 
   const context = {
     currPlaylist,
-    setCurrPlaylist,
+    handleSetCurrPlaylist,
     playlists,
     currentTrack,
     setCurrentTrack,
@@ -117,7 +125,7 @@ export default function OrchesAppWrapper({
                 setCurrentRoute={setCurrentRoute}
                 playlists={playlists}
                 currPlaylist={currPlaylist}
-                setCurrPlaylist={setCurrPlaylist}
+                setCurrPlaylist={handleSetCurrPlaylist}
               />
             )}
             <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
