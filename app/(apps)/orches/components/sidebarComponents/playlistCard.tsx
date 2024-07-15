@@ -1,26 +1,29 @@
 import React from 'react'
 import Image from 'next/image'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+
 export default function PlaylistCard({
   playlist,
   setCurrPlaylist,
   currPlaylist,
   index,
 }: {
-  playlist: DetailsPlaylistItem
-  setCurrPlaylist:
-    | React.Dispatch<React.SetStateAction<DetailsPlaylistItem | null>>
-    | undefined
-  currPlaylist: PlaylistItem | null | undefined
+  playlist: SimplifiedPlaylistObject
+  setCurrPlaylist: React.Dispatch<
+    React.SetStateAction<SimplifiedPlaylistObject | null>
+  >
+  currPlaylist: SimplifiedPlaylistObject | null | undefined
   index: number
 }): React.JSX.Element {
-  let img = { url: '', width: 0, height: 0 }
-  if (playlist?.images !== null) {
-    if (playlist.images.length === 1) {
-      img = { url: playlist.images[0].url, width: 80, height: 80 }
-    } else {
-      img = playlist?.images?.find((image) => image?.width < 1000) ?? img
-    }
-  }
+  const smallestImage = playlist?.images?.reduce((minImg, img) =>
+    img.width !== null &&
+    img.height !== null &&
+    minImg.width !== null &&
+    minImg.height !== null &&
+    img?.width * img?.height < minImg?.width * minImg?.height
+      ? img
+      : minImg,
+  )
   return (
     <div
       className={`flex rounded-lg gap-2 ${
@@ -35,10 +38,18 @@ export default function PlaylistCard({
       }}
     >
       <Image
-        src={img.url}
-        width={80}
-        height={80}
-        alt=""
+        src={smallestImage?.url}
+        width={
+          smallestImage?.width == null || smallestImage?.width < 80
+            ? 80
+            : smallestImage?.width
+        }
+        height={
+          smallestImage?.height == null || smallestImage?.height < 80
+            ? 80
+            : smallestImage?.height
+        }
+        alt={playlist.name}
         className="shrink-0 p-1 rounded-lg"
         priority={index === 0}
       />
@@ -48,7 +59,11 @@ export default function PlaylistCard({
           {playlist.description}
         </p>
         <p className="truncate text-sm text-spotify-subtext">
-          {playlist.tracks.total} songs
+          {`${
+            Array.isArray(playlist?.tracks)
+              ? playlist?.tracks?.length
+              : playlist?.tracks?.total
+          } songs`}
         </p>
       </div>
     </div>

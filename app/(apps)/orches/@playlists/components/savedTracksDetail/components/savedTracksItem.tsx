@@ -27,10 +27,10 @@ export default function SavedTracksItem({
     <div
       key={track.track.id}
       className="grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      onMouseEnter={() => {
+      onMouseOver={() => {
         setIsHover(true)
       }}
-      onMouseLeave={() => {
+      onMouseOut={() => {
         setIsHover(false)
       }}
     >
@@ -47,14 +47,14 @@ export default function SavedTracksItem({
         )}
       </div>
 
-      <div className="col-span-6 lg:col-span-4 flex align-middle space-x-3">
-        <div className="flex w-11 h-full items-center">
+      <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
+        <div className="flex shrink-0 h-full w-12">
           <Image
             src={smallestImage?.url}
             alt="track?.track?.name"
-            width={32}
-            height={32}
-            className="bg-image-background rounded-md w-full h-full"
+            width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
+            height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
+            className="w-auto h-auto rounded-md"
           />
         </div>
 

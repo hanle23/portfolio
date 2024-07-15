@@ -52,7 +52,11 @@ export default function PlaylistHeader({
           <p>{playlist?.description}</p>
 
           <p className="flex h-full text-spotify-subtext justify-start items-center w-fit whitespace-nowrap gap-1">
-            {(playlist?.tracks as { total: number }).total} songs •{' '}
+            {`${
+              Array.isArray(playlist?.tracks)
+                ? playlist?.tracks?.length
+                : playlist?.tracks?.total
+            } songs • `}
             <a
               className="flex w-fit items-center h-fit gap-1 underline underline-offset-2"
               href={playlist?.external_urls?.spotify}

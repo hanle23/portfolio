@@ -1,7 +1,8 @@
 import React from 'react'
 import SelectMode from './selectMode'
 import PlaylistCard from './sidebarComponents/playlistCard'
-import type { DetailsPlaylistItem } from '@/app/types/types'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+
 export default function SideBar({
   className,
   allRoutes,
@@ -15,10 +16,10 @@ export default function SideBar({
   allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
-  playlists: DetailsPlaylistItem[] | undefined
-  currPlaylist: DetailsPlaylistItem | null
+  playlists: SimplifiedPlaylistObject[] | undefined
+  currPlaylist: SimplifiedPlaylistObject | null
   setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<DetailsPlaylistItem | null>
+    React.SetStateAction<SimplifiedPlaylistObject | null>
   >
 }): React.JSX.Element {
   return (
@@ -30,7 +31,7 @@ export default function SideBar({
         setCurrentRoute={setCurrentRoute}
       />
       <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto shrink-0 min-w-36">
-        {playlists?.map((playlist: DetailsPlaylistItem, index: number) => (
+        {playlists?.map((playlist: SimplifiedPlaylistObject, index: number) => (
           <PlaylistCard
             key={playlist.id}
             index={index}

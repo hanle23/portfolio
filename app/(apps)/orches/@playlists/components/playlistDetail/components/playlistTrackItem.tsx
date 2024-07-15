@@ -23,26 +23,29 @@ export default function PlaylistTrackItem({
 }): React.JSX.Element {
   const [isHover, setIsHover] = useState<boolean>(false)
 
-  let img = { url: '', width: 0, height: 0 }
-  if (track?.track?.album?.images !== null) {
-    if (track?.track?.album?.images.length === 1) {
-      img = {
-        url: track?.track?.album?.images[0].url,
-        width: 250,
-        height: 250,
-      }
-    } else {
-      img =
-        track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
-    }
-  }
+  // let img = { url: '', width: 0, height: 0 }
+  // if (track?.track?.album?.images !== null) {
+  //   if (track?.track?.album?.images.length === 1) {
+  //     img = {
+  //       url: track?.track?.album?.images[0].url,
+  //       width: 250,
+  //       height: 250,
+  //     }
+  //   } else {
+  //     img =
+  //       track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
+  //   }
+  // }
+  const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
+    img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
+  )
   return track?.track !== null ? (
     <div
       className="grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      onMouseEnter={() => {
+      onMouseOver={() => {
         setIsHover(true)
       }}
-      onMouseLeave={() => {
+      onMouseOut={() => {
         setIsHover(false)
       }}
     >
@@ -55,17 +58,19 @@ export default function PlaylistTrackItem({
             trackUrl={track.track.preview_url}
           />
         ) : (
-          index + 1
+          <p className="mr-2">{index + 1}</p>
         )}
       </div>
-      <div className="col-span-6 lg:col-span-4 flex align-middle">
-        <Image
-          src={img?.url}
-          alt=""
-          width={40}
-          height={40}
-          className="mr-3 shrink-0 bg-image-background rounded-md"
-        />
+      <div className="col-span-6 lg:col-span-4 flex align-middle space-x-3">
+        <div className="flex shrink-0 h-full w-12">
+          <Image
+            src={smallestImage?.url}
+            alt=""
+            width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
+            height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
+            className="w-auto h-auto rounded-md"
+          />
+        </div>
         <div className="grid">
           <a
             href={track?.track?.external_urls?.spotify}
