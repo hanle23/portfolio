@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import QRCode from 'qrcode'
 import copy from '@/public/svg/copy.svg'
 import sdk from '@/lib/spotify-sdk/ClientInstance'
-import type { UserProfile } from '@/app/types/types'
+import type { UserProfile } from '@/app/types/spotify/general'
 
 export default function Page(): React.JSX.Element {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('')

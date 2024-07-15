@@ -1,7 +1,7 @@
 import spotifyProfile, { refreshAccessToken } from './SpotifyProfile'
 import type { Account, AuthOptions } from 'next-auth'
 import type { JWT } from 'next-auth/jwt'
-
+import type { AuthUser } from '@/app/types/spotify/auth'
 export const authOptions: AuthOptions = {
   providers: [spotifyProfile],
   session: {
