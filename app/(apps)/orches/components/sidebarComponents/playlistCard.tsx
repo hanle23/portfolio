@@ -9,9 +9,7 @@ export default function PlaylistCard({
   index,
 }: {
   playlist: SimplifiedPlaylistObject
-  setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<SimplifiedPlaylistObject | null>
-  >
+  setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
   currPlaylist: SimplifiedPlaylistObject | null | undefined
   index: number
 }): React.JSX.Element {

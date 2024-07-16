@@ -15,9 +15,7 @@ import type { AuthUser } from '@/app/types/spotify/auth'
 
 export interface OrchesContextType {
   currPlaylist: SimplifiedPlaylistObject | null
-  handleSetCurrPlaylist: React.Dispatch<
-    React.SetStateAction<SimplifiedPlaylistObject | null>
-  >
+  handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
   playlists: SimplifiedPlaylistObject[] | undefined
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>

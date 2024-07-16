@@ -18,9 +18,7 @@ export default function SideBar({
   currentRoute: string
   playlists: SimplifiedPlaylistObject[] | undefined
   currPlaylist: SimplifiedPlaylistObject | null
-  setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<SimplifiedPlaylistObject | null>
-  >
+  setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
 }): React.JSX.Element {
   return (
     <div className={className ?? 'flex flex-col gap-6 w-1/4 h-full relative'}>
