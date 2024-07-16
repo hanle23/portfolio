@@ -1,5 +1,6 @@
 'use client'
 import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
+import Tooltip from '@mui/material/Tooltip'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import MediaPreviewButton from '../../../../components/mediaPreviewButton'
@@ -27,12 +28,12 @@ export default function SavedTracksItem({
     <div
       key={track.track.id}
       className="grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      onMouseOver={() => {
-        setIsHover(true)
-      }}
-      onMouseOut={() => {
-        setIsHover(false)
-      }}
+      // onMouseOver={() => {
+      //   setIsHover(true)
+      // }}
+      // onMouseOut={() => {
+      //   setIsHover(false)
+      // }}
     >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         {isHover ? (
@@ -49,13 +50,30 @@ export default function SavedTracksItem({
 
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
-          <Image
-            src={smallestImage?.url}
-            alt="track?.track?.name"
-            width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
-            height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
-            className="w-auto h-auto rounded-md"
-          />
+          {track?.track?.isInPlaylist === false ? (
+            <Tooltip
+              title={`${track?.track?.name} is not in any playlist`}
+              placement="left-start"
+              arrow
+              leaveDelay={100}
+            >
+              <Image
+                src={smallestImage?.url}
+                alt="track?.track?.name"
+                width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
+                height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
+                className="w-auto h-auto rounded-md border-2 border-spotify-color"
+              />
+            </Tooltip>
+          ) : (
+            <Image
+              src={smallestImage?.url}
+              alt="track?.track?.name"
+              width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
+              height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
+              className="w-auto h-auto rounded-md "
+            />
+          )}
         </div>
 
         <div className="grid">
