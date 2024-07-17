@@ -14,16 +14,20 @@ interface UseDetailedPlaylistsReturn {
   mutate: KeyedMutator<any>
 }
 
-const fetchPlaylists = (url: string, token: string): any =>
-  fetcher({ url, token })
-const fetchPlaylistTracks = (playlistId: string, token: string): any =>
+const fetchPlaylists = (url: string, token: string | undefined): any =>
+  token !== undefined && fetcher({ url, token })
+const fetchPlaylistTracks = (
+  playlistId: string,
+  token: string | undefined,
+): any =>
+  token !== undefined &&
   fetcher({
     url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
     token,
   })
 
 export default function useDetailedPlaylists(
-  token: string | null,
+  token: string | undefined,
 ): UseDetailedPlaylistsReturn {
   const { data: session } = useSession()
   const {

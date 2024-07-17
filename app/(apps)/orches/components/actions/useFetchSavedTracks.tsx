@@ -15,14 +15,14 @@ interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
 
 export default function useFetchSavedTracks(
   fetcher: Fetcher<any, FetcherArgs>,
-  accessToken: string | null,
+  accessToken: string | undefined,
   setAllItemsFetched: React.Dispatch<React.SetStateAction<boolean>>,
 ): ExtendedSWRInfiniteResponse<SavedTracks, any> {
   const getKey = (
     pageIndex: number,
     previousPageData: any,
   ): FetcherArgs | null => {
-    if (accessToken === null || fetcher === null) return null
+    if (accessToken === undefined || fetcher === null) return null
     if (previousPageData !== null && previousPageData?.next === null) {
       return null
     }

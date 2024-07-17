@@ -1,4 +1,5 @@
 import type { DefaultSession } from 'next-auth'
+import type { AuthUser } from './spotify/auth'
 
 declare module 'next-auth' {
   /**

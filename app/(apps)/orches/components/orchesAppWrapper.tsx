@@ -1,5 +1,12 @@
 'use client'
-import React, { createContext, useState, useRef, useEffect } from 'react'
+import React, {
+  createContext,
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react'
 import SideBar from './sideBar'
 import { Header } from './header'
 import { usePathname } from 'next/navigation'
@@ -11,11 +18,10 @@ import fetcher from './actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './actions/helper/updateTracksWithPlaylistStatus'
 import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
-import type { AuthUser } from '@/app/types/spotify/auth'
 
 export interface OrchesContextType {
   currPlaylist: SimplifiedPlaylistObject | null
-  handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
+  handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
   playlists: SimplifiedPlaylistObject[] | undefined
   currentTrack: string | null
   setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
@@ -41,7 +47,6 @@ export default function OrchesAppWrapper({
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [allItemsFetched, setAllItemsFetched] = useState<boolean>(false)
-  const [accessToken, setAccessToken] = useState<string | null>(null)
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
   const [currentTrack, setCurrentTrack] = useState<string | null>(null)
@@ -55,25 +60,35 @@ export default function OrchesAppWrapper({
     isLoading: savedTracksIsLoading,
     mutate: savedTracksMutate,
     isValidating,
-  } = useFetchSavedTracks(fetcher, accessToken, setAllItemsFetched)
+  } = useFetchSavedTracks(
+    fetcher,
+    session?.user?.access_token,
+    setAllItemsFetched,
+  )
 
-  const { data: playlists } = useDetailedPlaylists(accessToken)
+  const { data: playlists } = useDetailedPlaylists(session?.user?.access_token)
 
-  const savedTracksFunc = {
-    data,
-    setNextPage,
-    savedTracksIsLoading,
-    savedTracksMutate,
-    isValidating,
-  }
+  const savedTracksFunc = useMemo(
+    () => ({
+      data,
+      setNextPage,
+      savedTracksIsLoading,
+      savedTracksMutate,
+      isValidating,
+    }),
+    [data, setNextPage, savedTracksIsLoading, savedTracksMutate, isValidating],
+  )
 
-  const handleSetCurrPlaylist = (playlist: SimplifiedPlaylistObject): void => {
-    if (trackAudio?.current !== undefined) {
-      trackAudio.current.currentTime = 0
-      trackAudio.current.pause()
-    }
-    setCurrPlaylist(playlist)
-  }
+  const handleSetCurrPlaylist = useCallback(
+    (playlist: SimplifiedPlaylistObject | null): void => {
+      if (trackAudio?.current !== undefined) {
+        trackAudio.current.currentTime = 0
+        trackAudio.current.pause()
+      }
+      setCurrPlaylist(playlist)
+    },
+    [trackAudio],
+  )
 
   useEffect(() => {
     if (data === undefined || playlists === undefined || allItemsFetched) {
@@ -92,21 +107,26 @@ export default function OrchesAppWrapper({
     }
   }, [data, playlists, savedTracksMutate, allItemsFetched])
 
-  useEffect(() => {
-    if (session?.user?.access_token === undefined) return
-    const profile: AuthUser = session?.user
-    setAccessToken(profile.access_token)
-  }, [session])
-
-  const context = {
-    currPlaylist,
-    handleSetCurrPlaylist,
-    playlists,
-    currentTrack,
-    setCurrentTrack,
-    trackAudio,
-    savedTracksFunc,
-  }
+  const context = useMemo(
+    () => ({
+      currPlaylist,
+      handleSetCurrPlaylist,
+      playlists,
+      currentTrack,
+      setCurrentTrack,
+      trackAudio,
+      savedTracksFunc,
+    }),
+    [
+      currPlaylist,
+      handleSetCurrPlaylist,
+      playlists,
+      currentTrack,
+      setCurrentTrack,
+      trackAudio,
+      savedTracksFunc,
+    ],
+  )
 
   return (
     <OrchesContext.Provider value={context}>

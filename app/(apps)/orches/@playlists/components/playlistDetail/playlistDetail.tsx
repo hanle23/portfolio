@@ -15,9 +15,7 @@ export default function PlaylistDetail({
   setCurrPlaylist,
 }: {
   playlist: SimplifiedPlaylistObject
-  setCurrPlaylist: React.Dispatch<
-    React.SetStateAction<SimplifiedPlaylistObject | null>
-  >
+  setCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
 }): React.JSX.Element {
   const context = useContext(OrchesContext)
   const trackAudio = context?.trackAudio

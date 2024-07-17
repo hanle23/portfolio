@@ -28,15 +28,15 @@ export default function SavedTracksItem({
     <div
       key={track.track.id}
       className="grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      // onMouseOver={() => {
-      //   setIsHover(true)
-      // }}
-      // onMouseOut={() => {
-      //   setIsHover(false)
-      // }}
+      onMouseOver={() => {
+        setIsHover(true)
+      }}
+      onMouseOut={() => {
+        setIsHover(false)
+      }}
     >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
-        {isHover ? (
+        {isHover && setCurrentTrack !== undefined ? (
           <MediaPreviewButton
             currentTrack={currentTrack}
             setCurrentTrack={setCurrentTrack}

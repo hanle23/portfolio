@@ -18,24 +18,12 @@ export default function PlaylistTrackItem({
   track: PlaylistTrackObject
   handleRemoveTrack: (trackUri: string) => Promise<void>
   currentTrack: string | null
-  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
+  setCurrentTrack:
+    | React.Dispatch<React.SetStateAction<string | null>>
+    | undefined
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
   const [isHover, setIsHover] = useState<boolean>(false)
-
-  // let img = { url: '', width: 0, height: 0 }
-  // if (track?.track?.album?.images !== null) {
-  //   if (track?.track?.album?.images.length === 1) {
-  //     img = {
-  //       url: track?.track?.album?.images[0].url,
-  //       width: 250,
-  //       height: 250,
-  //     }
-  //   } else {
-  //     img =
-  //       track?.track?.album?.images?.find((image) => image?.width < 300) ?? img
-  //   }
-  // }
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
   )
@@ -50,7 +38,7 @@ export default function PlaylistTrackItem({
       }}
     >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
-        {isHover ? (
+        {isHover && setCurrentTrack !== undefined ? (
           <MediaPreviewButton
             currentTrack={currentTrack}
             setCurrentTrack={setCurrentTrack}
