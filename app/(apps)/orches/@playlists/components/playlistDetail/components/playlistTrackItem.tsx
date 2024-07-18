@@ -1,5 +1,4 @@
-'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
@@ -23,31 +22,23 @@ export default function PlaylistTrackItem({
     | undefined
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): React.JSX.Element {
-  const [isHover, setIsHover] = useState<boolean>(false)
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
   )
   return track?.track !== null ? (
-    <div
-      className="grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      onMouseOver={() => {
-        setIsHover(true)
-      }}
-      onMouseOut={() => {
-        setIsHover(false)
-      }}
-    >
+    <div className="group grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover">
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
-        {isHover && setCurrentTrack !== undefined ? (
+        {setCurrentTrack !== undefined && (
           <MediaPreviewButton
+            className="group-hover:block"
             currentTrack={currentTrack}
             setCurrentTrack={setCurrentTrack}
             trackAudio={trackAudio}
             trackUrl={track.track.preview_url}
           />
-        ) : (
-          <p className="mr-2">{index + 1}</p>
         )}
+
+        <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>
       <div className="col-span-6 lg:col-span-4 flex align-middle space-x-3">
         <div className="flex shrink-0 h-full w-12">
@@ -101,9 +92,7 @@ export default function PlaylistTrackItem({
 
       <div className="col-span-2 flex items-center justify-around">
         <button
-          className={`${
-            !isHover && 'hidden'
-          } truncate text-sm hover:text-danger-color`}
+          className={`group-hover:block hidden truncate text-sm hover:text-danger-color`}
           onClick={() => {
             handleRemoveTrack(track?.track?.uri).catch((e) => {
               console.log(e)
@@ -119,9 +108,7 @@ export default function PlaylistTrackItem({
             .padStart(2, '0')}
         </div>
         <button
-          className={`${
-            !isHover && 'hidden'
-          } truncate text-sm h-fit w-fit hover:text-spotify-color`}
+          className={`group-hover:block hidden truncate text-sm h-fit w-fit hover:text-spotify-color`}
         >
           <MoreHorizIcon />
         </button>

@@ -1,8 +1,7 @@
-'use client'
 import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 import Tooltip from '@mui/material/Tooltip'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React from 'react'
 import MediaPreviewButton from '../../../../components/mediaPreviewButton'
 export default function SavedTracksItem({
   index,
@@ -19,7 +18,6 @@ export default function SavedTracksItem({
     | undefined
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): JSX.Element {
-  const [isHover, setIsHover] = useState<boolean>(false)
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
   )
@@ -27,25 +25,20 @@ export default function SavedTracksItem({
   return (
     <div
       key={track.track.id}
-      className="grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
-      onMouseOver={() => {
-        setIsHover(true)
-      }}
-      onMouseOut={() => {
-        setIsHover(false)
-      }}
+      className="group grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
     >
-      <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
-        {isHover && setCurrentTrack !== undefined ? (
+      <div className=" ol-span-1 flex justify-end text-spotify-subtext items-center">
+        {setCurrentTrack !== undefined && (
           <MediaPreviewButton
+            className="group-hover:block"
             currentTrack={currentTrack}
             setCurrentTrack={setCurrentTrack}
             trackAudio={trackAudio}
             trackUrl={track.track.preview_url}
           />
-        ) : (
-          <p className="mr-2">{index + 1}</p>
         )}
+
+        <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>
 
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">

@@ -6,6 +6,7 @@ module.exports = {
     // Or if using `src` directory:
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  variants: { extends: { display: ['group-hover'] } },
   theme: {
     extend: {
       colors: {

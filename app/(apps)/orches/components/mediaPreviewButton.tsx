@@ -49,7 +49,7 @@ export default function MediaPreviewButton({
   return (
     <button
       onClick={handleOnClick}
-      className={`${className ?? ''} hover:text-spotify-color`}
+      className={`${className ?? ''} hidden hover:text-spotify-color`}
     >
       <IconComponent />
     </button>
