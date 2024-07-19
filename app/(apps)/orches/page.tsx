@@ -7,25 +7,20 @@ import React, {
   useMemo,
   useCallback,
 } from 'react'
-import SideBar from './sideBar'
-import { Header } from './header'
+import SideBar from './components/sideBar'
+import { Header } from './components/header'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import Login from './auth/login'
-import useFetchSavedTracks from './actions/useFetchSavedTracks'
-import useDetailedPlaylists from './actions/useDetailPlaylist'
-import fetcher from './actions/helper/fetchFunction'
-import UpdateTracksWithPlaylistStatus from './actions/helper/updateTracksWithPlaylistStatus'
+import Login from './components/auth/login'
+import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
+import useDetailedPlaylists from './components/actions/useDetailPlaylist'
+import fetcher from './components/actions/helper/fetchFunction'
+import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
+import PlaylistPage from './playlists/playlistsPage'
 
 export interface OrchesContextType {
-  currPlaylist: SimplifiedPlaylistObject | null
-  handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
-  playlists: SimplifiedPlaylistObject[] | undefined
-  currentTrack: string | null
-  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
     data: SavedTracks[] | undefined
     setNextPage: () => Promise<void>
@@ -37,19 +32,16 @@ export interface OrchesContextType {
 
 export const OrchesContext = createContext<OrchesContextType | null>(null)
 
-export default function OrchesAppWrapper({
+export default function Page({
   children,
-  allRoutes,
 }: {
   children: React.ReactNode
-  allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
 }): React.JSX.Element {
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [allItemsFetched, setAllItemsFetched] = useState<boolean>(false)
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
-  const [currentTrack, setCurrentTrack] = useState<string | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
@@ -109,23 +101,9 @@ export default function OrchesAppWrapper({
 
   const context = useMemo(
     () => ({
-      currPlaylist,
-      handleSetCurrPlaylist,
-      playlists,
-      currentTrack,
-      setCurrentTrack,
-      trackAudio,
       savedTracksFunc,
     }),
-    [
-      currPlaylist,
-      handleSetCurrPlaylist,
-      playlists,
-      currentTrack,
-      setCurrentTrack,
-      trackAudio,
-      savedTracksFunc,
-    ],
+    [savedTracksFunc],
   )
 
   return (
@@ -136,26 +114,28 @@ export default function OrchesAppWrapper({
         <div className="h-full w-full bg-spotify-background text-white">
           <Header />
           <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
-            {pathname !== '/orches/profile' && (
-              <SideBar
-                allRoutes={allRoutes}
-                currentRoute={currentRoute}
-                setCurrentRoute={setCurrentRoute}
-                playlists={playlists}
-                currPlaylist={currPlaylist}
-                setCurrPlaylist={handleSetCurrPlaylist}
-              />
+            {pathname !== '/orches/profile' ? (
+              <>
+                <SideBar
+                  currentRoute={currentRoute}
+                  setCurrentRoute={setCurrentRoute}
+                  playlists={playlists}
+                  currPlaylist={currPlaylist}
+                  setCurrPlaylist={handleSetCurrPlaylist}
+                />
+                <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
+                  <PlaylistPage
+                    currPlaylist={currPlaylist}
+                    handleSetCurrPlaylist={handleSetCurrPlaylist}
+                    trackAudio={trackAudio}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
+                {children}
+              </div>
             )}
-            <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
-              {allRoutes !== undefined && pathname !== '/orches/profile'
-                ? (() => {
-                    const route = allRoutes.find(
-                      (route) => route.value === currentRoute,
-                    )
-                    return route !== null ? route?.node : null
-                  })()
-                : children}
-            </div>
           </div>
         </div>
       )}

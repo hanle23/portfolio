@@ -6,16 +6,10 @@ import MediaPreviewButton from '../../../../components/mediaPreviewButton'
 export default function SavedTracksItem({
   index,
   track,
-  currentTrack,
-  setCurrentTrack,
   trackAudio,
 }: {
   index: number
   track: SavedTracksObject
-  currentTrack: string | null | undefined
-  setCurrentTrack:
-    | React.Dispatch<React.SetStateAction<string | null>>
-    | undefined
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
 }): JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
@@ -28,15 +22,11 @@ export default function SavedTracksItem({
       className="group grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
     >
       <div className=" ol-span-1 flex justify-end text-spotify-subtext items-center">
-        {setCurrentTrack !== undefined && (
-          <MediaPreviewButton
-            className="group-hover:block"
-            currentTrack={currentTrack}
-            setCurrentTrack={setCurrentTrack}
-            trackAudio={trackAudio}
-            trackUrl={track.track.preview_url}
-          />
-        )}
+        <MediaPreviewButton
+          className="group-hover:block"
+          trackAudio={trackAudio}
+          trackUrl={track.track.preview_url}
+        />
 
         <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>

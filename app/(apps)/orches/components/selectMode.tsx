@@ -11,7 +11,7 @@ export default function SelectMode({
   currentRoute,
 }: {
   className: string
-  allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
+  allRoutes: Array<{ value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
 }): React.JSX.Element {

@@ -5,7 +5,6 @@ import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 
 export default function SideBar({
   className,
-  allRoutes,
   setCurrentRoute,
   currentRoute,
   playlists,
@@ -13,13 +12,13 @@ export default function SideBar({
   setCurrPlaylist,
 }: {
   className?: string
-  allRoutes: Array<{ node: React.ReactNode; value: string; label: string }>
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
   playlists: SimplifiedPlaylistObject[] | undefined
   currPlaylist: SimplifiedPlaylistObject | null
   setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
 }): React.JSX.Element {
+  const allRoutes = [{ value: 'playlists', label: 'Playlists' }]
   return (
     <div className={className ?? 'flex flex-col gap-6 w-1/4 h-full relative'}>
       <SelectMode

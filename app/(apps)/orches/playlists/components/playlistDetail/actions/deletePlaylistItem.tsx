@@ -1,16 +1,17 @@
-import type { OrchesContextType } from '@/app/(apps)/orches/components/appWrapper'
-
+import { useSession } from 'next-auth/react'
 export default async function useDeletePlaylistItem(
-  context: OrchesContextType | null,
   trackUri: string,
   playlistId: string,
   snapshotId: string,
 ): Promise<{ message: string; status: number }> {
+  const { data: session } = useSession()
+  if (session === undefined)
+    return { message: 'User not authorized to use this action', status: 401 }
   try {
     const response = await fetch(`/api/spotify/playlists/${playlistId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${context?.accessToken}`,
+        Authorization: `Bearer ${session?.user?.access_token}`,
         'Content-Type': 'application/json',
       },
       mode: 'cors',

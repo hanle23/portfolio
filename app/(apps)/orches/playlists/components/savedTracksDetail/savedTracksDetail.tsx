@@ -1,15 +1,18 @@
 'use client'
 import { useContext, useEffect } from 'react'
-import { OrchesContext } from '../../../components/orchesAppWrapper'
+import { OrchesContext } from '../../../page'
 import SavedTracksHeader from './components/savedTracksHeader'
 import SavedTracksItem from './components/savedTracksItem'
 import type {
   SavedTracks,
   SavedTracksObject,
 } from '@/app/types/spotify/savedTracks'
-export default function SavedTracksDetail(): JSX.Element {
+export default function SavedTracksDetail({
+  trackAudio,
+}: {
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
+}): JSX.Element {
   const context = useContext(OrchesContext)
-  const trackAudio = context?.trackAudio
   const { savedTracksFunc } = context ?? {}
   const savedTracks =
     savedTracksFunc?.data?.flatMap(
@@ -38,8 +41,6 @@ export default function SavedTracksDetail(): JSX.Element {
             key={track.track.id}
             index={index}
             track={track}
-            currentTrack={context?.currentTrack}
-            setCurrentTrack={context?.setCurrentTrack}
             trackAudio={trackAudio}
           />
         ))}

@@ -1,6 +1,4 @@
-'use client'
-import React, { useContext } from 'react'
-import { OrchesContext } from '../../../components/orchesAppWrapper'
+import React from 'react'
 import PlaylistHeader from './components/playlistHeader'
 import PlaylistTrackItem from './components/playlistTrackItem'
 import useDeletePlaylistItem from './actions/deletePlaylistItem'
@@ -11,24 +9,24 @@ import type {
 } from '@/app/types/spotify/playlist'
 
 export default function PlaylistDetail({
-  playlist,
+  currPlaylist,
   setCurrPlaylist,
+  trackAudio,
 }: {
-  playlist: SimplifiedPlaylistObject
+  currPlaylist: SimplifiedPlaylistObject
   setCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
+  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
 }): React.JSX.Element {
-  const context = useContext(OrchesContext)
-  const trackAudio = context?.trackAudio
-
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
     const res = await useDeletePlaylistItem(
-      context,
       trackUri,
-      playlist.id,
-      playlist.snapshot_id,
+      currPlaylist.id,
+      currPlaylist.snapshot_id,
     )
     if (res.status === 200) {
-      toast.success(`Successfully removed track from playlist ${playlist.name}`)
+      toast.success(
+        `Successfully removed track from playlist ${currPlaylist.name}`,
+      )
     } else {
       toast.error(
         `Unable to remove track from playlist, please try again later`,
@@ -38,19 +36,20 @@ export default function PlaylistDetail({
 
   return (
     <div className="w-full h-full flex flex-col overscroll-none overflow-y-auto">
-      <PlaylistHeader playlist={playlist} setCurrPlaylist={setCurrPlaylist} />
+      <PlaylistHeader
+        playlist={currPlaylist}
+        setCurrPlaylist={setCurrPlaylist}
+      />
 
       <div className="flex flex-col w-full h-full px-2 mt-4 gap-3">
-        {Array.isArray(context?.currPlaylist?.tracks) &&
-          context?.currPlaylist?.tracks?.map(
+        {Array.isArray(currPlaylist?.tracks) &&
+          currPlaylist?.tracks?.map(
             (track: PlaylistTrackObject, index: number) => (
               <PlaylistTrackItem
                 key={track?.track?.id}
                 handleRemoveTrack={useHandleRemoveTrack}
                 index={index}
                 track={track}
-                currentTrack={context?.currentTrack}
-                setCurrentTrack={context?.setCurrentTrack}
                 trackAudio={trackAudio}
               />
             ),

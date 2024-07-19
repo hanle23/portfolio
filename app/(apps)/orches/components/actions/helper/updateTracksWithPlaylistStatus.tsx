@@ -9,21 +9,27 @@ export default function updateTracksWithPlaylistStatus(
   const playlistTrackIds = new Set(
     playlists?.flatMap((playlist) => {
       if (Array.isArray(playlist?.tracks)) {
-        return playlist.tracks.map((item) => item?.track?.id)
+        return playlist?.tracks?.map((item) => item?.track?.id)
       }
       return []
     }),
   )
 
   // Map over savedTracks to add isInPlaylist property
-  const updatedSavedTracks = savedTracks.map((savedTrack: SavedTracks) => {
+  const updatedSavedTracks = savedTracks?.map((savedTrack: SavedTracks) => {
     const updatedItems = savedTrack?.items?.map((track) => {
+      if (
+        track?.track?.isInPlaylist !== undefined &&
+        track?.track?.isInPlaylist !== null
+      ) {
+        return track
+      }
       const isInPlaylist = playlistTrackIds.has(String(track?.track?.id))
 
       return {
         ...track,
         track: {
-          ...track.track,
+          ...track?.track,
           isInPlaylist,
         },
       }
