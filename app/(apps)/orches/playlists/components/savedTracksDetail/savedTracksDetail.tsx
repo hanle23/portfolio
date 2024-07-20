@@ -1,26 +1,50 @@
 'use client'
-import { useContext, useEffect } from 'react'
-import { OrchesContext } from '../../../page'
+import { useEffect, useState } from 'react'
 import SavedTracksHeader from './components/savedTracksHeader'
 import SavedTracksItem from './components/savedTracksItem'
 import type {
   SavedTracks,
   SavedTracksObject,
 } from '@/app/types/spotify/savedTracks'
+import PlaylistMenu from './components/playlistMenu'
 export default function SavedTracksDetail({
   trackAudio,
+  savedTracksFunc,
+  playlists,
 }: {
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
+  savedTracksFunc: {
+    data: SavedTracks[] | undefined
+    setNextPage: () => Promise<void>
+    savedTracksIsLoading: boolean
+    savedTracksMutate: () => void
+    isValidating: boolean
+  }
+  playlists:
+    | Array<{
+        name: string
+        id: string
+        images: Array<{
+          url: string
+          height: number | null
+          width: number | null
+        }>
+      }>
+    | undefined
+    | undefined
 }): JSX.Element {
-  const context = useContext(OrchesContext)
-  const { savedTracksFunc } = context ?? {}
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [currTrackUri, setCurrTrackUri] = useState<string>('')
+  const [playlistsToAdd, setPlaylistsToAdd] = useState<string[]>([])
+  const [playlistsToRemove, setPlaylistsToRemove] = useState<string[]>([])
+  const open = Boolean(anchorEl)
   const savedTracks =
     savedTracksFunc?.data?.flatMap(
       (trackPage: SavedTracks) => trackPage.items,
     ) ?? []
   useEffect(() => {
     if (
-      savedTracksFunc?.savedTracksIsLoading === false &&
+      !savedTracksFunc?.savedTracksIsLoading &&
       !savedTracksFunc?.isValidating
     )
       savedTracksFunc?.setNextPage().catch((e: any) => {
@@ -32,6 +56,17 @@ export default function SavedTracksDetail({
     savedTracksFunc?.isValidating,
     savedTracksFunc?.savedTracksIsLoading,
   ])
+  const handleAddToPlaylist = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    trackUri: string,
+  ): void => {
+    setAnchorEl(event.currentTarget)
+    setCurrTrackUri(trackUri)
+  }
+  const handleClose = (): void => {
+    setAnchorEl(null)
+    setCurrTrackUri('')
+  }
   return (
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
       <SavedTracksHeader total={savedTracksFunc?.data?.[0]?.total} />
@@ -42,8 +77,18 @@ export default function SavedTracksDetail({
             index={index}
             track={track}
             trackAudio={trackAudio}
+            handleAddToPlaylist={handleAddToPlaylist}
           />
         ))}
+        <PlaylistMenu
+          anchorEl={anchorEl}
+          handleClose={handleClose}
+          playlists={playlists}
+          open={open}
+          isSubmittable={
+            playlistsToAdd.length > 0 && playlistsToRemove.length > 0
+          }
+        />
       </div>
     </div>
   )

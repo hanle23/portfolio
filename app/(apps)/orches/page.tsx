@@ -1,12 +1,5 @@
 'use client'
-import React, {
-  createContext,
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import SideBar from './components/sideBar'
 import { Header } from './components/header'
 import { usePathname } from 'next/navigation'
@@ -17,20 +10,7 @@ import useDetailedPlaylists from './components/actions/useDetailPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
-import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
-
-export interface OrchesContextType {
-  savedTracksFunc: {
-    data: SavedTracks[] | undefined
-    setNextPage: () => Promise<void>
-    savedTracksIsLoading: boolean
-    savedTracksMutate: () => void
-    isValidating: boolean
-  }
-}
-
-export const OrchesContext = createContext<OrchesContextType | null>(null)
 
 export default function Page({
   children,
@@ -99,15 +79,8 @@ export default function Page({
     }
   }, [data, playlists, savedTracksMutate, allItemsFetched])
 
-  const context = useMemo(
-    () => ({
-      savedTracksFunc,
-    }),
-    [savedTracksFunc],
-  )
-
   return (
-    <OrchesContext.Provider value={context}>
+    <>
       {session === undefined || status !== 'authenticated' ? (
         <Login />
       ) : (
@@ -128,6 +101,12 @@ export default function Page({
                     currPlaylist={currPlaylist}
                     handleSetCurrPlaylist={handleSetCurrPlaylist}
                     trackAudio={trackAudio}
+                    savedTracksFunc={savedTracksFunc}
+                    playlists={playlists?.map(({ name, id, images }) => ({
+                      name,
+                      id,
+                      images,
+                    }))}
                   />
                 </div>
               </>
@@ -139,6 +118,6 @@ export default function Page({
           </div>
         </div>
       )}
-    </OrchesContext.Provider>
+    </>
   )
 }

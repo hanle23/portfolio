@@ -3,14 +3,21 @@ import Tooltip from '@mui/material/Tooltip'
 import Image from 'next/image'
 import React from 'react'
 import MediaPreviewButton from '../../../../components/mediaPreviewButton'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 export default function SavedTracksItem({
   index,
   track,
   trackAudio,
+  handleAddToPlaylist,
 }: {
   index: number
   track: SavedTracksObject
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
+  handleAddToPlaylist: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    trackUri: string,
+  ) => void
 }): JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
@@ -101,13 +108,25 @@ export default function SavedTracksItem({
         </p>
       </div>
 
-      <div className="col-span-2 flex">
+      <div className="col-span-2 flex items-center justify-between">
+        <button
+          className="group-hover:opacity-100 opacity-0 hover:text-spotify-color"
+          onClick={(event) => {
+            handleAddToPlaylist(event, track.track.uri)
+          }}
+        >
+          <AddCircleOutlineIcon />
+        </button>
+
         <p className="truncate items-center text-spotify-subtext text-sm justify-center h-full w-full flex">
           {Math.floor(track?.track?.duration_ms / 60000)}:
           {((track?.track?.duration_ms % 60000) / 1000)
             .toFixed(0)
             .padStart(2, '0')}
         </p>
+        <button className="group-hover:opacity-100 opacity-0 hover:text-spotify-color">
+          <MoreHorizIcon />
+        </button>
       </div>
     </div>
   )
