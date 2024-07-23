@@ -10,6 +10,7 @@ import useDetailedPlaylists from './components/actions/useDetailPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
 
 export default function Page({
@@ -19,7 +20,11 @@ export default function Page({
 }): React.JSX.Element {
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [allItemsFetched, setAllItemsFetched] = useState<boolean>(false)
+  const [playlists, setPlaylists] = useState<SimplifiedPlaylistObject[]>([])
+  const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
+  const [distinctPlaylist, setDistinctPlaylist] = useState<
+    SimplifiedPlaylistObject[]
+  >([])
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
   const trackAudio = useRef(
@@ -27,28 +32,55 @@ export default function Page({
   )
   const pathname = usePathname()
   const {
-    data,
+    data: savedTrackRes,
     setNextPage,
     isLoading: savedTracksIsLoading,
     mutate: savedTracksMutate,
     isValidating,
-  } = useFetchSavedTracks(
-    fetcher,
+  } = useFetchSavedTracks(fetcher, session?.user?.access_token)
+
+  const { data: playlistRes } = useDetailedPlaylists(
     session?.user?.access_token,
-    setAllItemsFetched,
   )
 
-  const { data: playlists } = useDetailedPlaylists(session?.user?.access_token)
+  useEffect(() => {
+    if (playlistRes !== null && playlistRes !== undefined) {
+      setPlaylists(playlistRes)
+    }
+
+    if (savedTrackRes !== null && savedTrackRes !== undefined) {
+      setSavedTracks((prevTracks) => {
+        if (prevTracks?.length === 0) {
+          return savedTrackRes
+        }
+        const filteredTracks = savedTrackRes.filter(
+          (savedTrack) =>
+            !prevTracks.some(
+              (prevTrack) =>
+                prevTrack.href === savedTrack.href ||
+                prevTrack.offset === savedTrack.offset,
+            ),
+        )
+        return [...prevTracks, ...filteredTracks]
+      })
+    }
+  }, [playlistRes, savedTrackRes])
 
   const savedTracksFunc = useMemo(
     () => ({
-      data,
+      savedTracks,
       setNextPage,
       savedTracksIsLoading,
       savedTracksMutate,
       isValidating,
     }),
-    [data, setNextPage, savedTracksIsLoading, savedTracksMutate, isValidating],
+    [
+      savedTracks,
+      setNextPage,
+      savedTracksIsLoading,
+      savedTracksMutate,
+      isValidating,
+    ],
   )
 
   const handleSetCurrPlaylist = useCallback(
@@ -62,22 +94,21 @@ export default function Page({
     [trackAudio],
   )
 
-  useEffect(() => {
-    if (data === undefined || playlists === undefined || allItemsFetched) {
-      return
-    }
-    if (data?.length === 0 || playlists?.length === 0) {
-      return
-    }
-    const fetchLimit = Math.ceil(data[0].total / data[0].limit)
-    if (data?.length === fetchLimit) {
-      const updatedTracks = UpdateTracksWithPlaylistStatus(playlists, data)
-      savedTracksMutate(updatedTracks, { revalidate: false }).catch((e) => {
-        console.log('error occurs')
-      })
-      setAllItemsFetched(true)
-    }
-  }, [data, playlists, savedTracksMutate, allItemsFetched])
+  // useEffect(() => {
+  //   if (savedTracks === undefined || playlists === undefined) {
+  //     return
+  //   }
+  //   if (savedTracks?.length === 0 || playlists?.length === 0) {
+  //     return
+  //   }
+  //   const fetchLimit = Math.ceil(savedTracks[0].total / savedTracks[0].limit)
+  //   if (savedTracks?.length === fetchLimit) {
+  //     const updatedTracks = UpdateTracksWithPlaylistStatus(
+  //       playlists,
+  //       savedTracks,
+  //     )
+  //   }
+  // }, [savedTracks, playlists])
 
   return (
     <>

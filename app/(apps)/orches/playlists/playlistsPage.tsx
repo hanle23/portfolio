@@ -34,7 +34,6 @@ export default function PlaylistPage({
     | undefined
     | undefined
 }): React.JSX.Element {
-  console.log(playlists)
   return (
     <div className="w-full h-full relative">
       {currPlaylist !== undefined && currPlaylist !== null ? (

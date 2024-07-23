@@ -16,7 +16,6 @@ interface ExtendedSWRInfiniteResponse<SavedTracks, Error>
 export default function useFetchSavedTracks(
   fetcher: Fetcher<any, FetcherArgs>,
   accessToken: string | undefined,
-  setAllItemsFetched: React.Dispatch<React.SetStateAction<boolean>>,
 ): ExtendedSWRInfiniteResponse<SavedTracks, any> {
   const getKey = (
     pageIndex: number,
@@ -67,7 +66,6 @@ export default function useFetchSavedTracks(
     await setSize(size + 1).catch((e) => {
       console.log(e)
     })
-    setAllItemsFetched(false)
   }
   const isLoading = isValidating && data !== undefined && data !== null
   return {
