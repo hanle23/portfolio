@@ -9,7 +9,10 @@ import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
 import useDetailedPlaylists from './components/actions/useDetailPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
-import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type {
+  UserPlaylistResponse,
+  SimplifiedPlaylistObject,
+} from '@/app/types/spotify/playlist'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
 
@@ -20,10 +23,10 @@ export default function Page({
 }): React.JSX.Element {
   const { data: session, status } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [playlists, setPlaylists] = useState<SimplifiedPlaylistObject[]>([])
+  const [playlists, setPlaylists] = useState<UserPlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
   const [distinctPlaylist, setDistinctPlaylist] = useState<
-    SimplifiedPlaylistObject[]
+    Array<{ id: string; title: string }>
   >([])
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
@@ -45,7 +48,20 @@ export default function Page({
 
   useEffect(() => {
     if (playlistRes !== null && playlistRes !== undefined) {
-      setPlaylists(playlistRes)
+      setPlaylists((prevTracks) => {
+        if (prevTracks?.length === 0) {
+          return playlistRes
+        }
+        const filteredTracks = playlistRes.filter(
+          (playlist) =>
+            !prevTracks.some(
+              (prevTrack) =>
+                prevTrack.href === playlist.href ||
+                prevTrack.offset === playlist.offset,
+            ),
+        )
+        return [...prevTracks, ...filteredTracks]
+      })
     }
 
     if (savedTrackRes !== null && savedTrackRes !== undefined) {
