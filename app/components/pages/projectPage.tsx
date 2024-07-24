@@ -73,7 +73,7 @@ export default function ProjectPage(): React.JSX.Element {
                         .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
                     </div>
                     <p className="line-clamp-2 hover:line-clamp-none">
-                      {project.description ?? 'Description coming soon!'}
+                      {project.description ?? ''}
                     </p>
                     <div className="text-sm  flex items-center space-x-1 mt-auto">
                       <div
