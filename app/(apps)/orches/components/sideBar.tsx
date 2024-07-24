@@ -1,20 +1,23 @@
 import React from 'react'
 import SelectMode from './selectMode'
 import PlaylistCard from './sidebarComponents/playlistCard'
-import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type {
+  PlaylistResponse,
+  SimplifiedPlaylistObject,
+} from '@/app/types/spotify/playlist'
 
 export default function SideBar({
   className,
   setCurrentRoute,
   currentRoute,
-  playlists,
+  playlistsRes,
   currPlaylist,
   setCurrPlaylist,
 }: {
   className?: string
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
-  playlists: SimplifiedPlaylistObject[] | undefined
+  playlistsRes: PlaylistResponse[] | undefined
   currPlaylist: SimplifiedPlaylistObject | null
   setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
 }): React.JSX.Element {
@@ -27,16 +30,20 @@ export default function SideBar({
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="flex flex-col rounded-lg bg-container h-[90%] p-2.5 overflow-x-hidden overflow-y-auto shrink-0 min-w-36">
-        {playlists?.map((playlist: SimplifiedPlaylistObject, index: number) => (
-          <PlaylistCard
-            key={playlist.id}
-            index={index}
-            playlist={playlist}
-            setCurrPlaylist={setCurrPlaylist}
-            currPlaylist={currPlaylist}
-          />
-        ))}
+      <div className="flex flex-col rounded-lg bg-container h-[87%] p-2.5 overflow-x-hidden overflow-y-auto shrink-0 min-w-36">
+        {playlistsRes?.map((playlistRes: PlaylistResponse) => {
+          return playlistRes?.items?.map(
+            (playlist: SimplifiedPlaylistObject, index: number) => (
+              <PlaylistCard
+                key={playlist.id}
+                index={index}
+                playlist={playlist}
+                setCurrPlaylist={setCurrPlaylist}
+                currPlaylist={currPlaylist}
+              />
+            ),
+          )
+        })}
       </div>
     </div>
   )

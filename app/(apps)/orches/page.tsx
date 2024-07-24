@@ -1,70 +1,102 @@
 'use client'
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import SideBar from './components/sideBar'
-import { Header } from './components/header'
-import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import Login from './components/auth/login'
 import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
-import useDetailedPlaylists from './components/actions/useDetailPlaylist'
+import useFetchPlaylist from './components/actions/useFetchPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
 import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type {
-  UserPlaylistResponse,
+  PlaylistResponse,
   SimplifiedPlaylistObject,
 } from '@/app/types/spotify/playlist'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
+import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
+import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
 
-export default function Page({
-  children,
-}: {
-  children: React.ReactNode
-}): React.JSX.Element {
-  const { data: session, status } = useSession()
+export default function Page(): React.JSX.Element {
+  const { data: session } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [playlists, setPlaylists] = useState<UserPlaylistResponse[]>([])
+  const [playlistsRes, setPlaylists] = useState<PlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
   const [distinctPlaylist, setDistinctPlaylist] = useState<
-    Array<{ id: string; title: string }>
+    Array<{
+      name: string
+      id: string
+      images: Array<{
+        url: string
+        height: number | null
+        width: number | null
+      }>
+    }>
   >([])
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
-  const pathname = usePathname()
   const {
     data: savedTrackRes,
-    setNextPage,
+    setNextPage: savedTracksSetNextPage,
     isLoading: savedTracksIsLoading,
     mutate: savedTracksMutate,
-    isValidating,
+    isValidating: savedTracksIsValidating,
   } = useFetchSavedTracks(fetcher, session?.user?.access_token)
 
-  const { data: playlistRes } = useDetailedPlaylists(
-    session?.user?.access_token,
-  )
+  const {
+    data: playlistRes,
+    setNextPage: playlistsSetNextPage,
+    isLoading: playlistsIsLoading,
+    mutate: playlistsMutate,
+    isValidating: playlistsIsValidating,
+  } = useFetchPlaylist(fetcher, session?.user?.access_token)
 
   useEffect(() => {
-    if (playlistRes !== null && playlistRes !== undefined) {
-      setPlaylists((prevTracks) => {
-        if (prevTracks?.length === 0) {
-          return playlistRes
+    if (
+      playlistRes !== null &&
+      playlistRes !== undefined &&
+      Math.ceil((playlistRes.length * PLAYLIST_LIMIT) / PLAYLIST_LIMIT) + 1 >
+        playlistRes.length
+    ) {
+      const filteredPlaylistRes = playlistRes?.map((playlistResponse) => ({
+        ...playlistResponse,
+        items: playlistResponse?.items?.filter(
+          (playlist) => playlist?.owner?.display_name === session?.user?.name,
+        ),
+      }))
+      setPlaylists((prevPlaylists) => {
+        if (prevPlaylists?.length === 0) {
+          return filteredPlaylistRes
         }
-        const filteredTracks = playlistRes.filter(
+        const filteredPlaylists = filteredPlaylistRes?.filter(
           (playlist) =>
-            !prevTracks.some(
-              (prevTrack) =>
-                prevTrack.href === playlist.href ||
-                prevTrack.offset === playlist.offset,
+            !prevPlaylists.some(
+              (prevPlaylist) =>
+                prevPlaylist.href === playlist.href ||
+                prevPlaylist.offset === playlist.offset,
             ),
         )
-        return [...prevTracks, ...filteredTracks]
+        return [...prevPlaylists, ...filteredPlaylists]
+      })
+      setDistinctPlaylist(() => {
+        return filteredPlaylistRes.flatMap((playlistRes) =>
+          playlistRes.items.map((playlist) => ({
+            id: playlist.id,
+            name: playlist.name,
+            images: playlist.images,
+          })),
+        )
       })
     }
 
-    if (savedTrackRes !== null && savedTrackRes !== undefined) {
+    if (
+      savedTrackRes !== null &&
+      savedTrackRes !== undefined &&
+      Math.ceil((savedTrackRes.length * SAVEDTRACK_LIMIT) / SAVEDTRACK_LIMIT) +
+        1 >
+        savedTrackRes.length
+    ) {
       setSavedTracks((prevTracks) => {
         if (prevTracks?.length === 0) {
           return savedTrackRes
@@ -80,24 +112,27 @@ export default function Page({
         return [...prevTracks, ...filteredTracks]
       })
     }
-  }, [playlistRes, savedTrackRes])
+  }, [playlistRes, savedTrackRes, session?.user?.name])
 
-  const savedTracksFunc = useMemo(
-    () => ({
-      savedTracks,
-      setNextPage,
-      savedTracksIsLoading,
-      savedTracksMutate,
-      isValidating,
-    }),
-    [
-      savedTracks,
-      setNextPage,
-      savedTracksIsLoading,
-      savedTracksMutate,
-      isValidating,
-    ],
-  )
+  useEffect(() => {
+    if (!playlistsIsLoading && !playlistsIsValidating)
+      playlistsSetNextPage().catch((e: any) => {
+        console.log(e)
+      })
+  }, [playlistsSetNextPage, playlistsIsValidating, playlistsIsLoading])
+
+  const savedTracksFunc = {
+    savedTracks,
+    savedTracksSetNextPage,
+    savedTracksIsLoading,
+    savedTracksMutate,
+    savedTracksIsValidating,
+  }
+
+  const playlistsFunc = {
+    playlistsRes,
+    playlistsMutate,
+  }
 
   const handleSetCurrPlaylist = useCallback(
     (playlist: SimplifiedPlaylistObject | null): void => {
@@ -127,44 +162,23 @@ export default function Page({
   // }, [savedTracks, playlists])
 
   return (
-    <>
-      {session === undefined || status !== 'authenticated' ? (
-        <Login />
-      ) : (
-        <div className="h-full w-full bg-spotify-background text-white">
-          <Header />
-          <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
-            {pathname !== '/orches/profile' ? (
-              <>
-                <SideBar
-                  currentRoute={currentRoute}
-                  setCurrentRoute={setCurrentRoute}
-                  playlists={playlists}
-                  currPlaylist={currPlaylist}
-                  setCurrPlaylist={handleSetCurrPlaylist}
-                />
-                <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
-                  <PlaylistPage
-                    currPlaylist={currPlaylist}
-                    handleSetCurrPlaylist={handleSetCurrPlaylist}
-                    trackAudio={trackAudio}
-                    savedTracksFunc={savedTracksFunc}
-                    playlists={playlists?.map(({ name, id, images }) => ({
-                      name,
-                      id,
-                      images,
-                    }))}
-                  />
-                </div>
-              </>
-            ) : (
-              <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
-                {children}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </>
+    <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
+      <SideBar
+        currentRoute={currentRoute}
+        setCurrentRoute={setCurrentRoute}
+        playlistsRes={playlistsRes}
+        currPlaylist={currPlaylist}
+        setCurrPlaylist={handleSetCurrPlaylist}
+      />
+      <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
+        <PlaylistPage
+          currPlaylist={currPlaylist}
+          handleSetCurrPlaylist={handleSetCurrPlaylist}
+          trackAudio={trackAudio}
+          savedTracksFunc={savedTracksFunc}
+          playlists={distinctPlaylist}
+        />
+      </div>
+    </div>
   )
 }

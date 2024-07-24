@@ -30,7 +30,7 @@ export interface SimplifiedPlaylistObject {
   uri: string
 }
 
-export interface UserPlaylistResponse {
+export interface PlaylistResponse {
   href: string
   limit: number
   next: string | null

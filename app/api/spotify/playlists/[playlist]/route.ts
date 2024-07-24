@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { type NextRequest } from 'next/server'
-import { LIMIT, BASE_URL } from '@/constants/spotify/playlist'
+import { BASE_URL } from '@/constants/spotify/playlist'
 
 export async function GET(
   req: NextRequest,
@@ -12,15 +12,18 @@ export async function GET(
   }
   let response
   const playlistID = params.playlist
+  const limit = req.nextUrl.searchParams.get('limit')
   const offset = req.nextUrl.searchParams.get('offset')
   try {
     response = await fetch(
-      `${BASE_URL}/${playlistID}/tracks?limit=${LIMIT}&offset=${offset}`,
+      `${BASE_URL}/${playlistID}/tracks?limit=${limit}&offset=${offset}`,
       {
         method: 'GET',
         headers: { Authorization: `${authHeader}` },
       },
     )
+    response = await response.json()
+    return NextResponse.json(response, { status: 200 })
   } catch (error) {
     console.error('Failed to fetch playlist items:', error)
     return NextResponse.json(
@@ -28,14 +31,6 @@ export async function GET(
       { status: 500 },
     )
   }
-  const res = await response.json()
-  return NextResponse.json({
-    items: res.items,
-    next: res.next,
-    limit: res.limit,
-    offset: res.offset,
-    total: res.total,
-  })
 }
 
 export async function DELETE(

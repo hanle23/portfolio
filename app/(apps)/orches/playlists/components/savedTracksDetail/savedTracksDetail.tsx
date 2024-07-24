@@ -14,11 +14,11 @@ export default function SavedTracksDetail({
 }: {
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
-    data: SavedTracks[] | undefined
-    setNextPage: () => Promise<void>
+    savedTracks: SavedTracks[] | undefined
+    savedTracksSetNextPage: () => Promise<void>
     savedTracksIsLoading: boolean
     savedTracksMutate: () => void
-    isValidating: boolean
+    savedTracksIsValidating: boolean
   }
   playlists:
     | Array<{
@@ -39,21 +39,21 @@ export default function SavedTracksDetail({
   const [playlistsToRemove, setPlaylistsToRemove] = useState<string[]>([])
   const open = Boolean(anchorEl)
   const savedTracks =
-    savedTracksFunc?.data?.flatMap(
+    savedTracksFunc?.savedTracks?.flatMap(
       (trackPage: SavedTracks) => trackPage.items,
     ) ?? []
   useEffect(() => {
     if (
       !savedTracksFunc?.savedTracksIsLoading &&
-      !savedTracksFunc?.isValidating
+      !savedTracksFunc?.savedTracksIsValidating
     )
-      savedTracksFunc?.setNextPage().catch((e: any) => {
+      savedTracksFunc?.savedTracksSetNextPage().catch((e: any) => {
         console.log(e)
       })
   }, [
     savedTracksFunc,
-    savedTracksFunc?.setNextPage,
-    savedTracksFunc?.isValidating,
+    savedTracksFunc?.savedTracksSetNextPage,
+    savedTracksFunc?.savedTracksIsValidating,
     savedTracksFunc?.savedTracksIsLoading,
   ])
   const handleAddToPlaylist = (
@@ -69,7 +69,7 @@ export default function SavedTracksDetail({
   }
   return (
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
-      <SavedTracksHeader total={savedTracksFunc?.data?.[0]?.total} />
+      <SavedTracksHeader total={savedTracksFunc?.savedTracks?.[0]?.total} />
       <div className="flex flex-col h-full w-full space-y-3 pt-3">
         {savedTracks?.map((track: SavedTracksObject, index: number) => (
           <SavedTracksItem

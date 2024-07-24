@@ -15,11 +15,11 @@ export default function PlaylistPage({
   handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
-    data: SavedTracks[] | undefined
-    setNextPage: () => Promise<void>
+    savedTracks: SavedTracks[] | undefined
+    savedTracksSetNextPage: () => Promise<void>
     savedTracksIsLoading: boolean
     savedTracksMutate: () => void
-    isValidating: boolean
+    savedTracksIsValidating: boolean
   }
   playlists:
     | Array<{
