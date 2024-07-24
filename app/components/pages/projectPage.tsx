@@ -22,7 +22,7 @@ export default function ProjectPage(): React.JSX.Element {
   }
   useEffect(() => {
     const fetchData = (): void => {
-      fetch('/api/projects')
+      fetch('/api/projects', { cache: 'no-store' })
         .then(async (response) => await response.json())
         .then((result: RES) => {
           setData(result.data)
