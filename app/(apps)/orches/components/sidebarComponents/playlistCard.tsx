@@ -8,8 +8,18 @@ export default function PlaylistCard({
   currPlaylist,
   index,
 }: {
-  playlist: SimplifiedPlaylistObject
-  setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
+  playlist: {
+    name: string
+    id: string
+    images: Array<{
+      url: string
+      height: number | null
+      width: number | null
+    }>
+    numOfTracks: number
+    description: string
+  }
+  setCurrPlaylist: (id: string) => void
   currPlaylist: SimplifiedPlaylistObject | null | undefined
   index: number
 }): React.JSX.Element {
@@ -31,7 +41,7 @@ export default function PlaylistCard({
       } overflow-hidden cursor-pointer py-1 px-2.5 min-h-1/4 min-w-2/4 shrink-0 `}
       onClick={() => {
         if (setCurrPlaylist !== undefined) {
-          setCurrPlaylist(playlist)
+          setCurrPlaylist(playlist?.id)
         }
       }}
     >
@@ -57,11 +67,7 @@ export default function PlaylistCard({
           {playlist.description}
         </p>
         <p className="truncate text-sm text-spotify-subtext">
-          {`${
-            Array.isArray(playlist?.tracks)
-              ? playlist?.tracks?.length
-              : playlist?.tracks?.total
-          } songs`}
+          {`${playlist?.numOfTracks} songs`}
         </p>
       </div>
     </div>

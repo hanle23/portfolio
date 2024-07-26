@@ -39,3 +39,21 @@ export interface PlaylistResponse {
   total: number
   items: SimplifiedPlaylistObject[]
 }
+
+export interface PlaylistItemResponse {
+  href: string
+  limit: number
+  next: string | null
+  offset: number
+  previous: string | null
+  total: number
+  items: PlaylistTrackObject[]
+}
+
+export interface PlaylistSummary {
+  id: string
+  name: string
+  images: ImageObject[]
+  numOfTracks: number
+  description: string
+}

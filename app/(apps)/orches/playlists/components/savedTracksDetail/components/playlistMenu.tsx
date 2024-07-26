@@ -25,6 +25,8 @@ export default function PlaylistMenu({
           height: number | null
           width: number | null
         }>
+        numOfTracks: number
+        description: string
       }>
     | undefined
     | undefined

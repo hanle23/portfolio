@@ -14,7 +14,7 @@ export default function PlaylistDetail({
   trackAudio,
 }: {
   currPlaylist: SimplifiedPlaylistObject
-  setCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
+  setCurrPlaylist: (id: string | null) => void
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
 }): React.JSX.Element {
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {

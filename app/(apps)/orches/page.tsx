@@ -5,11 +5,14 @@ import { useSession } from 'next-auth/react'
 import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
 import useFetchPlaylist from './components/actions/useFetchPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
+import fetchPlaylistItem from './components/actions/fetchPlaylistItem'
 import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type {
   PlaylistResponse,
   SimplifiedPlaylistObject,
+  PlaylistSummary,
 } from '@/app/types/spotify/playlist'
+import type { TrackPlaylists } from '@/app/types/spotify/track'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
 import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
@@ -18,21 +21,15 @@ import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [playlistsRes, setPlaylists] = useState<PlaylistResponse[]>([])
+  const [playlistsRes, setPlaylistsRes] = useState<PlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
-  const [distinctPlaylist, setDistinctPlaylist] = useState<
-    Array<{
-      name: string
-      id: string
-      images: Array<{
-        url: string
-        height: number | null
-        width: number | null
-      }>
-    }>
-  >([])
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
+  const [distinctPlaylist, setDistinctPlaylist] = useState<PlaylistSummary[]>(
+    [],
+  )
+  const [distinctTracksInPlaylist, setDistinctTracksInPlaylist] =
+    useState<TrackPlaylists>({})
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
@@ -48,48 +45,11 @@ export default function Page(): React.JSX.Element {
     data: playlistRes,
     setNextPage: playlistsSetNextPage,
     isLoading: playlistsIsLoading,
-    mutate: playlistsMutate,
+    // mutate: playlistsMutate,
     isValidating: playlistsIsValidating,
   } = useFetchPlaylist(fetcher, session?.user?.access_token)
 
   useEffect(() => {
-    if (
-      playlistRes !== null &&
-      playlistRes !== undefined &&
-      Math.ceil((playlistRes.length * PLAYLIST_LIMIT) / PLAYLIST_LIMIT) + 1 >
-        playlistRes.length
-    ) {
-      const filteredPlaylistRes = playlistRes?.map((playlistResponse) => ({
-        ...playlistResponse,
-        items: playlistResponse?.items?.filter(
-          (playlist) => playlist?.owner?.display_name === session?.user?.name,
-        ),
-      }))
-      setPlaylists((prevPlaylists) => {
-        if (prevPlaylists?.length === 0) {
-          return filteredPlaylistRes
-        }
-        const filteredPlaylists = filteredPlaylistRes?.filter(
-          (playlist) =>
-            !prevPlaylists.some(
-              (prevPlaylist) =>
-                prevPlaylist.href === playlist.href ||
-                prevPlaylist.offset === playlist.offset,
-            ),
-        )
-        return [...prevPlaylists, ...filteredPlaylists]
-      })
-      setDistinctPlaylist(() => {
-        return filteredPlaylistRes.flatMap((playlistRes) =>
-          playlistRes.items.map((playlist) => ({
-            id: playlist.id,
-            name: playlist.name,
-            images: playlist.images,
-          })),
-        )
-      })
-    }
-
     if (
       savedTrackRes !== null &&
       savedTrackRes !== undefined &&
@@ -112,7 +72,69 @@ export default function Page(): React.JSX.Element {
         return [...prevTracks, ...filteredTracks]
       })
     }
-  }, [playlistRes, savedTrackRes, session?.user?.name])
+  }, [savedTrackRes, session?.user?.name])
+
+  useEffect(() => {
+    if (
+      playlistRes !== null &&
+      playlistRes !== undefined &&
+      Math.ceil((playlistRes.length * PLAYLIST_LIMIT) / PLAYLIST_LIMIT) + 1 >
+        playlistRes.length
+    ) {
+      const filteredPlaylistRes = playlistRes?.map((playlistResponse) => ({
+        ...playlistResponse,
+        items: playlistResponse?.items?.filter(
+          (playlist) => playlist?.owner?.display_name === session?.user?.name,
+        ),
+      }))
+      if (session?.user?.name !== undefined) {
+        filteredPlaylistRes.forEach((playlistResponse) => {
+          playlistResponse.items.forEach((playlist) => {
+            !Array.isArray(playlist.tracks) &&
+              fetchPlaylistItem(
+                playlist?.tracks?.href,
+                session?.user?.access_token,
+              )
+                .then((res) => {
+                  if (res.items !== undefined) {
+                    playlist.tracks = res.items
+                  }
+                })
+                .catch((e) => {
+                  console.log(e)
+                })
+          })
+        })
+      }
+      setPlaylistsRes((prevPlaylists) => {
+        if (prevPlaylists?.length === 0) {
+          return filteredPlaylistRes
+        }
+        const filteredPlaylists = filteredPlaylistRes?.filter(
+          (playlist) =>
+            !prevPlaylists.some(
+              (prevPlaylist) =>
+                prevPlaylist.href === playlist.href ||
+                prevPlaylist.offset === playlist.offset,
+            ),
+        )
+        return [...prevPlaylists, ...filteredPlaylists]
+      })
+      setDistinctPlaylist(() => {
+        return filteredPlaylistRes.flatMap((playlistRes) =>
+          playlistRes.items.map((playlist) => ({
+            id: playlist.id,
+            name: playlist.name,
+            images: playlist.images,
+            numOfTracks: Array.isArray(playlist.tracks)
+              ? playlist.tracks.length
+              : playlist.tracks.total,
+            description: playlist.description,
+          })),
+        )
+      })
+    }
+  }, [playlistRes, session?.user])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
@@ -129,20 +151,19 @@ export default function Page(): React.JSX.Element {
     savedTracksIsValidating,
   }
 
-  const playlistsFunc = {
-    playlistsRes,
-    playlistsMutate,
-  }
-
   const handleSetCurrPlaylist = useCallback(
-    (playlist: SimplifiedPlaylistObject | null): void => {
+    (id: string | null): void => {
       if (trackAudio?.current !== undefined) {
         trackAudio.current.currentTime = 0
         trackAudio.current.pause()
       }
-      setCurrPlaylist(playlist)
+      setCurrPlaylist(
+        playlistRes
+          ?.flatMap((playlistRes) => playlistRes.items)
+          .find((playlist) => playlist.id === id) ?? null,
+      )
     },
-    [trackAudio],
+    [trackAudio, playlistRes],
   )
 
   // useEffect(() => {
@@ -166,7 +187,7 @@ export default function Page(): React.JSX.Element {
       <SideBar
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
-        playlistsRes={playlistsRes}
+        playlists={distinctPlaylist}
         currPlaylist={currPlaylist}
         setCurrPlaylist={handleSetCurrPlaylist}
       />

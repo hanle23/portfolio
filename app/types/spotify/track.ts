@@ -53,3 +53,5 @@ export interface TrackObject {
   is_local: boolean
   isInPlaylist?: boolean
 }
+
+export type TrackPlaylists = Record<string, string[]>

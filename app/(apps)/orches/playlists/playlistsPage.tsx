@@ -1,7 +1,10 @@
 import React from 'react'
 import PlaylistDetail from './components/playlistDetail/playlistDetail'
 import SavedTracksDetail from './components/savedTracksDetail/savedTracksDetail'
-import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
+import type {
+  SimplifiedPlaylistObject,
+  PlaylistSummary,
+} from '@/app/types/spotify/playlist'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 
 export default function PlaylistPage({
@@ -12,7 +15,7 @@ export default function PlaylistPage({
   playlists,
 }: {
   currPlaylist: SimplifiedPlaylistObject | null
-  handleSetCurrPlaylist: (playlist: SimplifiedPlaylistObject | null) => void
+  handleSetCurrPlaylist: (id: string | null) => void
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
     savedTracks: SavedTracks[] | undefined
@@ -21,18 +24,7 @@ export default function PlaylistPage({
     savedTracksMutate: () => void
     savedTracksIsValidating: boolean
   }
-  playlists:
-    | Array<{
-        name: string
-        id: string
-        images: Array<{
-          url: string
-          height: number | null
-          width: number | null
-        }>
-      }>
-    | undefined
-    | undefined
+  playlists: PlaylistSummary[] | undefined | undefined
 }): React.JSX.Element {
   return (
     <div className="w-full h-full relative">

@@ -1,25 +1,33 @@
 import React from 'react'
 import SelectMode from './selectMode'
 import PlaylistCard from './sidebarComponents/playlistCard'
-import type {
-  PlaylistResponse,
-  SimplifiedPlaylistObject,
-} from '@/app/types/spotify/playlist'
+import type { SimplifiedPlaylistObject } from '@/app/types/spotify/playlist'
 
 export default function SideBar({
   className,
   setCurrentRoute,
   currentRoute,
-  playlistsRes,
+  playlists,
   currPlaylist,
   setCurrPlaylist,
 }: {
   className?: string
   setCurrentRoute: React.Dispatch<React.SetStateAction<string>>
   currentRoute: string
-  playlistsRes: PlaylistResponse[] | undefined
+
   currPlaylist: SimplifiedPlaylistObject | null
-  setCurrPlaylist: (playlist: SimplifiedPlaylistObject) => void
+  setCurrPlaylist: (id: string) => void
+  playlists: Array<{
+    name: string
+    id: string
+    images: Array<{
+      url: string
+      height: number | null
+      width: number | null
+    }>
+    numOfTracks: number
+    description: string
+  }>
 }): React.JSX.Element {
   const allRoutes = [{ value: 'playlists', label: 'Playlists' }]
   return (
@@ -31,19 +39,30 @@ export default function SideBar({
         setCurrentRoute={setCurrentRoute}
       />
       <div className="flex flex-col rounded-lg bg-container h-[87%] p-2.5 overflow-x-hidden overflow-y-auto shrink-0 min-w-36">
-        {playlistsRes?.map((playlistRes: PlaylistResponse) => {
-          return playlistRes?.items?.map(
-            (playlist: SimplifiedPlaylistObject, index: number) => (
-              <PlaylistCard
-                key={playlist.id}
-                index={index}
-                playlist={playlist}
-                setCurrPlaylist={setCurrPlaylist}
-                currPlaylist={currPlaylist}
-              />
-            ),
-          )
-        })}
+        {playlists?.map(
+          (
+            playlist: {
+              name: string
+              id: string
+              images: Array<{
+                url: string
+                height: number | null
+                width: number | null
+              }>
+              numOfTracks: number
+              description: string
+            },
+            index: number,
+          ) => (
+            <PlaylistCard
+              key={playlist.id}
+              index={index}
+              playlist={playlist}
+              setCurrPlaylist={setCurrPlaylist}
+              currPlaylist={currPlaylist}
+            />
+          ),
+        )}
       </div>
     </div>
   )

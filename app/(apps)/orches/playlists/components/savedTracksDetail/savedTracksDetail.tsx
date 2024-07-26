@@ -6,6 +6,7 @@ import type {
   SavedTracks,
   SavedTracksObject,
 } from '@/app/types/spotify/savedTracks'
+import type { PlaylistSummary } from '@/app/types/spotify/playlist'
 import PlaylistMenu from './components/playlistMenu'
 export default function SavedTracksDetail({
   trackAudio,
@@ -20,18 +21,7 @@ export default function SavedTracksDetail({
     savedTracksMutate: () => void
     savedTracksIsValidating: boolean
   }
-  playlists:
-    | Array<{
-        name: string
-        id: string
-        images: Array<{
-          url: string
-          height: number | null
-          width: number | null
-        }>
-      }>
-    | undefined
-    | undefined
+  playlists: PlaylistSummary[] | undefined | undefined
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currTrackUri, setCurrTrackUri] = useState<string>('')
