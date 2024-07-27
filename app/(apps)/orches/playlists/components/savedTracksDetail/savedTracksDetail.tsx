@@ -133,8 +133,6 @@ export default function SavedTracksDetail({
           isSubmittable={
             playlistsToAdd.length > 0 || playlistsToRemove.length > 0
           }
-          currentTrackUri={currTrackUri}
-          distinctTracksInPlaylist={distinctTracksInPlaylist}
           handleAddOrRemoveFromPlaylist={handleAddOrRemoveFromPlaylist}
           shouldShowSpotifyColor={shouldShowSpotifyColor}
         />
