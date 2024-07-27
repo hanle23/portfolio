@@ -6,7 +6,6 @@ import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
 import useFetchPlaylist from './components/actions/useFetchPlaylist'
 import fetcher from './components/actions/helper/fetchFunction'
 import fetchPlaylistItem from './components/actions/fetchPlaylistItem'
-import UpdateTracksWithPlaylistStatus from './components/actions/helper/updateTracksWithPlaylistStatus'
 import type {
   PlaylistResponse,
   SimplifiedPlaylistObject,
@@ -17,6 +16,7 @@ import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
 import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
 import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
+import { updateDistinctTracks } from './components/actions/helper/updateDistinctTracks'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -98,6 +98,11 @@ export default function Page(): React.JSX.Element {
                 .then((res) => {
                   if (res.items !== undefined) {
                     playlist.tracks = res.items
+                    updateDistinctTracks(
+                      res.items,
+                      playlist.id,
+                      setDistinctTracksInPlaylist,
+                    )
                   }
                 })
                 .catch((e) => {
@@ -166,22 +171,6 @@ export default function Page(): React.JSX.Element {
     [trackAudio, playlistRes],
   )
 
-  // useEffect(() => {
-  //   if (savedTracks === undefined || playlists === undefined) {
-  //     return
-  //   }
-  //   if (savedTracks?.length === 0 || playlists?.length === 0) {
-  //     return
-  //   }
-  //   const fetchLimit = Math.ceil(savedTracks[0].total / savedTracks[0].limit)
-  //   if (savedTracks?.length === fetchLimit) {
-  //     const updatedTracks = UpdateTracksWithPlaylistStatus(
-  //       playlists,
-  //       savedTracks,
-  //     )
-  //   }
-  // }, [savedTracks, playlists])
-
   return (
     <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
       <SideBar
@@ -198,6 +187,7 @@ export default function Page(): React.JSX.Element {
           trackAudio={trackAudio}
           savedTracksFunc={savedTracksFunc}
           playlists={distinctPlaylist}
+          distinctTracksInPlaylist={distinctTracksInPlaylist}
         />
       </div>
     </div>

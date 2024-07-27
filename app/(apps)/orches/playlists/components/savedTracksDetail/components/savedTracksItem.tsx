@@ -10,6 +10,7 @@ export default function SavedTracksItem({
   track,
   trackAudio,
   handleAddToPlaylist,
+  distinctTracksInPlaylist,
 }: {
   index: number
   track: SavedTracksObject
@@ -18,6 +19,7 @@ export default function SavedTracksItem({
     event: React.MouseEvent<HTMLButtonElement>,
     trackUri: string,
   ) => void
+  distinctTracksInPlaylist: Record<string, string[]>
 }): JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
@@ -40,7 +42,7 @@ export default function SavedTracksItem({
 
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
-          {track?.track?.isInPlaylist === false ? (
+          {track?.track?.uri in distinctTracksInPlaylist ? (
             <Tooltip
               title={`${track?.track?.name} is not in any playlist`}
               placement="left-start"

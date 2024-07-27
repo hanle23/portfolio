@@ -12,6 +12,7 @@ export default function SavedTracksDetail({
   trackAudio,
   savedTracksFunc,
   playlists,
+  distinctTracksInPlaylist,
 }: {
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
@@ -22,6 +23,7 @@ export default function SavedTracksDetail({
     savedTracksIsValidating: boolean
   }
   playlists: PlaylistSummary[] | undefined | undefined
+  distinctTracksInPlaylist: Record<string, string[]>
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currTrackUri, setCurrTrackUri] = useState<string>('')
@@ -53,9 +55,61 @@ export default function SavedTracksDetail({
     setAnchorEl(event.currentTarget)
     setCurrTrackUri(trackUri)
   }
+
+  const handleAddOrRemoveFromPlaylist = (playlistId: string): void => {
+    if (
+      !distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
+      !playlistsToAdd.includes(playlistId)
+    ) {
+      setPlaylistsToAdd([...playlistsToAdd, playlistId])
+    } else if (
+      distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
+      !playlistsToRemove.includes(playlistId)
+    ) {
+      setPlaylistsToRemove([...playlistsToRemove, playlistId])
+    } else if (
+      distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
+      playlistsToRemove.includes(playlistId)
+    ) {
+      setPlaylistsToRemove(playlistsToRemove.filter((id) => id !== playlistId))
+    } else if (
+      !distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
+      playlistsToAdd.includes(playlistId)
+    ) {
+      setPlaylistsToAdd(playlistsToAdd.filter((id) => id !== playlistId))
+    }
+  }
+
+  const shouldShowSpotifyColor = (playlistId: string): boolean => {
+    if (
+      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !playlistsToAdd.includes(playlistId)
+    ) {
+      return false
+    } else if (
+      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !playlistsToRemove.includes(playlistId)
+    ) {
+      return true
+    } else if (
+      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      playlistsToRemove.includes(playlistId)
+    ) {
+      return false
+    } else if (
+      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      playlistsToAdd.includes(playlistId)
+    ) {
+      return true
+    }
+    return false
+  }
+
   const handleClose = (): void => {
     setAnchorEl(null)
     setCurrTrackUri('')
+    setPlaylistsToAdd([])
+    setPlaylistsToRemove([])
   }
   return (
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
@@ -68,6 +122,7 @@ export default function SavedTracksDetail({
             track={track}
             trackAudio={trackAudio}
             handleAddToPlaylist={handleAddToPlaylist}
+            distinctTracksInPlaylist={distinctTracksInPlaylist}
           />
         ))}
         <PlaylistMenu
@@ -76,8 +131,12 @@ export default function SavedTracksDetail({
           playlists={playlists}
           open={open}
           isSubmittable={
-            playlistsToAdd.length > 0 && playlistsToRemove.length > 0
+            playlistsToAdd.length > 0 || playlistsToRemove.length > 0
           }
+          currentTrackUri={currTrackUri}
+          distinctTracksInPlaylist={distinctTracksInPlaylist}
+          handleAddOrRemoveFromPlaylist={handleAddOrRemoveFromPlaylist}
+          shouldShowSpotifyColor={shouldShowSpotifyColor}
         />
       </div>
     </div>

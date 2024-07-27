@@ -13,6 +13,7 @@ export default function PlaylistPage({
   trackAudio,
   savedTracksFunc,
   playlists,
+  distinctTracksInPlaylist,
 }: {
   currPlaylist: SimplifiedPlaylistObject | null
   handleSetCurrPlaylist: (id: string | null) => void
@@ -25,6 +26,7 @@ export default function PlaylistPage({
     savedTracksIsValidating: boolean
   }
   playlists: PlaylistSummary[] | undefined | undefined
+  distinctTracksInPlaylist: Record<string, string[]>
 }): React.JSX.Element {
   return (
     <div className="w-full h-full relative">
@@ -39,6 +41,7 @@ export default function PlaylistPage({
           trackAudio={trackAudio}
           savedTracksFunc={savedTracksFunc}
           playlists={playlists}
+          distinctTracksInPlaylist={distinctTracksInPlaylist}
         />
       )}
     </div>

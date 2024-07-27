@@ -3,8 +3,9 @@
 import Menu from '@mui/material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import type { PlaylistSummary } from '@/app/types/spotify/playlist'
 
 export default function PlaylistMenu({
   anchorEl,
@@ -12,25 +13,16 @@ export default function PlaylistMenu({
   playlists,
   open,
   isSubmittable,
+  handleAddOrRemoveFromPlaylist,
+  shouldShowSpotifyColor,
 }: {
   anchorEl: HTMLElement | null
   handleClose: () => void
   open: boolean
-  playlists:
-    | Array<{
-        name: string
-        id: string
-        images: Array<{
-          url: string
-          height: number | null
-          width: number | null
-        }>
-        numOfTracks: number
-        description: string
-      }>
-    | undefined
-    | undefined
+  playlists: PlaylistSummary[] | undefined | undefined
   isSubmittable: boolean
+  handleAddOrRemoveFromPlaylist: (playlistId: string) => void
+  shouldShowSpotifyColor: (playlistId: string) => boolean
 }): JSX.Element {
   const [searchInput, setSearchInput] = useState<string>('')
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists)
@@ -45,6 +37,7 @@ export default function PlaylistMenu({
       setFilteredPlaylists(playlists)
     }
   }, [searchInput, playlists])
+
   return (
     <Menu
       id="basic-menu"
@@ -121,9 +114,23 @@ export default function PlaylistMenu({
                 />
                 <p>{playlist.name}</p>
               </div>
-              <button>
-                <CheckCircleIcon className="text-spotify-color text-xl" />
-              </button>
+              {shouldShowSpotifyColor(playlist.id) ? (
+                <button
+                  onClick={() => {
+                    handleAddOrRemoveFromPlaylist(playlist.id)
+                  }}
+                >
+                  <CheckCircleIcon className="text-spotify-color text-xl" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    handleAddOrRemoveFromPlaylist(playlist.id)
+                  }}
+                >
+                  <CheckCircleIcon className="text-xl" />
+                </button>
+              )}
             </div>
           ))}
         </div>
