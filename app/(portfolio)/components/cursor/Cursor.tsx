@@ -122,7 +122,6 @@ export default function Cursor(): React.JSX.Element {
 
     if (context.selectedElement.type === 'block') {
       const rect = context.selectedElement.el.getBoundingClientRect()
-      // console.log(scrollPosition.x, scrollPosition.y)
       baseStyles.left = rect.left + xMove
       baseStyles.top = rect.top + yMove
       baseStyles.height = `${rect.height}px`

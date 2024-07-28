@@ -1,60 +1,81 @@
-'use client'
-import { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import StopIcon from '@mui/icons-material/Stop'
 
-export default function MediaPreviewButton({
-  trackUrl,
-  currentTrack,
-  setCurrentTrack,
-  trackAudio,
-}: {
-  trackUrl: string
-  currentTrack: string | null
-  setCurrentTrack: React.Dispatch<React.SetStateAction<string | null>>
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
-}): JSX.Element {
-  const [, setIsPlaying] = useState(false)
-
-  function handleOnClick(): void {
-    if (trackAudio?.current === undefined) {
-      return
-    }
-    if (currentTrack === trackUrl) {
-      // If the current track is the same as the clicked track, stop the audio
-      if (!trackAudio.current.paused) {
-        trackAudio.current.currentTime = 0
-        trackAudio.current.pause()
-        setIsPlaying(false)
+const MediaPreviewButton = React.memo(
+  ({
+    className,
+    trackUrl,
+    trackAudio,
+  }: {
+    className?: string
+    trackUrl: string
+    trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
+  }): JSX.Element => {
+    const [isPlaying, setIsPlaying] = useState(() => {
+      const audioCurrent = trackAudio?.current
+      if (audioCurrent == null) {
+        return false
       } else {
-        // If the audio is already stopped, play it
-        trackAudio.current.play().catch((e) => {
-          console.log(e)
-        })
+        return !audioCurrent.paused
+      }
+    })
+
+    // Effect to sync state with external changes (e.g., audio paused externally)
+    useEffect(() => {
+      if (trackAudio?.current === null || trackAudio?.current === undefined)
+        return
+      const audio = trackAudio.current
+
+      const handlePlay = (): void => {
         setIsPlaying(true)
       }
-    } else {
-      // If the current track is different from the clicked track, stop the current track, set the new track, and play it
-      trackAudio.current.currentTime = 0
-      trackAudio.current.pause()
-      trackAudio.current.src = trackUrl
-      trackAudio.current.play().catch((e) => {
-        console.log(e)
-      })
-      setCurrentTrack(trackUrl)
-      setIsPlaying(true)
-    }
-  }
+      const handlePause = (): void => {
+        setIsPlaying(false)
+      }
 
-  return (
-    <button onClick={handleOnClick} className="hover:text-spotify-color">
-      {currentTrack === trackUrl &&
-      trackAudio?.current !== undefined &&
-      !trackAudio.current.paused ? (
-        <StopIcon />
-      ) : (
-        <PlayArrowIcon />
-      )}
-    </button>
-  )
-}
+      audio.addEventListener('play', handlePlay)
+      audio.addEventListener('pause', handlePause)
+
+      return () => {
+        audio.removeEventListener('play', handlePlay)
+        audio.removeEventListener('pause', handlePause)
+      }
+    }, [trackAudio])
+
+    const handleOnClick = useCallback(() => {
+      const audio = trackAudio?.current
+      if (audio === null || audio === undefined) return
+
+      let isCurrentTrack = trackUrl === audio.currentSrc
+      if (!isCurrentTrack) {
+        audio.src = trackUrl
+        audio.currentTime = 0
+        isCurrentTrack = true // Now it is the current track
+      }
+
+      if (audio.paused) {
+        audio.play().catch(console.error)
+        setIsPlaying(true)
+      } else {
+        audio.pause()
+        setIsPlaying(false)
+      }
+    }, [trackUrl, trackAudio])
+
+    if (trackAudio?.current === undefined) {
+      return <></>
+    }
+
+    return (
+      <button
+        onClick={handleOnClick}
+        className={`${className ?? ''} hidden hover:text-spotify-color`}
+      >
+        {isPlaying ? <StopIcon /> : <PlayArrowIcon />}
+      </button>
+    )
+  },
+)
+MediaPreviewButton.displayName = 'MediaPreviewButton'
+export default MediaPreviewButton

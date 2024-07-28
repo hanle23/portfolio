@@ -1,41 +1,29 @@
-'use client'
-import type { ReactNode } from 'react'
-import { useState } from 'react'
-import { OrchesAppWrapper } from '@/app/(apps)/orches/components/appWrapper'
-import { usePathname } from 'next/navigation'
-// export const metadata = {
-//   title: 'Beats Flow',
-//   description: 'A music playlist manager for Spotify',
-// }
-export default function Layout({
+import AuthSessionProvider from './components/wrappers/AuthSessionProvider'
+import authOptions from '@/app/api/auth/[...nextauth]/authOptions'
+import Login from './components/auth/login'
+import { Header } from './components/header'
+import { getServerSession } from 'next-auth'
+export const metadata = {
+  title: 'Orches',
+  description: 'A playlist manager for Spotify',
+}
+export default async function Layout({
   children,
-  playlists,
-  beatsMap,
 }: {
   children: React.ReactNode
-  playlists: ReactNode
-  beatsMap: ReactNode
-}): React.JSX.Element {
-  const pathname = usePathname()
-  const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const allRoutes = [
-    { node: playlists, value: 'playlists', label: 'Playlists' },
-    { node: beatsMap, value: 'beatsMap', label: 'Beats Map' },
-  ]
+}): Promise<React.JSX.Element> {
+  const session = await getServerSession(authOptions)
+
   return (
-    <OrchesAppWrapper
-      allRoutes={allRoutes}
-      currentRoute={currentRoute}
-      setCurrentRoute={setCurrentRoute}
-    >
-      {allRoutes !== undefined && pathname !== '/orches/profile'
-        ? (() => {
-            const route = allRoutes.find(
-              (route) => route.value === currentRoute,
-            )
-            return route !== null ? route?.node : null
-          })()
-        : children}
-    </OrchesAppWrapper>
+    <AuthSessionProvider session={session}>
+      {session !== null ? (
+        <div className="h-full w-full bg-spotify-background text-white">
+          <Header />
+          {children}
+        </div>
+      ) : (
+        <Login />
+      )}
+    </AuthSessionProvider>
   )
 }
