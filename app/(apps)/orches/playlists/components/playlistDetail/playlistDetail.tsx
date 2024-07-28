@@ -1,7 +1,7 @@
 import React from 'react'
 import PlaylistHeader from './components/playlistHeader'
 import PlaylistTrackItem from './components/playlistTrackItem'
-import useDeletePlaylistItem from './actions/deletePlaylistItem'
+import deletePlaylistItem from '../actions/deletePlaylistItem'
 import toast, { Toaster } from 'react-hot-toast'
 import type {
   SimplifiedPlaylistObject,
@@ -18,7 +18,7 @@ export default function PlaylistDetail({
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
 }): React.JSX.Element {
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
-    const res = await useDeletePlaylistItem(
+    const res = await deletePlaylistItem(
       trackUri,
       currPlaylist.id,
       currPlaylist.snapshot_id,

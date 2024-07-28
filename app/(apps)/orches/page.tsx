@@ -21,7 +21,7 @@ import { updateDistinctTracks } from './components/actions/helper/updateDistinct
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
   const [currentRoute, setCurrentRoute] = useState<string>('playlists')
-  const [playlistsRes, setPlaylistsRes] = useState<PlaylistResponse[]>([])
+  const [playlists, setPlaylists] = useState<PlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
@@ -45,7 +45,7 @@ export default function Page(): React.JSX.Element {
     data: playlistRes,
     setNextPage: playlistsSetNextPage,
     isLoading: playlistsIsLoading,
-    // mutate: playlistsMutate,
+    mutate: playlistsMutate,
     isValidating: playlistsIsValidating,
   } = useFetchPlaylist(fetcher, session?.user?.access_token)
 
@@ -111,7 +111,7 @@ export default function Page(): React.JSX.Element {
           })
         })
       }
-      setPlaylistsRes((prevPlaylists) => {
+      setPlaylists((prevPlaylists) => {
         if (prevPlaylists?.length === 0) {
           return filteredPlaylistRes
         }
@@ -135,6 +135,7 @@ export default function Page(): React.JSX.Element {
               ? playlist.tracks.length
               : playlist.tracks.total,
             description: playlist.description,
+            snapshot_id: playlist.snapshot_id,
           })),
         )
       })
@@ -158,17 +159,21 @@ export default function Page(): React.JSX.Element {
 
   const handleSetCurrPlaylist = useCallback(
     (id: string | null): void => {
-      if (trackAudio?.current !== undefined) {
+      if (id === null) {
+        setCurrPlaylist(null)
+      } else {
+        setCurrPlaylist(
+          playlists
+            ?.flatMap((playlistRes) => playlistRes.items)
+            .find((playlist) => playlist.id === id) ?? null,
+        )
+      }
+      if (trackAudio?.current !== undefined && trackAudio?.current !== null) {
         trackAudio.current.currentTime = 0
         trackAudio.current.pause()
       }
-      setCurrPlaylist(
-        playlistRes
-          ?.flatMap((playlistRes) => playlistRes.items)
-          .find((playlist) => playlist.id === id) ?? null,
-      )
     },
-    [trackAudio, playlistRes],
+    [trackAudio, playlists],
   )
 
   return (
@@ -187,6 +192,7 @@ export default function Page(): React.JSX.Element {
           trackAudio={trackAudio}
           savedTracksFunc={savedTracksFunc}
           playlists={distinctPlaylist}
+          playlistsMutate={playlistsMutate}
           distinctTracksInPlaylist={distinctTracksInPlaylist}
         />
       </div>

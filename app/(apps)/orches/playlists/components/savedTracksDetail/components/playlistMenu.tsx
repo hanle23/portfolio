@@ -14,7 +14,8 @@ export default function PlaylistMenu({
   open,
   isSubmittable,
   handleAddOrRemoveFromPlaylist,
-  shouldShowSpotifyColor,
+  isChecked,
+  handleSubmit,
 }: {
   anchorEl: HTMLElement | null
   handleClose: () => void
@@ -22,7 +23,8 @@ export default function PlaylistMenu({
   playlists: PlaylistSummary[] | undefined | undefined
   isSubmittable: boolean
   handleAddOrRemoveFromPlaylist: (playlistId: string) => void
-  shouldShowSpotifyColor: (playlistId: string) => boolean
+  isChecked: (playlistId: string) => boolean
+  handleSubmit: () => void
 }): JSX.Element {
   const [searchInput, setSearchInput] = useState<string>('')
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists)
@@ -114,7 +116,7 @@ export default function PlaylistMenu({
                 />
                 <p>{playlist.name}</p>
               </div>
-              {shouldShowSpotifyColor(playlist.id) ? (
+              {isChecked(playlist.id) ? (
                 <button
                   onClick={() => {
                     handleAddOrRemoveFromPlaylist(playlist.id)
@@ -146,7 +148,10 @@ export default function PlaylistMenu({
           Cancel
         </button>
         {isSubmittable && (
-          <button className="bg-white text-spotify-item-hover rounded-full font-semibold px-4 py-1 hover:scale-105">
+          <button
+            className="bg-white text-spotify-item-hover rounded-full font-semibold px-4 py-1 hover:scale-105"
+            onClick={handleSubmit}
+          >
             Done
           </button>
         )}

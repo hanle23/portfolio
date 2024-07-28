@@ -56,4 +56,5 @@ export interface PlaylistSummary {
   images: ImageObject[]
   numOfTracks: number
   description: string
+  snapshot_id: string
 }

@@ -6,13 +6,20 @@ import type {
   SavedTracks,
   SavedTracksObject,
 } from '@/app/types/spotify/savedTracks'
-import type { PlaylistSummary } from '@/app/types/spotify/playlist'
+import type {
+  PlaylistSummary,
+  PlaylistResponse,
+} from '@/app/types/spotify/playlist'
 import PlaylistMenu from './components/playlistMenu'
+import deletePlaylistItem from '../actions/deletePlaylistItem'
+import addPlaylistItem from '../actions/addPlaylistItem'
+import toast, { Toaster } from 'react-hot-toast'
 export default function SavedTracksDetail({
   trackAudio,
   savedTracksFunc,
   playlists,
   distinctTracksInPlaylist,
+  playlistsMutate,
 }: {
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
@@ -24,6 +31,7 @@ export default function SavedTracksDetail({
   }
   playlists: PlaylistSummary[] | undefined | undefined
   distinctTracksInPlaylist: Record<string, string[]>
+  playlistsMutate: () => Promise<PlaylistResponse[] | undefined>
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currTrackUri, setCurrTrackUri] = useState<string>('')
@@ -56,31 +64,87 @@ export default function SavedTracksDetail({
     setCurrTrackUri(trackUri)
   }
 
+  function handleSubmit(): void {
+    for (const playlistId of playlistsToRemove) {
+      const snapshotId = playlists?.find(
+        (playlist) => playlist.id === playlistId,
+      )?.snapshot_id
+      const playlistName = playlists?.find(
+        (playlist) => playlist.id === playlistId,
+      )?.name
+      if (snapshotId === undefined) {
+        continue
+      }
+      deletePlaylistItem(currTrackUri, playlistId, snapshotId)
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success(
+              `Successfully removed track from playlist ${playlistName}`,
+            )
+          } else {
+            toast.error(
+              `Unable to remove track from playlist, please try again later`,
+            )
+          }
+        })
+        .catch((e: any) => {
+          console.log(e)
+        })
+    }
+
+    for (const playlistId of playlistsToAdd) {
+      const playlistName = playlists?.find(
+        (playlist) => playlist.id === playlistId,
+      )?.name
+      addPlaylistItem(currTrackUri, playlistId)
+        .then((res) => {
+          if (res.status === 201) {
+            toast.success(
+              `Successfully added track to playlist ${playlistName}`,
+            )
+          } else {
+            toast.error(
+              `Unable to add track to playlist, please try again later`,
+            )
+          }
+        })
+        .catch((e: any) => {
+          console.log(e)
+        })
+    }
+    if (playlistsToAdd.length > 0 || playlistsToRemove.length > 0) {
+      playlistsMutate().catch((e: any) => {
+        console.log(e)
+      })
+      handleClose()
+    }
+  }
+
   const handleAddOrRemoveFromPlaylist = (playlistId: string): void => {
     if (
-      !distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
-      !playlistsToAdd.includes(playlistId)
+      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !playlistsToAdd?.includes(playlistId)
     ) {
       setPlaylistsToAdd([...playlistsToAdd, playlistId])
     } else if (
-      distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
-      !playlistsToRemove.includes(playlistId)
+      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !playlistsToRemove?.includes(playlistId)
     ) {
       setPlaylistsToRemove([...playlistsToRemove, playlistId])
     } else if (
-      distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
-      playlistsToRemove.includes(playlistId)
+      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      playlistsToRemove?.includes(playlistId)
     ) {
       setPlaylistsToRemove(playlistsToRemove.filter((id) => id !== playlistId))
     } else if (
-      !distinctTracksInPlaylist[currTrackUri].includes(playlistId) &&
-      playlistsToAdd.includes(playlistId)
+      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      playlistsToAdd?.includes(playlistId)
     ) {
       setPlaylistsToAdd(playlistsToAdd.filter((id) => id !== playlistId))
     }
   }
 
-  const shouldShowSpotifyColor = (playlistId: string): boolean => {
+  const isChecked = (playlistId: string): boolean => {
     if (
       !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
       !playlistsToAdd.includes(playlistId)
@@ -134,9 +198,20 @@ export default function SavedTracksDetail({
             playlistsToAdd.length > 0 || playlistsToRemove.length > 0
           }
           handleAddOrRemoveFromPlaylist={handleAddOrRemoveFromPlaylist}
-          shouldShowSpotifyColor={shouldShowSpotifyColor}
+          isChecked={isChecked}
+          handleSubmit={handleSubmit}
         />
       </div>
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          duration: 4500,
+          style: {
+            background: '#27272a',
+            color: '#fff',
+          },
+        }}
+      />
     </div>
   )
 }

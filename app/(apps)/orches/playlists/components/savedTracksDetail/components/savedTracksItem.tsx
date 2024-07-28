@@ -43,6 +43,14 @@ export default function SavedTracksItem({
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
           {track?.track?.uri in distinctTracksInPlaylist ? (
+            <Image
+              src={smallestImage?.url}
+              alt="track?.track?.name"
+              width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
+              height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
+              className="w-auto h-auto rounded-md "
+            />
+          ) : (
             <Tooltip
               title={`${track?.track?.name} is not in any playlist`}
               placement="left-start"
@@ -57,14 +65,6 @@ export default function SavedTracksItem({
                 className="w-auto h-auto rounded-md border-2 border-spotify-color"
               />
             </Tooltip>
-          ) : (
-            <Image
-              src={smallestImage?.url}
-              alt="track?.track?.name"
-              width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
-              height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
-              className="w-auto h-auto rounded-md "
-            />
           )}
         </div>
 
