@@ -30,7 +30,7 @@ export default function SavedTracksItem({
       key={track.track.id}
       className="group grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
     >
-      <div className=" ol-span-1 flex justify-end text-spotify-subtext items-center">
+      <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         <MediaPreviewButton
           className="group-hover:block"
           trackAudio={trackAudio}
@@ -39,7 +39,6 @@ export default function SavedTracksItem({
 
         <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>
-
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
           {track?.track?.uri in distinctTracksInPlaylist ? (

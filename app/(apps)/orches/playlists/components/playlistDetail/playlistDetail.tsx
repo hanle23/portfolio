@@ -46,7 +46,7 @@ export default function PlaylistDetail({
           currPlaylist?.tracks?.map(
             (track: PlaylistTrackObject, index: number) => (
               <PlaylistTrackItem
-                key={track?.track?.id}
+                key={`${currPlaylist.id} ${track?.track?.id}`}
                 handleRemoveTrack={useHandleRemoveTrack}
                 index={index}
                 track={track}
