@@ -7,7 +7,7 @@ import type {
   SdkOptions,
 } from '@spotify/web-api-ts-sdk'
 import { SpotifyApi } from '@spotify/web-api-ts-sdk'
-import type { AuthUser } from '@/app/api/auth/[...nextauth]/authOptions'
+import type { AuthUser } from '@/app/types/spotify/auth'
 import { getSession, signIn } from 'next-auth/react'
 
 /**
