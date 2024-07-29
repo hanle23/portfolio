@@ -10,17 +10,22 @@ export default function PlaylistTrackItem({
   track,
   handleRemoveTrack,
   trackAudio,
+  style,
 }: {
   index: number
   track: PlaylistTrackObject
   handleRemoveTrack: (trackUri: string) => Promise<void>
   trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
+  style: React.CSSProperties | undefined
 }): React.JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
   )
   return track?.track !== null ? (
-    <div className="group grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover">
+    <div
+      className="group grid grid-cols-12 gap-4 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
+      style={style}
+    >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         <MediaPreviewButton
           className="group-hover:block"
@@ -30,8 +35,8 @@ export default function PlaylistTrackItem({
 
         <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>
-      <div className="col-span-6 lg:col-span-4 flex align-middle space-x-3">
-        <div className="flex shrink-0 h-full w-12">
+      <div className="col-span-6 lg:col-span-4 flex  items-center align-middle space-x-3">
+        <div className="flex shrink-0 h-12 w-12">
           <Image
             src={smallestImage?.url}
             alt=""

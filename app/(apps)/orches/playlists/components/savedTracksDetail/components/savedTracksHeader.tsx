@@ -15,7 +15,9 @@ export default function SavedTracksHeader({
         )}
       </div>
       <div className="bg-spotify-header-background text-spotify-subtext w-full h-8 grid grid-cols-12 gap-4 border-b relative border-spotify-item-background border-solid px-4">
-        <div className="col-span-1 flex justify-end items-center">{'#'}</div>
+        <div className="col-span-1 flex justify-end items-center pr-1.5">
+          {'#'}
+        </div>
         <div className="col-span-6 lg:col-span-4 flex align-middle items-center">
           <p className="text-sm">Title</p>
         </div>

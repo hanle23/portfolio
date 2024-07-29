@@ -2852,6 +2852,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-virtualized-auto-sizer@^1.0.24:
+  version "1.0.24"
+  resolved "https://registry.npmjs.org/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.24.tgz"
+  integrity sha512-3kCn7N9NEb3FlvJrSHWGQ4iVl+ydQObq2fHMn12i5wbtm74zHOPhz/i64OL3c1S1vi9i2GXtZqNqUJTQ+BnNfg==
+
 react-window-infinite-loader@^1.0.9:
   version "1.0.9"
   resolved "https://registry.npmjs.org/react-window-infinite-loader/-/react-window-infinite-loader-1.0.9.tgz"

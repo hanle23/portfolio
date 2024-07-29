@@ -11,6 +11,7 @@ export default function SavedTracksItem({
   trackAudio,
   handleAddToPlaylist,
   distinctTracksInPlaylist,
+  style,
 }: {
   index: number
   track: SavedTracksObject
@@ -20,6 +21,7 @@ export default function SavedTracksItem({
     trackUri: string,
   ) => void
   distinctTracksInPlaylist: Record<string, string[]>
+  style: React.CSSProperties | undefined
 }): JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
@@ -28,7 +30,8 @@ export default function SavedTracksItem({
   return (
     <div
       key={track.track.id}
-      className="group grid grid-cols-12 gap-4 py-1 border relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
+      style={style}
+      className="group grid grid-cols-12 gap-4 py-1 border overflow-hidden relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
     >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         <MediaPreviewButton

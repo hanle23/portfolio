@@ -185,7 +185,7 @@ export default function Page(): React.JSX.Element {
         currPlaylist={currPlaylist}
         setCurrPlaylist={handleSetCurrPlaylist}
       />
-      <div className="flex rounded-lg shrink-0 w-4/6 h-full bg-container overflow-hidden">
+      <div className="flex rounded-lg shrink-0 flex-1 h-full bg-container overflow-hidden">
         <PlaylistPage
           currPlaylist={currPlaylist}
           handleSetCurrPlaylist={handleSetCurrPlaylist}
