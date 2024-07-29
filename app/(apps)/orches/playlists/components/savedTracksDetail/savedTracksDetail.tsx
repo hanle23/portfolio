@@ -2,10 +2,7 @@
 import { useEffect, useState } from 'react'
 import SavedTracksHeader from './components/savedTracksHeader'
 import SavedTracksItem from './components/savedTracksItem'
-import type {
-  SavedTracks,
-  SavedTracksObject,
-} from '@/app/types/spotify/savedTracks'
+import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import type {
   PlaylistSummary,
   PlaylistResponse,
@@ -14,6 +11,8 @@ import PlaylistMenu from './components/playlistMenu'
 import deletePlaylistItem from '../actions/deletePlaylistItem'
 import addPlaylistItem from '../actions/addPlaylistItem'
 import toast, { Toaster } from 'react-hot-toast'
+import { VariableSizeList as List } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 export default function SavedTracksDetail({
   trackAudio,
   savedTracksFunc,
@@ -169,6 +168,26 @@ export default function SavedTracksDetail({
     return false
   }
 
+  const Row = ({
+    index,
+    style,
+  }: {
+    index: number
+    style: React.CSSProperties | undefined
+  }): JSX.Element => {
+    return (
+      <SavedTracksItem
+        key={savedTracks[index].track.id}
+        style={style}
+        index={index}
+        track={savedTracks[index]}
+        trackAudio={trackAudio}
+        handleAddToPlaylist={handleAddToPlaylist}
+        distinctTracksInPlaylist={distinctTracksInPlaylist}
+      />
+    )
+  }
+
   const handleClose = (): void => {
     setAnchorEl(null)
     setCurrTrackUri('')
@@ -179,16 +198,18 @@ export default function SavedTracksDetail({
     <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
       <SavedTracksHeader total={savedTracksFunc?.savedTracks?.[0]?.total} />
       <div className="flex flex-col h-full w-full space-y-3 pt-3">
-        {savedTracks?.map((track: SavedTracksObject, index: number) => (
-          <SavedTracksItem
-            key={track.track.id}
-            index={index}
-            track={track}
-            trackAudio={trackAudio}
-            handleAddToPlaylist={handleAddToPlaylist}
-            distinctTracksInPlaylist={distinctTracksInPlaylist}
-          />
-        ))}
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              itemCount={savedTracks.length}
+              itemSize={() => 60}
+              width={width}
+            >
+              {Row}
+            </List>
+          )}
+        </AutoSizer>
         <PlaylistMenu
           anchorEl={anchorEl}
           handleClose={handleClose}

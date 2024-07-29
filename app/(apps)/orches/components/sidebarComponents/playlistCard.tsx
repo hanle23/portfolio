@@ -38,7 +38,7 @@ export default function PlaylistCard({
         currPlaylist?.id === playlist?.id
           ? 'bg-spotify-color bg-opacity-40 hover:bg-opacity-70'
           : 'hover:bg-playlist-hover'
-      } overflow-hidden cursor-pointer py-1 px-2.5 min-h-1/4 min-w-2/4 shrink-0 `}
+      } overflow-hidden cursor-pointer py-1 px-2.5 min-h-1/4 shrink-0`}
       onClick={() => {
         if (setCurrPlaylist !== undefined) {
           setCurrPlaylist(playlist?.id)
@@ -58,7 +58,7 @@ export default function PlaylistCard({
             : smallestImage?.height
         }
         alt={playlist.name}
-        className="shrink-0 p-1 rounded-lg"
+        className="shrink-0 p-1 rounded-lg overflow-hidden"
         priority={index === 0}
       />
       <div className="flex flex-col shrink-0">
