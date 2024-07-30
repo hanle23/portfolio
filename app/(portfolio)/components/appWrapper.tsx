@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 
@@ -82,6 +82,39 @@ export default function AppWrapper({
     pressing,
     setPressing,
   }
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+
+    function disableScroll(): void {
+      document.body.style.overflow = 'hidden'
+    }
+
+    function enableScrolling(): void {
+      document.body.style.overflow = ''
+      // Clear the previous timeout if there is one
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
+      // Start a new timeout that will call disableScroll after 1 second of inactivity
+      timeoutId = setTimeout(disableScroll, 1000)
+    }
+    if (window.matchMedia('(min-width: 640px)').matches) {
+      document.body.addEventListener('wheel', enableScrolling)
+      document.body.addEventListener('click', enableScrolling)
+      document.body.addEventListener('mousemove', enableScrolling)
+    }
+
+    // Clean up the event listeners and the timeout when the component unmounts
+    return () => {
+      document.body.removeEventListener('wheel', enableScrolling)
+      document.body.removeEventListener('click', enableScrolling)
+      document.body.removeEventListener('mousemove', enableScrolling)
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [])
 
   return (
     <Context.Provider value={context}>

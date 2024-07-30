@@ -13,7 +13,7 @@ export default function ContactPage(): React.JSX.Element {
         <div className="flex h-fit w-full">
           <p className="text-center">
             {
-              "Hi there! I'm very excited to know that you have traveled all the way here to find my contact information! Here are some of the way we can connect (please don't sign me up to magazine subscriptions). I hope you can find a convenient way to reach out to me from the list below!"
+              "Hi there! I'm very excited know that you have travelled all the way here to find my contact information! Here are some of the way we can connect (please don't sign me up to magazine subscriptions). I hope you can find a convenient way to reach out to me from the list below!"
             }
           </p>
         </div>

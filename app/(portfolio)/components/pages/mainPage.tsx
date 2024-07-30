@@ -20,23 +20,20 @@ export default function MainPage(): React.JSX.Element {
       <div className="grid mt-6 grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <p className="text-base">
-            {`Back in 2016, my journey into programming began with a fascination
-            for a Trouble in Terrorist Town server in CS . My friend and I
-            started writing mods for his server, and this hobby quickly evolved
-            into a passion for software development. Since then, I've had
-            numerous opportunities to expand my knowledge across various domains
-            within Computer Science, both in academic settings and through
-            hands-on experience at a startup.`}
+            Back in 2016 when I first discovered a Trouble in Terrorist Town
+            server in CS:GO, my friend and I were learning to write some mods
+            for his server, and it pulled me into the hobby of programming.
+            Since then, I have had many opportunities to broaden my knowledge in
+            various topics within Computer Science, both at an{' '}
+            <strong>educational institution</strong> and at a{' '}
+            <strong>start-up</strong> .
           </p>
           <br />
           <p className="text-base ">
-            {`Today, I am actively seeking my next opportunity to build innovative
-            products. Currently, I develop SaaS applications at Tesoract and
-            create internal software solutions for the School of Continuing
-            Studies at York University. In my free time, you'll often find me
-            immersed in games like Baldur's Gate 3, reading books, and honing my
-            skills on the piano. I also have a keen interest in custom
-            mechanical keyboards, music, movies, and audiophile equipment.`}
+            Nowadays I am actively seeking for my next opportunity to build
+            great products while developing <strong>Saas</strong> application{' '}
+            <strong>Tesoract</strong>, and creating internal softwares for{' '}
+            <strong>School of Continuing Studies at York University</strong>
           </p>
         </div>
 
@@ -76,6 +73,11 @@ export default function MainPage(): React.JSX.Element {
             </a>
           </BlockContainer>
         </div>
+        <p className="text-base ">
+          {
+            "During my free time I usually playing games, especially Baldur's Gate 3 these days, reading books and hopefully getting a new piano eventually to be a real Asian."
+          }
+        </p>
       </div>
     </div>
   )
