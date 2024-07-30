@@ -27,7 +27,7 @@ export default function SavedTracksHeader({
         <div className="hidden lg:flex lg:col-span-2 justify-center items-center">
           <p className="text-sm">Date Added</p>
         </div>
-        <div className="col-span-2 flex justify-center items-center">
+        <div className="col-span-2 flex justify-center items-center pr-7">
           <AccessTimeIcon />
         </div>
       </div>

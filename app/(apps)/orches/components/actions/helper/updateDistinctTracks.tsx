@@ -3,23 +3,24 @@ import type { TrackPlaylists } from '@/app/types/spotify/track'
 export const updateDistinctTracks = (
   resItems: PlaylistTrackObject[],
   playlistId: string,
+  distinctTracksInPlaylist: TrackPlaylists,
   setDistinctTracks: React.Dispatch<React.SetStateAction<TrackPlaylists>>,
 ): void => {
-  setDistinctTracks((prevTracks) => {
-    const newState = { ...prevTracks }
+  const newState = distinctTracksInPlaylist
 
-    resItems.forEach((item) => {
-      const trackId = item?.track?.uri
-
-      if (trackId in newState) {
-        if (!newState[trackId].includes(playlistId)) {
-          newState[trackId].push(playlistId)
-        }
-      } else {
-        newState[trackId] = [playlistId]
+  resItems.forEach((item) => {
+    const trackId = item?.track?.id
+    if (trackId === null || trackId === undefined) {
+      return
+    }
+    if (trackId in newState) {
+      if (!newState[trackId].includes(playlistId)) {
+        newState[trackId].push(playlistId)
       }
-    })
-
-    return newState
+    } else {
+      newState[trackId] = [playlistId]
+    }
   })
+
+  setDistinctTracks(newState)
 }

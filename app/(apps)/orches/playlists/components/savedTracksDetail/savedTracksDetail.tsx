@@ -14,13 +14,13 @@ import toast, { Toaster } from 'react-hot-toast'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 export default function SavedTracksDetail({
-  trackAudio,
   savedTracksFunc,
   playlists,
   distinctTracksInPlaylist,
   playlistsMutate,
+  trackUrl,
+  setTrackUrl,
 }: {
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
     savedTracks: SavedTracks[] | undefined
     savedTracksSetNextPage: () => Promise<void>
@@ -31,9 +31,11 @@ export default function SavedTracksDetail({
   playlists: PlaylistSummary[] | undefined | undefined
   distinctTracksInPlaylist: Record<string, string[]>
   playlistsMutate: () => Promise<PlaylistResponse[] | undefined>
+  trackUrl: string
+  setTrackUrl: (url: string) => void
 }): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [currTrackUri, setCurrTrackUri] = useState<string>('')
+  const [currTrackId, setCurrTrackId] = useState<string>('')
   const [playlistsToAdd, setPlaylistsToAdd] = useState<string[]>([])
   const [playlistsToRemove, setPlaylistsToRemove] = useState<string[]>([])
   const open = Boolean(anchorEl)
@@ -57,10 +59,10 @@ export default function SavedTracksDetail({
   ])
   const handleAddToPlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
-    trackUri: string,
+    trackId: string,
   ): void => {
     setAnchorEl(event.currentTarget)
-    setCurrTrackUri(trackUri)
+    setCurrTrackId(trackId)
   }
 
   function handleSubmit(): void {
@@ -71,6 +73,7 @@ export default function SavedTracksDetail({
       const playlistName = playlists?.find(
         (playlist) => playlist.id === playlistId,
       )?.name
+      const currTrackUri = `spotify:track:${currTrackId}`
       if (snapshotId === undefined) {
         continue
       }
@@ -95,6 +98,7 @@ export default function SavedTracksDetail({
       const playlistName = playlists?.find(
         (playlist) => playlist.id === playlistId,
       )?.name
+      const currTrackUri = `spotify:track:${currTrackId}`
       addPlaylistItem(currTrackUri, playlistId)
         .then((res) => {
           if (res.status === 201) {
@@ -121,22 +125,22 @@ export default function SavedTracksDetail({
 
   const handleAddOrRemoveFromPlaylist = (playlistId: string): void => {
     if (
-      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       !playlistsToAdd?.includes(playlistId)
     ) {
       setPlaylistsToAdd([...playlistsToAdd, playlistId])
     } else if (
-      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       !playlistsToRemove?.includes(playlistId)
     ) {
       setPlaylistsToRemove([...playlistsToRemove, playlistId])
     } else if (
-      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       playlistsToRemove?.includes(playlistId)
     ) {
       setPlaylistsToRemove(playlistsToRemove.filter((id) => id !== playlistId))
     } else if (
-      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       playlistsToAdd?.includes(playlistId)
     ) {
       setPlaylistsToAdd(playlistsToAdd.filter((id) => id !== playlistId))
@@ -145,22 +149,22 @@ export default function SavedTracksDetail({
 
   const isChecked = (playlistId: string): boolean => {
     if (
-      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       !playlistsToAdd.includes(playlistId)
     ) {
       return false
     } else if (
-      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       !playlistsToRemove.includes(playlistId)
     ) {
       return true
     } else if (
-      distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       playlistsToRemove.includes(playlistId)
     ) {
       return false
     } else if (
-      !distinctTracksInPlaylist[currTrackUri]?.includes(playlistId) &&
+      !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
       playlistsToAdd.includes(playlistId)
     ) {
       return true
@@ -181,21 +185,22 @@ export default function SavedTracksDetail({
         style={style}
         index={index}
         track={savedTracks[index]}
-        trackAudio={trackAudio}
         handleAddToPlaylist={handleAddToPlaylist}
         distinctTracksInPlaylist={distinctTracksInPlaylist}
+        trackUrl={trackUrl}
+        setTrackUrl={setTrackUrl}
       />
     )
   }
 
   const handleClose = (): void => {
     setAnchorEl(null)
-    setCurrTrackUri('')
+    setCurrTrackId('')
     setPlaylistsToAdd([])
     setPlaylistsToRemove([])
   }
   return (
-    <div className="flex flex-col h-full w-full overflow-y-auto overscroll-none">
+    <div className="flex flex-col h-full w-full">
       <SavedTracksHeader total={savedTracksFunc?.savedTracks?.[0]?.total} />
       <div className="flex flex-col h-full w-full space-y-3 pt-3">
         <AutoSizer>

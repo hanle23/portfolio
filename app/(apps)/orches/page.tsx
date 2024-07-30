@@ -20,7 +20,6 @@ import { updateDistinctTracks } from './components/actions/helper/updateDistinct
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
-  const [currentRoute, setCurrentRoute] = useState<string>('playlists')
   const [playlists, setPlaylists] = useState<PlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
   const [currPlaylist, setCurrPlaylist] =
@@ -30,6 +29,7 @@ export default function Page(): React.JSX.Element {
   )
   const [distinctTracksInPlaylist, setDistinctTracksInPlaylist] =
     useState<TrackPlaylists>({})
+  const [trackUrl, setTrackUrl] = useState<string>('')
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
   )
@@ -48,6 +48,28 @@ export default function Page(): React.JSX.Element {
     mutate: playlistsMutate,
     isValidating: playlistsIsValidating,
   } = useFetchPlaylist(fetcher, session?.user?.access_token)
+
+  useEffect(() => {
+    if (trackUrl === '') {
+      trackAudio?.current?.pause()
+      return
+    }
+    if (trackAudio?.current !== null && trackAudio?.current !== undefined) {
+      trackAudio.current.src = trackUrl
+      trackAudio.current.load()
+      trackAudio.current.onloadeddata = () => {
+        if (trackAudio?.current?.currentSrc === trackUrl) {
+          trackAudio.current.play().catch((e) => {
+            console.log(e)
+          })
+        }
+      }
+
+      trackAudio.current.onerror = (e) => {
+        console.error('Error loading audio:', e)
+      }
+    }
+  }, [trackUrl, trackAudio])
 
   useEffect(() => {
     if (
@@ -101,6 +123,7 @@ export default function Page(): React.JSX.Element {
                     updateDistinctTracks(
                       res.items,
                       playlist.id,
+                      distinctTracksInPlaylist,
                       setDistinctTracksInPlaylist,
                     )
                   }
@@ -140,7 +163,7 @@ export default function Page(): React.JSX.Element {
         )
       })
     }
-  }, [playlistRes, session?.user])
+  }, [playlistRes, session?.user, distinctTracksInPlaylist])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
@@ -179,8 +202,6 @@ export default function Page(): React.JSX.Element {
   return (
     <div className="flex gap-8 w-full h-full pt-16 p-3 justify-center">
       <SideBar
-        currentRoute={currentRoute}
-        setCurrentRoute={setCurrentRoute}
         playlists={distinctPlaylist}
         currPlaylist={currPlaylist}
         setCurrPlaylist={handleSetCurrPlaylist}
@@ -189,11 +210,12 @@ export default function Page(): React.JSX.Element {
         <PlaylistPage
           currPlaylist={currPlaylist}
           handleSetCurrPlaylist={handleSetCurrPlaylist}
-          trackAudio={trackAudio}
           savedTracksFunc={savedTracksFunc}
           playlists={distinctPlaylist}
           playlistsMutate={playlistsMutate}
           distinctTracksInPlaylist={distinctTracksInPlaylist}
+          trackUrl={trackUrl}
+          setTrackUrl={setTrackUrl}
         />
       </div>
     </div>

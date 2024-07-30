@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import type {
   SimplifiedPlaylistObject,
   PlaylistTrackObject,
+  PlaylistResponse,
 } from '@/app/types/spotify/playlist'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -13,11 +14,15 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 export default function PlaylistDetail({
   currPlaylist,
   setCurrPlaylist,
-  trackAudio,
+  playlistsMutate,
+  trackUrl,
+  setTrackUrl,
 }: {
   currPlaylist: SimplifiedPlaylistObject
   setCurrPlaylist: (id: string | null) => void
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
+  playlistsMutate: () => Promise<PlaylistResponse[] | undefined>
+  trackUrl: string
+  setTrackUrl: (url: string) => void
 }): React.JSX.Element {
   async function useHandleRemoveTrack(trackUri: string): Promise<void> {
     const res = await deletePlaylistItem(
@@ -26,6 +31,9 @@ export default function PlaylistDetail({
       currPlaylist.snapshot_id,
     )
     if (res.status === 200) {
+      playlistsMutate().catch((e: any) => {
+        console.log(e)
+      })
       toast.success(
         `Successfully removed track from playlist ${currPlaylist.name}`,
       )
@@ -50,15 +58,16 @@ export default function PlaylistDetail({
           handleRemoveTrack={useHandleRemoveTrack}
           index={index}
           track={currPlaylist?.tracks[index]}
-          trackAudio={trackAudio}
           style={style}
+          trackUrl={trackUrl}
+          setTrackUrl={setTrackUrl}
         />
       )
     } else return null
   }
 
   return (
-    <div className="w-full h-full flex flex-col overscroll-none overflow-y-auto">
+    <div className="w-full h-full flex flex-col">
       <PlaylistHeader
         playlist={currPlaylist}
         setCurrPlaylist={setCurrPlaylist}

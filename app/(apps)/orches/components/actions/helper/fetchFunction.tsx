@@ -2,13 +2,22 @@ import type { Fetcher } from 'swr'
 export interface FetcherArgs {
   url: string
   token: string
+  body?: any
+  method?: string
 }
 
-const fetcher: Fetcher<any, FetcherArgs> = async ({ url, token }) => {
+const fetcher: Fetcher<any, FetcherArgs> = async ({
+  url,
+  token,
+  body,
+  method,
+}) => {
   const response = await fetch(url, {
+    method: method ?? 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    body: JSON.stringify(body),
   })
 
   if (response.status === 429) {

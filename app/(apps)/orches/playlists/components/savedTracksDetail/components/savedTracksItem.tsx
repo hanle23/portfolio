@@ -8,20 +8,22 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 export default function SavedTracksItem({
   index,
   track,
-  trackAudio,
   handleAddToPlaylist,
   distinctTracksInPlaylist,
   style,
+  trackUrl,
+  setTrackUrl,
 }: {
   index: number
   track: SavedTracksObject
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined> | undefined
   handleAddToPlaylist: (
     event: React.MouseEvent<HTMLButtonElement>,
     trackUri: string,
   ) => void
   distinctTracksInPlaylist: Record<string, string[]>
   style: React.CSSProperties | undefined
+  trackUrl: string
+  setTrackUrl: (url: string) => void
 }): JSX.Element {
   const smallestImage = track?.track?.album?.images?.reduce((minImg, img) =>
     img?.width * img?.height < minImg?.width * minImg?.height ? img : minImg,
@@ -36,15 +38,16 @@ export default function SavedTracksItem({
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         <MediaPreviewButton
           className="group-hover:block"
-          trackAudio={trackAudio}
-          trackUrl={track.track.preview_url}
+          currTrackUrl={track.track.preview_url}
+          trackUrl={trackUrl}
+          setTrackUrl={setTrackUrl}
         />
 
         <p className="mr-2 group-hover:hidden">{index + 1}</p>
       </div>
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
-          {track?.track?.uri in distinctTracksInPlaylist ? (
+          {track?.track?.id in distinctTracksInPlaylist ? (
             <Image
               src={smallestImage?.url}
               alt="track?.track?.name"
@@ -116,7 +119,7 @@ export default function SavedTracksItem({
         <button
           className="group-hover:opacity-100 opacity-0 hover:text-spotify-color"
           onClick={(event) => {
-            handleAddToPlaylist(event, track.track.uri)
+            handleAddToPlaylist(event, track.track.id)
           }}
         >
           <AddCircleOutlineIcon />

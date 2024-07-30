@@ -10,15 +10,15 @@ import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 export default function PlaylistPage({
   currPlaylist,
   handleSetCurrPlaylist,
-  trackAudio,
   savedTracksFunc,
   playlists,
   distinctTracksInPlaylist,
   playlistsMutate,
+  trackUrl,
+  setTrackUrl,
 }: {
   currPlaylist: SimplifiedPlaylistObject | null
   handleSetCurrPlaylist: (id: string | null) => void
-  trackAudio: React.MutableRefObject<HTMLAudioElement | undefined>
   savedTracksFunc: {
     savedTracks: SavedTracks[] | undefined
     savedTracksSetNextPage: () => Promise<void>
@@ -29,6 +29,8 @@ export default function PlaylistPage({
   playlists: PlaylistSummary[] | undefined | undefined
   distinctTracksInPlaylist: Record<string, string[]>
   playlistsMutate: () => Promise<PlaylistResponse[] | undefined>
+  trackUrl: string
+  setTrackUrl: (url: string) => void
 }): JSX.Element {
   return (
     <div className="w-full h-full relative">
@@ -36,15 +38,18 @@ export default function PlaylistPage({
         <PlaylistDetail
           currPlaylist={currPlaylist}
           setCurrPlaylist={handleSetCurrPlaylist}
-          trackAudio={trackAudio}
+          playlistsMutate={playlistsMutate}
+          trackUrl={trackUrl}
+          setTrackUrl={setTrackUrl}
         />
       ) : (
         <SavedTracksDetail
-          trackAudio={trackAudio}
           savedTracksFunc={savedTracksFunc}
           playlists={playlists}
           distinctTracksInPlaylist={distinctTracksInPlaylist}
           playlistsMutate={playlistsMutate}
+          trackUrl={trackUrl}
+          setTrackUrl={setTrackUrl}
         />
       )}
     </div>

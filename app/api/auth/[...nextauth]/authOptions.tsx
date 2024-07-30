@@ -5,7 +5,7 @@ import type { AuthUser } from '@/app/types/spotify/auth'
 export const authOptions: AuthOptions = {
   providers: [spotifyProfile],
   session: {
-    maxAge: 60 * 60,
+    maxAge: 60 * 59,
     strategy: 'jwt',
   },
   callbacks: {
@@ -17,28 +17,28 @@ export const authOptions: AuthOptions = {
       account: Account | null
     }): Promise<JWT> {
       if (account !== null && account !== undefined) {
-        const newToken = {
+        return {
           ...token,
           access_token: account.access_token,
           token_type: account.token_type,
           expires_at: account.expires_at,
+          expires_in: account.expires_in,
           refresh_token: account.refresh_token,
           scope: account.scope,
         }
-        return newToken
       }
       const updatedToken = {
         ...token,
         access_token: token?.access_token,
         token_type: token?.token_type,
         expires_at: Number(token?.expires_at ?? Date.now() / 1000),
-        expires_in: Number(token?.expires_in ?? 0) - Date.now() / 1000, // Representing the time left in seconds
+        expires_in: Number(token?.expires_in ?? 0) - Date.now() / 1000,
         refresh_token: token?.refresh_token,
         scope: token?.scope,
         id: token?.providerAccountId,
       }
 
-      if (Number(Date.now() / 1000) >= updatedToken.expires_at - 5 * 60) {
+      if (Number(Date.now() / 1000) + 5 * 60 >= updatedToken.expires_at) {
         return await refreshAccessToken(updatedToken)
       }
 
