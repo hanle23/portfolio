@@ -30,9 +30,7 @@ export default function Page(): React.JSX.Element {
   const [distinctTracksInPlaylist, setDistinctTracksInPlaylist] =
     useState<TrackPlaylists>({})
   const [trackUrl, setTrackUrl] = useState<string>('')
-  const trackAudio = useRef(
-    typeof Audio !== 'undefined' ? new Audio() : undefined,
-  )
+  const trackAudio = useRef(typeof Audio !== 'undefined' ? new Audio() : null)
   const {
     data: savedTrackRes,
     setNextPage: savedTracksSetNextPage,
@@ -54,7 +52,7 @@ export default function Page(): React.JSX.Element {
       trackAudio?.current?.pause()
       return
     }
-    if (trackAudio?.current !== null && trackAudio?.current !== undefined) {
+    if (trackAudio?.current !== null) {
       trackAudio.current.src = trackUrl
       trackAudio.current.load()
       trackAudio.current.onloadeddata = () => {
@@ -120,12 +118,6 @@ export default function Page(): React.JSX.Element {
                 .then((res) => {
                   if (res.items !== undefined) {
                     playlist.tracks = res.items
-                    updateDistinctTracks(
-                      res.items,
-                      playlist.id,
-                      distinctTracksInPlaylist,
-                      setDistinctTracksInPlaylist,
-                    )
                   }
                 })
                 .catch((e) => {
@@ -163,7 +155,17 @@ export default function Page(): React.JSX.Element {
         )
       })
     }
-  }, [playlistRes, session?.user, distinctTracksInPlaylist])
+  }, [playlistRes, session?.user])
+
+  useEffect(() => {
+    if (Object.keys(distinctTracksInPlaylist).length === 0) {
+      updateDistinctTracks(
+        playlists,
+        distinctTracksInPlaylist,
+        setDistinctTracksInPlaylist,
+      )
+    }
+  }, [playlists, distinctTracksInPlaylist, session?.user])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)

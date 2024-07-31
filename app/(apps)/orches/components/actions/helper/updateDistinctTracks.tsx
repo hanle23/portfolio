@@ -1,26 +1,34 @@
-import type { PlaylistTrackObject } from '@/app/types/spotify/playlist'
+import type {
+  PlaylistResponse,
+  SimplifiedPlaylistObject,
+  PlaylistTrackObject,
+} from '@/app/types/spotify/playlist'
 import type { TrackPlaylists } from '@/app/types/spotify/track'
 export const updateDistinctTracks = (
-  resItems: PlaylistTrackObject[],
-  playlistId: string,
+  playlists: PlaylistResponse[],
   distinctTracksInPlaylist: TrackPlaylists,
-  setDistinctTracks: React.Dispatch<React.SetStateAction<TrackPlaylists>>,
+  setDistinctTracks: (newState: TrackPlaylists) => void,
 ): void => {
-  const newState = distinctTracksInPlaylist
+  const newDistinctTracksInPlaylist = distinctTracksInPlaylist
+  const allPlaylists = playlists.flatMap((playlist) => playlist.items)
 
-  resItems.forEach((item) => {
-    const trackId = item?.track?.id
-    if (trackId === null || trackId === undefined) {
-      return
-    }
-    if (trackId in newState) {
-      if (!newState[trackId].includes(playlistId)) {
-        newState[trackId].push(playlistId)
+  allPlaylists.forEach((playlist: SimplifiedPlaylistObject) => {
+    const playlistId = playlist.id
+    const resItems = playlist.tracks as PlaylistTrackObject[]
+    resItems.forEach((item) => {
+      const trackId = item?.track?.id
+      if (trackId === null || trackId === undefined) {
+        return
       }
-    } else {
-      newState[trackId] = [playlistId]
-    }
+      if (trackId in newDistinctTracksInPlaylist) {
+        if (!newDistinctTracksInPlaylist[trackId].includes(playlistId)) {
+          newDistinctTracksInPlaylist[trackId].push(playlistId)
+        }
+      } else {
+        newDistinctTracksInPlaylist[trackId] = [playlistId]
+      }
+    })
   })
-
-  setDistinctTracks(newState)
+  console.log(newDistinctTracksInPlaylist)
+  setDistinctTracks(newDistinctTracksInPlaylist)
 }
