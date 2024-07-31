@@ -13,6 +13,10 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  NEXT_PUBLIC_SPOTIFY_CLIENT_ID: ${{ vars.NEXT_PUBLIC_SPOTIFY_CLIENT_ID }}
+  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+
 defaults:
   run:
     # change this if your nextjs app does not live at the root of the repo
@@ -36,15 +40,6 @@ jobs:
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
-
-      # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
-      # so the step above will fail to pull dependencies
-      # - uses: pnpm/action-setup@v2
-      #   name: Install pnpm
-      #   id: pnpm-install
-      #   with:
-      #     version: 7
-      #     run_install: true
 
       - name: Restore next build
         uses: actions/cache@v3
