@@ -158,12 +158,18 @@ export default function Page(): React.JSX.Element {
   }, [playlistRes, session?.user])
 
   useEffect(() => {
-    if (Object.keys(distinctTracksInPlaylist).length === 0) {
-      updateDistinctTracks(
-        playlists,
-        distinctTracksInPlaylist,
-        setDistinctTracksInPlaylist,
-      )
+    const newDistinctTracksInPlaylist = updateDistinctTracks(
+      playlists,
+      distinctTracksInPlaylist,
+    )
+    console.log(playlists)
+    console.log(newDistinctTracksInPlaylist)
+    if (
+      newDistinctTracksInPlaylist !== null &&
+      newDistinctTracksInPlaylist !== distinctTracksInPlaylist
+    ) {
+      console.log(newDistinctTracksInPlaylist)
+      setDistinctTracksInPlaylist(newDistinctTracksInPlaylist)
     }
   }, [playlists, distinctTracksInPlaylist, session?.user])
 

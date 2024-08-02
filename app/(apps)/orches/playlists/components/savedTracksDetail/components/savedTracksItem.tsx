@@ -47,7 +47,8 @@ export default function SavedTracksItem({
       </div>
       <div className="col-span-6 lg:col-span-4 flex justify-start items-center gap-3">
         <div className="flex shrink-0 h-full w-12">
-          {track?.track?.id in distinctTracksInPlaylist ? (
+          {Object.keys(distinctTracksInPlaylist).length === 0 ||
+          track?.track?.id in distinctTracksInPlaylist ? (
             <Image
               src={smallestImage?.url}
               alt="track?.track?.name"

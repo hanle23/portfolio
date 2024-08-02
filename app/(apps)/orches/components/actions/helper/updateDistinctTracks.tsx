@@ -7,14 +7,16 @@ import type { TrackPlaylists } from '@/app/types/spotify/track'
 export const updateDistinctTracks = (
   playlists: PlaylistResponse[],
   distinctTracksInPlaylist: TrackPlaylists,
-  setDistinctTracks: (newState: TrackPlaylists) => void,
-): void => {
+): TrackPlaylists | null => {
   const newDistinctTracksInPlaylist = distinctTracksInPlaylist
   const allPlaylists = playlists.flatMap((playlist) => playlist.items)
 
   allPlaylists.forEach((playlist: SimplifiedPlaylistObject) => {
     const playlistId = playlist.id
     const resItems = playlist.tracks as PlaylistTrackObject[]
+    if (!Array.isArray(resItems)) {
+      return null
+    }
     resItems.forEach((item) => {
       const trackId = item?.track?.id
       if (trackId === null || trackId === undefined) {
@@ -29,6 +31,5 @@ export const updateDistinctTracks = (
       }
     })
   })
-  console.log(newDistinctTracksInPlaylist)
-  setDistinctTracks(newDistinctTracksInPlaylist)
+  return newDistinctTracksInPlaylist
 }
