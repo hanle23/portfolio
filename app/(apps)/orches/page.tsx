@@ -30,7 +30,9 @@ export default function Page(): React.JSX.Element {
   const [distinctTracksInPlaylist, setDistinctTracksInPlaylist] =
     useState<TrackPlaylists>({})
   const [trackUrl, setTrackUrl] = useState<string>('')
-  const trackAudio = useRef(typeof Audio !== 'undefined' ? new Audio() : null)
+  const trackAudio = useRef(
+    typeof Audio !== 'undefined' ? new Audio() : undefined,
+  )
   const {
     data: savedTrackRes,
     setNextPage: savedTracksSetNextPage,
@@ -52,7 +54,7 @@ export default function Page(): React.JSX.Element {
       trackAudio?.current?.pause()
       return
     }
-    if (trackAudio?.current !== null) {
+    if (trackAudio?.current !== null && trackAudio?.current !== undefined) {
       trackAudio.current.src = trackUrl
       trackAudio.current.load()
       trackAudio.current.onloadeddata = () => {
@@ -101,31 +103,40 @@ export default function Page(): React.JSX.Element {
       Math.ceil((playlistRes.length * PLAYLIST_LIMIT) / PLAYLIST_LIMIT) + 1 >
         playlistRes.length
     ) {
+      if (session?.user?.name === undefined) {
+        return
+      }
       const filteredPlaylistRes = playlistRes?.map((playlistResponse) => ({
         ...playlistResponse,
         items: playlistResponse?.items?.filter(
           (playlist) => playlist?.owner?.display_name === session?.user?.name,
         ),
       }))
-      if (session?.user?.name !== undefined) {
-        filteredPlaylistRes.forEach((playlistResponse) => {
-          playlistResponse.items.forEach((playlist) => {
-            !Array.isArray(playlist.tracks) &&
-              fetchPlaylistItem(
-                playlist?.tracks?.href,
-                session?.user?.access_token,
-              )
-                .then((res) => {
-                  if (res.items !== undefined) {
-                    playlist.tracks = res.items
-                  }
-                })
-                .catch((e) => {
-                  console.log(e)
-                })
-          })
+
+      filteredPlaylistRes.forEach((playlistResponse) => {
+        playlistResponse.items.forEach((playlist) => {
+          !Array.isArray(playlist.tracks) &&
+            fetchPlaylistItem(
+              playlist?.tracks?.href,
+              session?.user?.access_token,
+            )
+              .then((res) => {
+                if (res.items !== undefined) {
+                  playlist.tracks = res.items
+                  updateDistinctTracks(
+                    res.items,
+                    playlist.id,
+                    distinctTracksInPlaylist,
+                    setDistinctTracksInPlaylist,
+                  )
+                }
+              })
+              .catch((e) => {
+                console.log(e)
+              })
         })
-      }
+      })
+
       setPlaylists((prevPlaylists) => {
         if (prevPlaylists?.length === 0) {
           return filteredPlaylistRes
@@ -155,23 +166,9 @@ export default function Page(): React.JSX.Element {
         )
       })
     }
-  }, [playlistRes, session?.user])
-
-  useEffect(() => {
-    const newDistinctTracksInPlaylist = updateDistinctTracks(
-      playlists,
-      distinctTracksInPlaylist,
-    )
-    console.log(playlists)
-    console.log(newDistinctTracksInPlaylist)
-    if (
-      newDistinctTracksInPlaylist !== null &&
-      newDistinctTracksInPlaylist !== distinctTracksInPlaylist
-    ) {
-      console.log(newDistinctTracksInPlaylist)
-      setDistinctTracksInPlaylist(newDistinctTracksInPlaylist)
-    }
-  }, [playlists, distinctTracksInPlaylist, session?.user])
+  }, [playlistRes, session?.user, distinctTracksInPlaylist])
+  console.log(playlists)
+  console.log('distinctTracksInPlaylist', distinctTracksInPlaylist)
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
