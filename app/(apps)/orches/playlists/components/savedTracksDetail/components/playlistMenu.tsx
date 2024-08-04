@@ -24,7 +24,7 @@ export default function PlaylistMenu({
   isSubmittable: boolean
   handleAddOrRemoveFromPlaylist: (playlistId: string) => void
   isChecked: (playlistId: string) => boolean
-  handleSubmit: () => void
+  handleSubmit: () => Promise<void>
 }): JSX.Element {
   const [searchInput, setSearchInput] = useState<string>('')
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists)
@@ -150,7 +150,11 @@ export default function PlaylistMenu({
         {isSubmittable && (
           <button
             className="bg-white text-spotify-item-hover rounded-full font-semibold px-4 py-1 hover:scale-105"
-            onClick={handleSubmit}
+            onClick={() => {
+              handleSubmit().catch((e) => {
+                console.log(e)
+              })
+            }}
           >
             Done
           </button>

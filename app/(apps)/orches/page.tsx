@@ -16,7 +16,7 @@ import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistPage from './playlists/playlistsPage'
 import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
 import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
-import { updateDistinctTracks } from './components/actions/helper/updateDistinctTracks'
+import { createDistinctTracks } from './components/actions/helper/createDistinctTracks'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -123,7 +123,7 @@ export default function Page(): React.JSX.Element {
               .then((res) => {
                 if (res.items !== undefined) {
                   playlist.tracks = res.items
-                  updateDistinctTracks(
+                  createDistinctTracks(
                     res.items,
                     playlist.id,
                     distinctTracksInPlaylist,
@@ -167,8 +167,6 @@ export default function Page(): React.JSX.Element {
       })
     }
   }, [playlistRes, session?.user, distinctTracksInPlaylist])
-  console.log(playlists)
-  console.log('distinctTracksInPlaylist', distinctTracksInPlaylist)
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
@@ -221,6 +219,7 @@ export default function Page(): React.JSX.Element {
           distinctTracksInPlaylist={distinctTracksInPlaylist}
           trackUrl={trackUrl}
           setTrackUrl={setTrackUrl}
+          setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
         />
       </div>
     </div>
