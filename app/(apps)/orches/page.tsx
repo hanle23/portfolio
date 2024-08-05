@@ -17,11 +17,13 @@ import PlaylistPage from './playlists/playlistsPage'
 import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
 import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
 import { createDistinctTracks } from './components/actions/helper/createDistinctTracks'
+import { Toaster } from 'react-hot-toast'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
   const [playlists, setPlaylists] = useState<PlaylistResponse[]>([])
   const [savedTracks, setSavedTracks] = useState<SavedTracks[]>([])
+
   const [currPlaylist, setCurrPlaylist] =
     useState<SimplifiedPlaylistObject | null>(null)
   const [distinctPlaylist, setDistinctPlaylist] = useState<PlaylistSummary[]>(
@@ -222,6 +224,17 @@ export default function Page(): React.JSX.Element {
           setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
         />
       </div>
+
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          duration: 4500,
+          style: {
+            background: '#27272a',
+            color: '#fff',
+          },
+        }}
+      />
     </div>
   )
 }
