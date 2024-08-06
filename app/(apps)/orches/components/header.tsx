@@ -32,7 +32,6 @@ export function Header(): React.JSX.Element {
 
   return session?.user !== undefined ? (
     <>
-      {' '}
       <AppBar
         position="absolute"
         color="transparent"
@@ -62,7 +61,18 @@ export function Header(): React.JSX.Element {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={session?.user?.name} src={session?.user?.image} />
+                <Avatar
+                  alt={session?.user?.name}
+                  src={
+                    session?.user?.image?.reduce((prev, current) =>
+                      prev.height !== null &&
+                      current.height !== null &&
+                      prev.height < current.height
+                        ? prev
+                        : current,
+                    ).url ?? ''
+                  }
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -94,7 +104,15 @@ export function Header(): React.JSX.Element {
                     <Suspense fallback={<div>loading...</div>}>
                       <Avatar
                         alt={session?.user?.name}
-                        src={session?.user?.image}
+                        src={
+                          session?.user?.image?.reduce((prev, current) =>
+                            prev.height !== null &&
+                            current.height !== null &&
+                            prev.height < current.height
+                              ? prev
+                              : current,
+                          ).url ?? ''
+                        }
                       />
                       <Typography className="font-semibold text-white">
                         {session?.user?.name}
@@ -122,7 +140,7 @@ export function Header(): React.JSX.Element {
           </Box>
         </Toolbar>
       </AppBar>
-      <ProfilePage open={open} onClose={onClose} />
+      <ProfilePage open={open} onClose={onClose} session={session} />
     </>
   ) : (
     <></>
