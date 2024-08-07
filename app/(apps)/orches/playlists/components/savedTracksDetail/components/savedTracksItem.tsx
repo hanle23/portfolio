@@ -15,6 +15,7 @@ import PlaylistMenu from './playlistMenu'
 import deletePlaylistItem from '../../actions/deletePlaylistItem'
 import addPlaylistItem from '../../actions/addPlaylistItem'
 import updateDistinctTracks from '@/app/(apps)/orches/components/actions/helper/updateDistinctTracks'
+import IsExistInPlaylist from './actions/isExistInPlaylist'
 
 interface SavedTracksItemProps {
   index: number
@@ -151,56 +152,18 @@ export default function SavedTracksItem({
   const handleAddOrRemoveFromPlaylist = useCallback(
     (playlistId: string): void => {
       if (
-        !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        !playlistsToAdd?.includes(playlistId)
-      ) {
-        setPlaylistsToAdd([...playlistsToAdd, playlistId])
-      } else if (
-        distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        !playlistsToRemove?.includes(playlistId)
+        IsExistInPlaylist(
+          playlistId,
+          distinctTracksInPlaylist,
+          currTrackId,
+          playlistsToAdd,
+          playlistsToRemove,
+        )
       ) {
         setPlaylistsToRemove([...playlistsToRemove, playlistId])
-      } else if (
-        distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        playlistsToRemove?.includes(playlistId)
-      ) {
-        setPlaylistsToRemove(
-          playlistsToRemove.filter((id) => id !== playlistId),
-        )
-      } else if (
-        !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        playlistsToAdd?.includes(playlistId)
-      ) {
-        setPlaylistsToAdd(playlistsToAdd.filter((id) => id !== playlistId))
+      } else {
+        setPlaylistsToAdd([...playlistsToAdd, playlistId])
       }
-    },
-    [currTrackId, distinctTracksInPlaylist, playlistsToAdd, playlistsToRemove],
-  )
-
-  const isChecked = useCallback(
-    (playlistId: string): boolean => {
-      if (
-        !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        !playlistsToAdd.includes(playlistId)
-      ) {
-        return false
-      } else if (
-        distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        !playlistsToRemove.includes(playlistId)
-      ) {
-        return true
-      } else if (
-        distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        playlistsToRemove.includes(playlistId)
-      ) {
-        return false
-      } else if (
-        !distinctTracksInPlaylist[currTrackId]?.includes(playlistId) &&
-        playlistsToAdd.includes(playlistId)
-      ) {
-        return true
-      }
-      return false
     },
     [currTrackId, distinctTracksInPlaylist, playlistsToAdd, playlistsToRemove],
   )
@@ -216,7 +179,15 @@ export default function SavedTracksItem({
           playlistsToAdd.length > 0 || playlistsToRemove.length > 0
         }
         handleAddOrRemoveFromPlaylist={handleAddOrRemoveFromPlaylist}
-        isChecked={isChecked}
+        isChecked={(playlistId: string) => {
+          return IsExistInPlaylist(
+            playlistId,
+            distinctTracksInPlaylist,
+            currTrackId,
+            playlistsToAdd,
+            playlistsToRemove,
+          )
+        }}
         handleSubmit={handleSubmit}
       />
     ),
@@ -228,8 +199,9 @@ export default function SavedTracksItem({
       playlistsToAdd,
       playlistsToRemove,
       handleAddOrRemoveFromPlaylist,
-      isChecked,
       handleSubmit,
+      currTrackId,
+      distinctTracksInPlaylist,
     ],
   )
 
