@@ -11,13 +11,18 @@ import type {
   SimplifiedPlaylistObject,
   PlaylistSummary,
 } from '@/app/types/spotify/playlist'
-import type { TrackPlaylists } from '@/app/types/spotify/track'
+import type {
+  TrackPlaylists,
+  AudioFeaturesObject,
+} from '@/app/types/spotify/track'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
-import PlaylistPage from './playlists/playlistsPage'
+import PlaylistDetail from './playlists/components/playlistDetail/playlistDetail'
+import SavedTracksDetail from './playlists/components/savedTracksDetail/savedTracksDetail'
 import { LIMIT as PLAYLIST_LIMIT } from '@/constants/spotify/playlist'
 import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
 import { createDistinctTracks } from './components/actions/helper/createDistinctTracks'
 import { Toaster } from 'react-hot-toast'
+import setFeaturesHolder from './components/actions/audioFeatures/setFeaturesHolder'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -33,6 +38,9 @@ export default function Page(): React.JSX.Element {
   )
   const [distinctTracksInPlaylist, setDistinctTracksInPlaylist] =
     useState<TrackPlaylists>({})
+  const [audioFeatures, setAudioFeatures] = useState<
+    Record<string, number | AudioFeaturesObject>
+  >({})
   const [trackUrl, setTrackUrl] = useState<string>('')
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
@@ -82,25 +90,34 @@ export default function Page(): React.JSX.Element {
     if (savedTracksCompleted) {
       return
     }
+    const filteredTracks = savedTrackRes.filter(
+      (savedTrack) =>
+        !savedTracks.some(
+          (prevTrack) =>
+            prevTrack.href === savedTrack.href ||
+            prevTrack.offset === savedTrack.offset,
+        ),
+    )
     setSavedTracks((prevTracks) => {
       if (prevTracks?.length === 0) {
         return savedTrackRes
       }
-      const filteredTracks = savedTrackRes.filter(
-        (savedTrack) =>
-          !prevTracks.some(
-            (prevTrack) =>
-              prevTrack.href === savedTrack.href ||
-              prevTrack.offset === savedTrack.offset,
-          ),
-      )
       return [...prevTracks, ...filteredTracks]
+    })
+    filteredTracks.forEach((savedTracks) => {
+      setFeaturesHolder(savedTracks.items, audioFeatures, setAudioFeatures)
     })
     setSavedTracksCompleted(
       savedTrackRes.length ===
         Math.ceil(savedTrackRes[0].total / SAVEDTRACK_LIMIT),
     )
-  }, [savedTrackRes, session?.user?.name, savedTracksCompleted])
+  }, [
+    savedTracks,
+    savedTrackRes,
+    session?.user?.name,
+    savedTracksCompleted,
+    audioFeatures,
+  ])
 
   useEffect(() => {
     if (playlistRes === null || playlistRes === undefined) {
@@ -131,6 +148,7 @@ export default function Page(): React.JSX.Element {
                   distinctTracksInPlaylist,
                   setDistinctTracksInPlaylist,
                 )
+                setFeaturesHolder(res.items, audioFeatures, setAudioFeatures)
               }
             })
             .catch((e) => {
@@ -179,14 +197,6 @@ export default function Page(): React.JSX.Element {
       })
   }, [playlistsSetNextPage, playlistsIsValidating, playlistsIsLoading])
 
-  const savedTracksFunc = {
-    savedTracks,
-    savedTracksSetNextPage,
-    savedTracksIsLoading,
-    savedTracksMutate,
-    savedTracksIsValidating,
-  }
-
   const handleSetCurrPlaylist = useCallback(
     (id: string | null): void => {
       if (id === null) {
@@ -214,17 +224,31 @@ export default function Page(): React.JSX.Element {
         setCurrPlaylist={handleSetCurrPlaylist}
       />
       <div className="flex rounded-lg shrink-0 flex-1 h-full bg-container overflow-hidden">
-        <PlaylistPage
-          currPlaylist={currPlaylist}
-          handleSetCurrPlaylist={handleSetCurrPlaylist}
-          savedTracksFunc={savedTracksFunc}
-          playlists={distinctPlaylist}
-          playlistsMutate={playlistsMutate}
-          distinctTracksInPlaylist={distinctTracksInPlaylist}
-          trackUrl={trackUrl}
-          setTrackUrl={setTrackUrl}
-          setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
-        />
+        {currPlaylist !== undefined && currPlaylist !== null ? (
+          <PlaylistDetail
+            currPlaylist={currPlaylist}
+            setCurrPlaylist={handleSetCurrPlaylist}
+            playlistsMutate={playlistsMutate}
+            trackUrl={trackUrl}
+            setTrackUrl={setTrackUrl}
+          />
+        ) : (
+          <SavedTracksDetail
+            savedTracksFunc={{
+              savedTracks,
+              savedTracksSetNextPage,
+              savedTracksIsLoading,
+              savedTracksMutate,
+              savedTracksIsValidating,
+            }}
+            playlists={distinctPlaylist}
+            distinctTracksInPlaylist={distinctTracksInPlaylist}
+            playlistsMutate={playlistsMutate}
+            trackUrl={trackUrl}
+            setTrackUrl={setTrackUrl}
+            setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
+          />
+        )}
       </div>
 
       <Toaster

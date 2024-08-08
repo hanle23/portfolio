@@ -17,7 +17,7 @@ interface SavedTracksDetailProps {
     savedTracks: SavedTracks[] | undefined
     savedTracksSetNextPage: () => Promise<void>
     savedTracksIsLoading: boolean
-    savedTracksMutate: () => void
+    savedTracksMutate: () => Promise<SavedTracks[] | undefined>
     savedTracksIsValidating: boolean
   }
   playlists: PlaylistSummary[] | undefined | undefined
