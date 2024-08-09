@@ -23,6 +23,7 @@ import { LIMIT as SAVEDTRACK_LIMIT } from '@/constants/spotify/savedTracks'
 import { createDistinctTracks } from './components/actions/helper/createDistinctTracks'
 import { Toaster } from 'react-hot-toast'
 import setFeaturesHolder from './components/actions/audioFeatures/setFeaturesHolder'
+import queueAudioFeatures from './components/actions/audioFeatures/queueAudioFeatures'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -120,6 +121,17 @@ export default function Page(): React.JSX.Element {
   ])
 
   useEffect(() => {
+    if (
+      Object.keys(audioFeatures).length % 100 !== 0 ||
+      (!savedTracksCompleted && !playlistsCompleted)
+    )
+      return
+    queueAudioFeatures(audioFeatures, setAudioFeatures).catch((e) => {
+      console.log(e)
+    })
+  }, [audioFeatures, savedTracksCompleted, playlistsCompleted])
+
+  useEffect(() => {
     if (playlistRes === null || playlistRes === undefined) {
       return
     }
@@ -188,7 +200,13 @@ export default function Page(): React.JSX.Element {
     setPlaylistsCompleted(
       playlistRes.length === Math.ceil(playlistRes[0].total / PLAYLIST_LIMIT),
     )
-  }, [playlistRes, session?.user, distinctTracksInPlaylist, playlistsCompleted])
+  }, [
+    playlistRes,
+    session?.user,
+    distinctTracksInPlaylist,
+    playlistsCompleted,
+    audioFeatures,
+  ])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
