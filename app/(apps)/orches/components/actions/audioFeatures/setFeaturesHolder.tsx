@@ -4,14 +4,14 @@ import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 export default function setFeaturesHolder(
   trackArray: PlaylistTrackObject[] | SavedTracksObject[],
   audioFeatures: Record<string, number | AudioFeaturesObject>,
-  setAudioFeatures: React.Dispatch<
-    React.SetStateAction<Record<string, number | AudioFeaturesObject>>
-  >,
+  setAudioFeatures: (
+    value: Record<string, number | AudioFeaturesObject>,
+  ) => void,
 ): void {
   const newAudioFeatures = audioFeatures
 
   trackArray.forEach((track) => {
-    const trackId = track.track.id
+    const trackId = track?.track?.id
     if (trackId === undefined || trackId === null) {
       return
     }

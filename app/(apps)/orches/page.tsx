@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import SideBar from './components/sideBar'
 import { useSession } from 'next-auth/react'
 import useFetchSavedTracks from './components/actions/useFetchSavedTracks'
@@ -24,6 +24,7 @@ import { createDistinctTracks } from './components/actions/helper/createDistinct
 import { Toaster } from 'react-hot-toast'
 import setFeaturesHolder from './components/actions/audioFeatures/setFeaturesHolder'
 import queueAudioFeatures from './components/actions/audioFeatures/queueAudioFeatures'
+import { debounce } from 'lodash'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -42,6 +43,9 @@ export default function Page(): React.JSX.Element {
   const [audioFeatures, setAudioFeatures] = useState<
     Record<string, number | AudioFeaturesObject>
   >({})
+  const audioFeaturesRef = useRef<Record<string, number | AudioFeaturesObject>>(
+    {},
+  )
   const [trackUrl, setTrackUrl] = useState<string>('')
   const trackAudio = useRef(
     typeof Audio !== 'undefined' ? new Audio() : undefined,
@@ -61,6 +65,48 @@ export default function Page(): React.JSX.Element {
     mutate: playlistsMutate,
     isValidating: playlistsIsValidating,
   } = useFetchPlaylist(fetcher, session?.user?.access_token)
+
+  const handleQueueAudioFeatures = useCallback(() => {
+    console.log('Queueing audio features...')
+    queueAudioFeatures(audioFeaturesRef.current)
+      .then((value) => {
+        if (value !== null) {
+          audioFeaturesRef.current = value
+          setAudioFeatures(value)
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [])
+
+  const debouncedSetAudioFeatures = useMemo(
+    () =>
+      debounce(() => {
+        setAudioFeatures(audioFeaturesRef.current)
+      }, 300),
+    [],
+  )
+
+  const updateAudioFeatures = useCallback(
+    (newFeatures: Record<string, number | AudioFeaturesObject>) => {
+      audioFeaturesRef.current = newFeatures
+      debouncedSetAudioFeatures()
+      console.log('Audio features updated', Object.keys(newFeatures).length)
+      if (
+        Object.keys(newFeatures).length % 100 === 0 ||
+        (playlistsCompleted && savedTracksCompleted)
+      ) {
+        handleQueueAudioFeatures()
+      }
+    },
+    [
+      debouncedSetAudioFeatures,
+      handleQueueAudioFeatures,
+      playlistsCompleted,
+      savedTracksCompleted,
+    ],
+  )
 
   useEffect(() => {
     if (trackUrl === '') {
@@ -85,51 +131,44 @@ export default function Page(): React.JSX.Element {
   }, [trackUrl, trackAudio])
 
   useEffect(() => {
-    if (savedTrackRes === null || savedTrackRes === undefined) {
-      return
-    }
-    if (savedTracksCompleted) {
-      return
-    }
-    const filteredTracks = savedTrackRes.filter(
-      (savedTrack) =>
-        !savedTracks.some(
-          (prevTrack) =>
-            prevTrack.href === savedTrack.href ||
-            prevTrack.offset === savedTrack.offset,
-        ),
-    )
-    setSavedTracks((prevTracks) => {
-      if (prevTracks?.length === 0) {
-        return savedTrackRes
-      }
-      return [...prevTracks, ...filteredTracks]
-    })
-    filteredTracks.forEach((savedTracks) => {
-      setFeaturesHolder(savedTracks.items, audioFeatures, setAudioFeatures)
-    })
-    setSavedTracksCompleted(
-      savedTrackRes.length ===
-        Math.ceil(savedTrackRes[0].total / SAVEDTRACK_LIMIT),
-    )
-  }, [
-    savedTracks,
-    savedTrackRes,
-    session?.user?.name,
-    savedTracksCompleted,
-    audioFeatures,
-  ])
-
-  useEffect(() => {
     if (
-      Object.keys(audioFeatures).length % 100 !== 0 ||
-      (!savedTracksCompleted && !playlistsCompleted)
-    )
+      savedTrackRes === null ||
+      savedTrackRes === undefined ||
+      savedTracksCompleted
+    ) {
       return
-    queueAudioFeatures(audioFeatures, setAudioFeatures).catch((e) => {
-      console.log(e)
+    }
+
+    setSavedTracks((prevTracks) => {
+      const filteredTracks = savedTrackRes.filter(
+        (savedTrack) =>
+          !prevTracks.some(
+            (prevTrack) =>
+              prevTrack.href === savedTrack.href ||
+              prevTrack.offset === savedTrack.offset,
+          ),
+      )
+      const newTracks =
+        prevTracks?.length === 0
+          ? savedTrackRes
+          : [...prevTracks, ...filteredTracks]
+      const savedTrackItems = newTracks.flatMap(
+        (savedTrack) => savedTrack.items,
+      )
+      setFeaturesHolder(
+        savedTrackItems,
+        audioFeaturesRef.current,
+        updateAudioFeatures,
+      )
+      return newTracks
     })
-  }, [audioFeatures, savedTracksCompleted, playlistsCompleted])
+    if (
+      savedTrackRes.length ===
+      Math.ceil(savedTrackRes[0].total / SAVEDTRACK_LIMIT)
+    ) {
+      setSavedTracksCompleted(true)
+    }
+  }, [savedTrackRes, savedTracksCompleted, updateAudioFeatures])
 
   useEffect(() => {
     if (playlistRes === null || playlistRes === undefined) {
@@ -160,7 +199,11 @@ export default function Page(): React.JSX.Element {
                   distinctTracksInPlaylist,
                   setDistinctTracksInPlaylist,
                 )
-                setFeaturesHolder(res.items, audioFeatures, setAudioFeatures)
+                setFeaturesHolder(
+                  res.items,
+                  audioFeaturesRef.current,
+                  updateAudioFeatures,
+                )
               }
             })
             .catch((e) => {
@@ -197,16 +240,46 @@ export default function Page(): React.JSX.Element {
         })),
       )
     })
-    setPlaylistsCompleted(
-      playlistRes.length === Math.ceil(playlistRes[0].total / PLAYLIST_LIMIT),
-    )
+    if (
+      playlistRes.length === Math.ceil(playlistRes[0].total / PLAYLIST_LIMIT)
+    ) {
+      setPlaylistsCompleted(true)
+    }
   }, [
     playlistRes,
-    session?.user,
     distinctTracksInPlaylist,
+    session?.user,
     playlistsCompleted,
     audioFeatures,
+    updateAudioFeatures,
   ])
+
+  // useEffect(() => {
+  //   if (
+  //     (Object.keys(audioFeatures).length !== 0 &&
+  //       Object.keys(audioFeatures).length % 100 !== 0) ||
+  //     (!savedTracksCompleted && !playlistsCompleted)
+  //   ) {
+  //     return
+  //   }
+  //   console.log(audioFeatures)
+
+  //   console.log('Queueing audio features...')
+  //   queueAudioFeatures(audioFeatures)
+  //     .then((value) => {
+  //       if (value !== null) {
+  //         updateAudioFeatures(value)
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log(e)
+  //     })
+  // }, [
+  //   savedTracksCompleted,
+  //   playlistsCompleted,
+  //   updateAudioFeatures,
+  //   audioFeatures,
+  // ])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
