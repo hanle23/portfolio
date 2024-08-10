@@ -84,7 +84,7 @@ export default function Page(): React.JSX.Element {
     () =>
       debounce(() => {
         setAudioFeatures(audioFeaturesRef.current)
-      }, 300),
+      }, 700),
     [],
   )
 
