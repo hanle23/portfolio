@@ -24,6 +24,7 @@ import { createDistinctTracks } from './components/actions/helper/createDistinct
 import { Toaster } from 'react-hot-toast'
 import setFeaturesHolder from './components/actions/audioFeatures/setFeaturesHolder'
 import queueAudioFeatures from './components/actions/audioFeatures/queueAudioFeatures'
+import IsObjectNeedToFetch from './components/actions/helper/isObjectNeedToFetch'
 import { debounce } from 'lodash'
 
 export default function Page(): React.JSX.Element {
@@ -66,24 +67,16 @@ export default function Page(): React.JSX.Element {
     isValidating: playlistsIsValidating,
   } = useFetchPlaylist(fetcher, session?.user?.access_token)
 
-  const handleQueueAudioFeatures = useCallback(() => {
-    console.log('Queueing audio features...')
-    queueAudioFeatures(audioFeaturesRef.current)
-      .then((value) => {
-        if (value !== null) {
-          audioFeaturesRef.current = value
-          setAudioFeatures(value)
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }, [])
-
   const debouncedSetAudioFeatures = useMemo(
     () =>
       debounce(() => {
-        setAudioFeatures(audioFeaturesRef.current)
+        if (
+          audioFeaturesRef.current !== null &&
+          audioFeaturesRef.current !== undefined
+        ) {
+          setAudioFeatures(audioFeaturesRef.current)
+          audioFeaturesRef.current = {}
+        }
       }, 700),
     [],
   )
@@ -92,20 +85,8 @@ export default function Page(): React.JSX.Element {
     (newFeatures: Record<string, number | AudioFeaturesObject>) => {
       audioFeaturesRef.current = newFeatures
       debouncedSetAudioFeatures()
-      console.log('Audio features updated', Object.keys(newFeatures).length)
-      if (
-        Object.keys(newFeatures).length % 100 === 0 ||
-        (playlistsCompleted && savedTracksCompleted)
-      ) {
-        handleQueueAudioFeatures()
-      }
     },
-    [
-      debouncedSetAudioFeatures,
-      handleQueueAudioFeatures,
-      playlistsCompleted,
-      savedTracksCompleted,
-    ],
+    [debouncedSetAudioFeatures],
   )
 
   useEffect(() => {
@@ -254,32 +235,22 @@ export default function Page(): React.JSX.Element {
     updateAudioFeatures,
   ])
 
-  // useEffect(() => {
-  //   if (
-  //     (Object.keys(audioFeatures).length !== 0 &&
-  //       Object.keys(audioFeatures).length % 100 !== 0) ||
-  //     (!savedTracksCompleted && !playlistsCompleted)
-  //   ) {
-  //     return
-  //   }
-  //   console.log(audioFeatures)
-
-  //   console.log('Queueing audio features...')
-  //   queueAudioFeatures(audioFeatures)
-  //     .then((value) => {
-  //       if (value !== null) {
-  //         updateAudioFeatures(value)
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       console.log(e)
-  //     })
-  // }, [
-  //   savedTracksCompleted,
-  //   playlistsCompleted,
-  //   updateAudioFeatures,
-  //   audioFeatures,
-  // ])
+  useEffect(() => {
+    if (Object.keys(audioFeatures).length < 100) {
+      return
+    }
+    while (IsObjectNeedToFetch(audioFeatures)) {
+      queueAudioFeatures(audioFeatures)
+        .then((value) => {
+          if (value !== null) {
+            setAudioFeatures(value)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }, [savedTracksCompleted, playlistsCompleted, audioFeatures])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)
