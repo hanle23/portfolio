@@ -11,10 +11,9 @@ import type {
   SimplifiedPlaylistObject,
   PlaylistSummary,
 } from '@/app/types/spotify/playlist'
-import type {
-  TrackPlaylists,
-  AudioFeaturesObject,
-} from '@/app/types/spotify/track'
+import type { TrackPlaylists } from '@/app/types/spotify/track'
+
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import type { SavedTracks } from '@/app/types/spotify/savedTracks'
 import PlaylistDetail from './playlists/components/playlistDetail/playlistDetail'
 import SavedTracksDetail from './playlists/components/savedTracksDetail/savedTracksDetail'
@@ -74,6 +73,12 @@ export default function Page(): React.JSX.Element {
           audioFeaturesRef.current !== null &&
           audioFeaturesRef.current !== undefined
         ) {
+          updatePlaylistSummary(
+            audioFeaturesRef.current,
+            distinctTracksInPlaylist,
+            distinctPlaylist,
+            setDistinctPlaylist,
+          )
           setAudioFeatures(audioFeaturesRef.current)
           audioFeaturesRef.current = {}
         }
@@ -88,6 +93,39 @@ export default function Page(): React.JSX.Element {
     },
     [debouncedSetAudioFeatures],
   )
+
+  const updatePlaylistSummary = (
+    audioFeatures: Record<string, number | AudioFeaturesObject>,
+    distinctTracksInPlaylist: TrackPlaylists,
+    distinctPlaylist: PlaylistSummary[],
+    setDistinctPlaylist: React.Dispatch<
+      React.SetStateAction<PlaylistSummary[]>
+    >,
+  ): void => {
+    const newDistinctPlaylist = distinctPlaylist
+    for (let i = 0; i < distinctPlaylist.length; i++) {
+      if (
+        newDistinctPlaylist[i].tracksFeatures !== undefined &&
+        newDistinctPlaylist[i]?.tracksFeatures?.length ===
+          newDistinctPlaylist[i].numOfTracks
+      ) {
+        continue
+      }
+      const playlistId = newDistinctPlaylist[i].id
+      const newTracksFeatures: AudioFeaturesObject[] =
+        newDistinctPlaylist[i].tracksFeatures ?? []
+      Object.keys(distinctTracksInPlaylist).forEach((trackId: string) => {
+        if (distinctTracksInPlaylist[trackId].includes(playlistId)) {
+          const audioFeature = audioFeatures[trackId]
+          if (audioFeature !== undefined && audioFeature instanceof Object) {
+            newTracksFeatures.push(audioFeature)
+          }
+        }
+      })
+      newDistinctPlaylist[i].tracksFeatures = newTracksFeatures
+    }
+    setDistinctPlaylist(newDistinctPlaylist)
+  }
 
   useEffect(() => {
     if (trackUrl === '') {
