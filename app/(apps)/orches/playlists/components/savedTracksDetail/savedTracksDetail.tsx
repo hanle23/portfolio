@@ -58,6 +58,26 @@ export default function SavedTracksDetail({
     savedTracksFunc?.savedTracksIsLoading,
   ])
 
+  // const isItemLoaded = (index: number): boolean => {
+  //   return (
+  //     (!savedTracksFunc?.savedTracksIsLoading &&
+  //       !savedTracksFunc?.savedTracksIsValidating) ||
+  //     index < savedTracks.length
+  //   )
+  // }
+
+  // const loadMoreItems = async (
+  //   startIndex: number,
+  //   endIndex: number,
+  // ): Promise<void> => {
+  //   try {
+  //     await savedTracksFunc?.savedTracksSetNextPage()
+  //   } catch (error) {
+  //     console.log('Failed to load more items: ', error)
+  //     toast.error('Failed to load more tracks. Please try again.')
+  //   }
+  // }
+
   const Row = ({
     index,
     style,
@@ -93,6 +113,8 @@ export default function SavedTracksDetail({
               itemCount={savedTracks.length}
               itemSize={() => 60}
               width={width}
+              // ref={ref}
+              // onItemsRendered={onItemsRendered}
             >
               {Row}
             </List>

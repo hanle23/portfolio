@@ -1,5 +1,5 @@
 'use client'
-import type { AudioFeaturesObject } from '@/app/types/spotify/track'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import fetchAudioFeatures from './fetchAudioFeatures'
 
 export default async function queueAudioFeatures(
@@ -9,12 +9,11 @@ export default async function queueAudioFeatures(
 
   const tracksToFetch: string[] = []
   Object.keys(audioFeatures).forEach((trackId) => {
-    if (audioFeatures[trackId] === 0 && tracksToFetch.length + 1 <= 100) {
+    if (newAudioFeatures[trackId] === 0 && tracksToFetch.length + 1 <= 100) {
       tracksToFetch.push(trackId)
-      newAudioFeatures[trackId] = 1
     }
   })
-  if (tracksToFetch.length >= 1) {
+  if (tracksToFetch.length > 0) {
     const fetchedAudioFeatures = await fetchAudioFeatures(tracksToFetch)
     if (fetchedAudioFeatures.audio_features.length === 0) {
       return audioFeatures
@@ -24,6 +23,8 @@ export default async function queueAudioFeatures(
         newAudioFeatures[audioFeature.id] = audioFeature
       },
     )
+  } else {
+    return null
   }
 
   return newAudioFeatures

@@ -24,7 +24,7 @@ import { Toaster } from 'react-hot-toast'
 import setFeaturesHolder from './components/actions/audioFeatures/setFeaturesHolder'
 import queueAudioFeatures from './components/actions/audioFeatures/queueAudioFeatures'
 import IsObjectNeedToFetch from './components/actions/helper/isObjectNeedToFetch'
-import { debounce } from 'lodash'
+import { throttle } from 'lodash'
 
 export default function Page(): React.JSX.Element {
   const { data: session } = useSession()
@@ -68,21 +68,25 @@ export default function Page(): React.JSX.Element {
 
   const debouncedSetAudioFeatures = useMemo(
     () =>
-      debounce(() => {
+      throttle(() => {
         if (
           audioFeaturesRef.current !== null &&
           audioFeaturesRef.current !== undefined
         ) {
-          updatePlaylistSummary(
-            audioFeaturesRef.current,
-            distinctTracksInPlaylist,
-            distinctPlaylist,
-            setDistinctPlaylist,
-          )
-          setAudioFeatures(audioFeaturesRef.current)
-          audioFeaturesRef.current = {}
+          while (IsObjectNeedToFetch(audioFeaturesRef.current)) {
+            queueAudioFeatures(audioFeaturesRef.current)
+              .then((value) => {
+                if (value !== null) {
+                  audioFeaturesRef.current = value
+                  setAudioFeatures(audioFeaturesRef.current)
+                }
+              })
+              .catch((e) => {
+                console.log(e)
+              })
+          }
         }
-      }, 700),
+      }, 1000),
     [],
   )
 
@@ -93,39 +97,38 @@ export default function Page(): React.JSX.Element {
     },
     [debouncedSetAudioFeatures],
   )
-
-  const updatePlaylistSummary = (
-    audioFeatures: Record<string, number | AudioFeaturesObject>,
-    distinctTracksInPlaylist: TrackPlaylists,
-    distinctPlaylist: PlaylistSummary[],
-    setDistinctPlaylist: React.Dispatch<
-      React.SetStateAction<PlaylistSummary[]>
-    >,
-  ): void => {
-    const newDistinctPlaylist = distinctPlaylist
-    for (let i = 0; i < distinctPlaylist.length; i++) {
-      if (
-        newDistinctPlaylist[i].tracksFeatures !== undefined &&
-        newDistinctPlaylist[i]?.tracksFeatures?.length ===
-          newDistinctPlaylist[i].numOfTracks
-      ) {
-        continue
-      }
-      const playlistId = newDistinctPlaylist[i].id
-      const newTracksFeatures: AudioFeaturesObject[] =
-        newDistinctPlaylist[i].tracksFeatures ?? []
-      Object.keys(distinctTracksInPlaylist).forEach((trackId: string) => {
-        if (distinctTracksInPlaylist[trackId].includes(playlistId)) {
-          const audioFeature = audioFeatures[trackId]
-          if (audioFeature !== undefined && audioFeature instanceof Object) {
-            newTracksFeatures.push(audioFeature)
-          }
-        }
-      })
-      newDistinctPlaylist[i].tracksFeatures = newTracksFeatures
-    }
-    setDistinctPlaylist(newDistinctPlaylist)
-  }
+  // const updatePlaylistSummary = (
+  //   audioFeatures: Record<string, number | AudioFeaturesObject>,
+  //   distinctTracksInPlaylist: TrackPlaylists,
+  //   distinctPlaylist: PlaylistSummary[],
+  //   setDistinctPlaylist: React.Dispatch<
+  //     React.SetStateAction<PlaylistSummary[]>
+  //   >,
+  // ): void => {
+  //   const newDistinctPlaylist = distinctPlaylist
+  //   for (let i = 0; i < distinctPlaylist.length; i++) {
+  //     if (
+  //       newDistinctPlaylist[i].tracksFeatures !== undefined &&
+  //       newDistinctPlaylist[i]?.tracksFeatures?.length ===
+  //         newDistinctPlaylist[i].numOfTracks
+  //     ) {
+  //       continue
+  //     }
+  //     const playlistId = newDistinctPlaylist[i].id
+  //     const newTracksFeatures: AudioFeaturesObject[] =
+  //       newDistinctPlaylist[i].tracksFeatures ?? []
+  //     Object.keys(distinctTracksInPlaylist).forEach((trackId: string) => {
+  //       if (distinctTracksInPlaylist[trackId].includes(playlistId)) {
+  //         const audioFeature = audioFeatures[trackId]
+  //         if (audioFeature !== undefined && audioFeature instanceof Object) {
+  //           newTracksFeatures.push(audioFeature)
+  //         }
+  //       }
+  //     })
+  //     newDistinctPlaylist[i].tracksFeatures = newTracksFeatures
+  //   }
+  //   setDistinctPlaylist(newDistinctPlaylist)
+  // }
 
   useEffect(() => {
     if (trackUrl === '') {
@@ -273,22 +276,32 @@ export default function Page(): React.JSX.Element {
     updateAudioFeatures,
   ])
 
-  useEffect(() => {
-    if (Object.keys(audioFeatures).length < 100) {
-      return
-    }
-    while (IsObjectNeedToFetch(audioFeatures)) {
-      queueAudioFeatures(audioFeatures)
-        .then((value) => {
-          if (value !== null) {
-            setAudioFeatures(value)
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    }
-  }, [savedTracksCompleted, playlistsCompleted, audioFeatures])
+  // useEffect(() => {
+  //   if (Object.keys(audioFeatures).length < 100) {
+  //     return
+  //   }
+  //   queueAudioFeatures(audioFeatures)
+  //     .then((value) => {
+  //       if (value !== null) {
+  //         setAudioFeatures(value)
+  //         updatePlaylistSummary(
+  //           value,
+  //           distinctTracksInPlaylist,
+  //           distinctPlaylist,
+  //           setDistinctPlaylist,
+  //         )
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log(e)
+  //     })
+  // }, [
+  //   savedTracksCompleted,
+  //   playlistsCompleted,
+  //   audioFeatures,
+  //   distinctPlaylist,
+  //   distinctTracksInPlaylist,
+  // ])
 
   useEffect(() => {
     if (!playlistsIsLoading && !playlistsIsValidating)

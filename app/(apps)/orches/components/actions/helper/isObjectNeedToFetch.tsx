@@ -1,4 +1,4 @@
-import type { AudioFeaturesObject } from '@/app/types/spotify/track'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 export default function IsObjectNeedToFetch(
   audioFeatures: Record<string, number | AudioFeaturesObject>,
 ): boolean {
