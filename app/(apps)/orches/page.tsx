@@ -78,7 +78,7 @@ export default function Page(): React.JSX.Element {
               .then((value) => {
                 if (value !== null) {
                   audioFeaturesRef.current = value
-                  setAudioFeatures(audioFeaturesRef.current)
+                  // setAudioFeatures(audioFeaturesRef.current)
                 }
               })
               .catch((e) => {
@@ -93,7 +93,7 @@ export default function Page(): React.JSX.Element {
   const updateAudioFeatures = useCallback(
     (newFeatures: Record<string, number | AudioFeaturesObject>) => {
       audioFeaturesRef.current = newFeatures
-      debouncedSetAudioFeatures()
+      // debouncedSetAudioFeatures()
     },
     [debouncedSetAudioFeatures],
   )

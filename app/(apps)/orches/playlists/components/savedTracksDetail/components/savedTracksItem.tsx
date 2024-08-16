@@ -207,14 +207,14 @@ export default function SavedTracksItem({
 
   return (
     <div
-      key={track.track.id}
+      key={track?.track?.id}
       style={style}
       className="group grid grid-cols-12 gap-4 py-1 border overflow-hidden relative border-solid px-4 border-transparent hover:bg-spotify-item-hover"
     >
       <div className="col-span-1 flex justify-end text-spotify-subtext items-center">
         <MediaPreviewButton
           className="group-hover:block"
-          currTrackUrl={track.track.preview_url}
+          currTrackUrl={track?.track?.preview_url}
           trackUrl={trackUrl}
           setTrackUrl={setTrackUrl}
         />
@@ -228,7 +228,7 @@ export default function SavedTracksItem({
             distinctTracksInPlaylist[track?.track?.id].length !== 0) ? (
             <Image
               src={smallestImage?.url}
-              alt="track?.track?.name"
+              alt=""
               width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
               height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
               className="w-auto h-auto rounded-md "
@@ -242,7 +242,7 @@ export default function SavedTracksItem({
             >
               <Image
                 src={smallestImage?.url}
-                alt="track?.track?.name"
+                alt=""
                 width={smallestImage?.width < 64 ? 64 : smallestImage?.width}
                 height={smallestImage?.height < 64 ? 64 : smallestImage?.height}
                 className="w-auto h-auto rounded-md border-2 border-spotify-color"
@@ -257,7 +257,9 @@ export default function SavedTracksItem({
             target="_blank"
             className="truncate"
           >
-            {track?.track?.name}
+            {track?.track?.name !== undefined
+              ? track?.track?.name
+              : 'Loading...'}
           </a>
           <span className="truncate text-sm text-spotify-subtext">
             {track?.track?.artists.map((artist, index) => (
@@ -285,7 +287,7 @@ export default function SavedTracksItem({
 
       <div className="hidden lg:flex lg:col-span-2">
         <p className="truncate items-center text-spotify-subtext text-sm justify-center h-full w-full flex">
-          {new Date(track.added_at).toLocaleDateString('en-US', {
+          {new Date(track?.added_at).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -297,7 +299,7 @@ export default function SavedTracksItem({
         <button
           className="group-hover:opacity-100 opacity-0 hover:text-spotify-color"
           onClick={(event) => {
-            handleAddToPlaylist(event, track.track.id)
+            handleAddToPlaylist(event, track?.track?.id)
           }}
         >
           <AddCircleOutlineIcon />
