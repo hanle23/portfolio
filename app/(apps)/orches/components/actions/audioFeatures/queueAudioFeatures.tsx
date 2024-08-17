@@ -16,7 +16,7 @@ export default async function queueAudioFeatures(
   if (tracksToFetch.length > 0) {
     const fetchedAudioFeatures = await fetchAudioFeatures(tracksToFetch)
     if (fetchedAudioFeatures.audio_features.length === 0) {
-      return audioFeatures
+      return null
     }
     fetchedAudioFeatures.audio_features.forEach(
       (audioFeature: AudioFeaturesObject) => {

@@ -1,5 +1,5 @@
 'use server'
-import type { AudioFeaturesObject } from '@/app/types/spotify/track'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import fetchFunction from '@/app/(apps)/orches/components/actions/helper/fetchFunction'
 import authOptions from '@/app/api/auth/[...nextauth]/authOptions'
 import { getServerSession } from 'next-auth'
