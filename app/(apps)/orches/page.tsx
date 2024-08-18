@@ -153,14 +153,17 @@ export default function Page(): React.JSX.Element {
                 if (!Array.isArray(playlist.tracks)) {
                   const res = await fetchPlaylistItem(
                     playlist?.tracks?.href,
+                    playlist?.tracks?.total,
                     session.user.access_token,
                   )
-                  const validTracks = res.items.filter(
+                  console.log(res)
+                  const resItems = res.flatMap((res) => res.items)
+                  const validTracks = resItems.filter(
                     (item) => item.track !== null,
                   )
                   const newPlaylist = { ...playlist, tracks: validTracks }
                   createDistinctTracks(
-                    res.items,
+                    validTracks,
                     playlist.id,
                     distinctTracksInPlaylist,
                     setDistinctTracksInPlaylist,
