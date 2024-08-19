@@ -58,5 +58,5 @@ export interface PlaylistSummary {
   numOfTracks: number
   description: string
   snapshot_id: string
-  tracksFeatures?: AudioFeaturesObject[]
+  tracksFeatures?: AudioFeaturesObject[] | null
 }

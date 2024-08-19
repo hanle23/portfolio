@@ -2,7 +2,7 @@ import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import type { PlaylistTrackObject } from '@/app/types/spotify/playlist'
 import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 import throttledFetchAudioFeatures from './throttledFetchAudioFeatures'
-export default async function setAudioFeatures(
+export default async function updateAudioFeatures(
   trackArray: PlaylistTrackObject[] | SavedTracksObject[],
   audioFeatures: Record<string, number | AudioFeaturesObject>,
 ): Promise<Record<string, number | AudioFeaturesObject> | undefined> {

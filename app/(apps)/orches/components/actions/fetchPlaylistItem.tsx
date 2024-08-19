@@ -6,8 +6,11 @@ import { LIMIT } from '@/constants/spotify/playlist'
 export default async function fetchPlaylistItem(
   url: string,
   total: number,
-  accessToken: string,
-): Promise<PlaylistItemResponse[]> {
+  accessToken: string | undefined,
+): Promise<PlaylistItemResponse[] | null> {
+  if (accessToken === undefined || accessToken === null) {
+    return null
+  }
   let offset = 0
   const res: PlaylistItemResponse[] = []
   while (offset < total) {
