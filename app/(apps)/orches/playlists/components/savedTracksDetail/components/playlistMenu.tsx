@@ -6,6 +6,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import type { PlaylistSummary } from '@/app/types/spotify/playlist'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
+import calculateFeatureSimilarity from './actions/calculateFeatureSimilarity'
 
 export default function PlaylistMenu({
   anchorEl,
@@ -16,6 +18,7 @@ export default function PlaylistMenu({
   handleAddOrRemoveFromPlaylist,
   isChecked,
   handleSubmit,
+  audioFeatures,
 }: {
   anchorEl: HTMLElement | null
   handleClose: () => void
@@ -25,6 +28,7 @@ export default function PlaylistMenu({
   handleAddOrRemoveFromPlaylist: (playlistId: string) => void
   isChecked: (playlistId: string) => boolean
   handleSubmit: () => Promise<void>
+  audioFeatures: Record<string, number | AudioFeaturesObject>
 }): JSX.Element {
   const [searchInput, setSearchInput] = useState<string>('')
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists)

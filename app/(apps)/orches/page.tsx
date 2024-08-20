@@ -327,6 +327,7 @@ export default function Page(): React.JSX.Element {
             trackUrl={trackUrl}
             setTrackUrl={setTrackUrl}
             setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
+            audioFeatures={audioFeaturesRef.current}
           />
         )}
       </div>

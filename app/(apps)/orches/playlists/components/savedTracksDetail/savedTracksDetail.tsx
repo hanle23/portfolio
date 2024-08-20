@@ -5,6 +5,7 @@ import type {
   PlaylistSummary,
   PlaylistResponse,
 } from '@/app/types/spotify/playlist'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import toast, { Toaster } from 'react-hot-toast'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -28,6 +29,7 @@ interface SavedTracksDetailProps {
   setDistinctTracksInPlaylist: React.Dispatch<
     React.SetStateAction<TrackPlaylists>
   >
+  audioFeatures: Record<string, number | AudioFeaturesObject>
 }
 
 export default function SavedTracksDetail({
@@ -38,6 +40,7 @@ export default function SavedTracksDetail({
   trackUrl,
   setTrackUrl,
   setDistinctTracksInPlaylist,
+  audioFeatures,
 }: SavedTracksDetailProps): JSX.Element {
   const savedTracks =
     savedTracksFunc?.savedTracks?.flatMap(
@@ -107,6 +110,7 @@ export default function SavedTracksDetail({
         toast={toast}
         playlistsMutate={playlistsMutate}
         setDistinctTracksInPlaylist={setDistinctTracksInPlaylist}
+        audioFeatures={audioFeatures}
       />
     )
   }

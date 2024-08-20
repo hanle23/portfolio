@@ -1,5 +1,4 @@
 'use client'
-import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 import Tooltip from '@mui/material/Tooltip'
 import Image from 'next/image'
 import React, { useCallback, useState, useMemo } from 'react'
@@ -10,7 +9,9 @@ import type {
   PlaylistSummary,
   PlaylistResponse,
 } from '@/app/types/spotify/playlist'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
 import type { TrackPlaylists } from '@/app/types/spotify/track'
+import type { SavedTracksObject } from '@/app/types/spotify/savedTracks'
 import PlaylistMenu from './playlistMenu'
 import deletePlaylistItem from '../../actions/deletePlaylistItem'
 import addPlaylistItem from '../../actions/addPlaylistItem'
@@ -30,6 +31,7 @@ interface SavedTracksItemProps {
   setDistinctTracksInPlaylist: React.Dispatch<
     React.SetStateAction<TrackPlaylists>
   >
+  audioFeatures: Record<string, number | AudioFeaturesObject>
 }
 export default function SavedTracksItem({
   index,
@@ -42,6 +44,7 @@ export default function SavedTracksItem({
   toast,
   playlistsMutate,
   setDistinctTracksInPlaylist,
+  audioFeatures,
 }: SavedTracksItemProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [currTrackId, setCurrTrackId] = useState<string>('')
@@ -189,6 +192,7 @@ export default function SavedTracksItem({
           )
         }}
         handleSubmit={handleSubmit}
+        audioFeatures={audioFeatures}
       />
     ),
     [
@@ -202,6 +206,7 @@ export default function SavedTracksItem({
       handleSubmit,
       currTrackId,
       distinctTracksInPlaylist,
+      audioFeatures,
     ],
   )
 
