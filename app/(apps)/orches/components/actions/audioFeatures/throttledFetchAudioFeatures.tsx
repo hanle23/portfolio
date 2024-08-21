@@ -1,26 +1,36 @@
 import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
-import IsObjectNeedToFetch from './isObjectNeedToFetch'
+import NumOfObjectNeedToFetch from './numOfObjectNeedToFetch'
 import queueAudioFeatures from './queueAudioFeatures'
 import { throttle } from 'lodash'
 
 const throttledFetchAudioFeatures = async (
   audioFeatures: Record<string, number | AudioFeaturesObject>,
-): Promise<Record<string, number | AudioFeaturesObject>> => {
-  const fetchData = async (): Promise<
-    Record<string, number | AudioFeaturesObject>
-  > => {
+  currPageIndex: number,
+  totalPage: number,
+): Promise<Record<string, number | AudioFeaturesObject> | null> => {
+  const fetchData = async (): Promise<Record<
+    string,
+    number | AudioFeaturesObject
+  > | null> => {
     let newAudioFeatures = audioFeatures
     if (audioFeatures !== null && audioFeatures !== undefined) {
-      while (IsObjectNeedToFetch(audioFeatures)) {
+      const numOfObject = NumOfObjectNeedToFetch(audioFeatures)
+      if (numOfObject < 75 && currPageIndex !== totalPage) {
+        return null
+      }
+      let current = 0
+      while (current < numOfObject) {
         const res = await queueAudioFeatures(audioFeatures)
         if (res === null) {
           break
         }
-        newAudioFeatures = res
+        newAudioFeatures = res.data
+        current += res.total
       }
     }
     return newAudioFeatures
   }
+
   const throttledFetchFn = throttle(fetchData, 1000, {
     leading: true,
     trailing: false,

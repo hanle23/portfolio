@@ -168,7 +168,7 @@ export default function Page(): React.JSX.Element {
         filteredPlaylistRes = await Promise.all(
           filteredPlaylistRes.map(async (playlistResponse) => {
             const updatedItems = await Promise.all(
-              playlistResponse.items.map(async (playlist) => {
+              playlistResponse.items.map(async (playlist, index) => {
                 if (!Array.isArray(playlist.tracks) && session?.user !== null) {
                   const res = await fetchPlaylistItem(
                     playlist?.tracks?.href,
@@ -186,6 +186,8 @@ export default function Page(): React.JSX.Element {
                   const updatedAudioFeatures = await updateAudioFeatures(
                     validTracks,
                     audioFeaturesRef.current,
+                    index,
+                    playlistResponse.items.length - 1,
                   )
                   if (updatedAudioFeatures !== undefined) {
                     audioFeaturesRef.current = updatedAudioFeatures

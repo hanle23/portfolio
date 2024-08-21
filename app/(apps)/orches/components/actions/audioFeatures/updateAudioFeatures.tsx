@@ -5,9 +5,11 @@ import throttledFetchAudioFeatures from './throttledFetchAudioFeatures'
 export default async function updateAudioFeatures(
   trackArray: PlaylistTrackObject[] | SavedTracksObject[],
   audioFeatures: Record<string, number | AudioFeaturesObject>,
+  currPageIndex: number,
+  totalPage: number,
 ): Promise<Record<string, number | AudioFeaturesObject> | undefined> {
   try {
-    let newAudioFeatures = audioFeatures
+    const newAudioFeatures = audioFeatures
 
     trackArray.forEach((track) => {
       const trackId = track?.track?.id
@@ -18,7 +20,14 @@ export default async function updateAudioFeatures(
         newAudioFeatures[trackId] = 0
       }
     })
-    newAudioFeatures = await throttledFetchAudioFeatures(newAudioFeatures)
+    const res = await throttledFetchAudioFeatures(
+      newAudioFeatures,
+      currPageIndex,
+      totalPage,
+    )
+    if (res !== null) {
+      return res
+    }
     return newAudioFeatures
   } catch (error) {
     console.log(error)

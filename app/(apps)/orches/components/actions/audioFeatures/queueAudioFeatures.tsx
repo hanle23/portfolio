@@ -4,10 +4,14 @@ import fetchAudioFeatures from './fetchAudioFeatures'
 
 export default async function queueAudioFeatures(
   audioFeatures: Record<string, number | AudioFeaturesObject>,
-): Promise<Record<string, number | AudioFeaturesObject> | null> {
+): Promise<{
+  data: Record<string, number | AudioFeaturesObject>
+  total: number
+} | null> {
   const newAudioFeatures = audioFeatures
 
   const tracksToFetch: string[] = []
+  let total = 0
   Object.keys(audioFeatures).forEach((trackId) => {
     if (newAudioFeatures[trackId] === 0 && tracksToFetch.length + 1 <= 100) {
       tracksToFetch.push(trackId)
@@ -21,11 +25,12 @@ export default async function queueAudioFeatures(
     fetchedAudioFeatures.audio_features.forEach(
       (audioFeature: AudioFeaturesObject) => {
         newAudioFeatures[audioFeature.id] = audioFeature
+        total += 1
       },
     )
   } else {
     return null
   }
 
-  return newAudioFeatures
+  return { data: newAudioFeatures, total }
 }

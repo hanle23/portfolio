@@ -1,11 +1,11 @@
 import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
-export default function IsObjectNeedToFetch(
+export default function NumOfObjectNeedToFetch(
   audioFeatures: Record<string, number | AudioFeaturesObject>,
-): boolean {
-  let result = false
+): number {
+  let result = 0
   Object.keys(audioFeatures).forEach((trackId) => {
     if (audioFeatures[trackId] === 0) {
-      result = true
+      result += 1
     }
   })
   return result
