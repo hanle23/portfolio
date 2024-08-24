@@ -1,7 +1,8 @@
+import type { ImageObject } from './general'
 export interface AuthUser {
   name: string
   email: string
-  image: string
+  image: ImageObject[]
   access_token: string
   token_type: string
   expires_at: number
@@ -9,6 +10,8 @@ export interface AuthUser {
   refresh_token: string
   scope: string
   id: string
+  external_urls: { spotify: string }
+  followers: { href: string | null; total: number }
 }
 
 export interface AccessTokenSuccessData {

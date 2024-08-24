@@ -2,7 +2,7 @@ import React from 'react'
 import PlaylistHeader from './components/playlistHeader'
 import PlaylistTrackItem from './components/playlistTrackItem'
 import deletePlaylistItem from '../actions/deletePlaylistItem'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import type {
   SimplifiedPlaylistObject,
   PlaylistTrackObject,
@@ -93,16 +93,6 @@ export default function PlaylistDetail({
           <></>
         )}
       </div>
-      <Toaster
-        position="bottom-center"
-        toastOptions={{
-          duration: 4500,
-          style: {
-            background: '#27272a',
-            color: '#fff',
-          },
-        }}
-      />
     </div>
   )
 }

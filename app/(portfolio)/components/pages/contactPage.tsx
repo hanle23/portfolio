@@ -19,12 +19,12 @@ export default function ContactPage(): React.JSX.Element {
         </div>
 
         <div className="flex flex-col space-y-2 md:flex-row md:justify-center md:mt-14  md:space-x-5 items-center h-full m-auto">
-          <BlockContainer className="flex p-2.5 border-2 border-zinc-500 h-fit w-fit rounded-md font-bold">
+          <BlockContainer>
             <a
               target="_blank"
               href="https://calendly.com/hanle23"
               rel="noopener noreferrer"
-              className=""
+              className="flex p-2.5 border-2 border-zinc-500 h-fit w-fit rounded-md font-bold"
             >
               <p>Schedule a Meeting</p>
             </a>

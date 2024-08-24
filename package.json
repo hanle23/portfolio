@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-   "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "eslint-config-next": "^14.2.5",
     "gsap": "^3.12.5",
+    "lodash": "^4.17.21",
     "next": "^14.2.5",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
@@ -32,10 +33,11 @@
     "react-window-infinite-loader": "^1.0.9",
     "sharp": "^0.33.4",
     "swr": "^2.2.5",
-   "typewriter-effect": "^2.21.0"
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.5",
+    "@types/lodash": "^4.17.7",
     "@types/node": "22.0.0",
     "@types/qrcode": "^1.5.5",
     "@types/react-window-infinite-loader": "^1.0.9",

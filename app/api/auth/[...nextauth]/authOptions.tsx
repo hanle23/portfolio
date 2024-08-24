@@ -12,9 +12,11 @@ export const authOptions: AuthOptions = {
     async jwt({
       token,
       account,
+      profile,
     }: {
       token: JWT
       account: Account | null
+      profile: any
     }): Promise<JWT> {
       if (account !== null && account !== undefined) {
         return {
@@ -25,6 +27,9 @@ export const authOptions: AuthOptions = {
           expires_in: account.expires_in,
           refresh_token: account.refresh_token,
           scope: account.scope,
+          image: profile.images,
+          external_urls: profile.external_urls,
+          followers: profile.followers,
         }
       }
       const updatedToken = {
@@ -36,6 +41,9 @@ export const authOptions: AuthOptions = {
         refresh_token: token?.refresh_token,
         scope: token?.scope,
         id: token?.providerAccountId,
+        image: token?.image,
+        external_urls: token?.external_urls,
+        followers: token?.followers,
       }
 
       if (Number(Date.now() / 1000) + 5 * 60 >= updatedToken.expires_at) {
@@ -54,6 +62,9 @@ export const authOptions: AuthOptions = {
         refresh_token: token.refresh_token,
         scope: token.scope,
         id: token.id,
+        image: token.image,
+        external_urls: token.external_urls,
+        followers: token.followers,
       }
       session.user = user
       session.error = token.error

@@ -1,5 +1,6 @@
 import type { ImageObject, SimplifiedUserProfile } from './general'
 import type { TrackObject } from './track'
+import type { AudioFeaturesObject } from './audioFeatures'
 export interface PlaylistTrackObject {
   added_at: string
   added_by: SimplifiedUserProfile
@@ -57,4 +58,5 @@ export interface PlaylistSummary {
   numOfTracks: number
   description: string
   snapshot_id: string
+  tracksFeatures?: AudioFeaturesObject[] | null
 }

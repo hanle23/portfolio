@@ -1,26 +1,33 @@
-import type { PlaylistTrackObject } from '@/app/types/spotify/playlist'
 import type { TrackPlaylists } from '@/app/types/spotify/track'
-export const updateDistinctTracks = (
-  resItems: PlaylistTrackObject[],
-  playlistId: string,
-  distinctTracksInPlaylist: TrackPlaylists,
-  setDistinctTracks: React.Dispatch<React.SetStateAction<TrackPlaylists>>,
-): void => {
+export default function updateDistinctTracks(
+  trackId: string,
+  playlistsToAdd: string[],
+  playlistsToRemove: string[],
+  distinctTracksInPlaylist: Record<string, string[]>,
+  setDistinctTracksInPlaylist: React.Dispatch<
+    React.SetStateAction<TrackPlaylists>
+  >,
+): void {
   const newState = distinctTracksInPlaylist
-
-  resItems.forEach((item) => {
-    const trackId = item?.track?.id
-    if (trackId === null || trackId === undefined) {
-      return
-    }
-    if (trackId in newState) {
-      if (!newState[trackId].includes(playlistId)) {
-        newState[trackId].push(playlistId)
+  if (playlistsToAdd.length > 0) {
+    playlistsToAdd.forEach((playlistId) => {
+      if (trackId in newState) {
+        if (!newState[trackId].includes(playlistId)) {
+          newState[trackId].push(playlistId)
+        }
+      } else {
+        newState[trackId] = [playlistId]
       }
-    } else {
-      newState[trackId] = [playlistId]
-    }
-  })
+    })
+  }
 
-  setDistinctTracks(newState)
+  if (playlistsToRemove.length > 0) {
+    playlistsToRemove.forEach((playlistId) => {
+      if (trackId in newState) {
+        newState[trackId] = newState[trackId].filter((id) => id !== playlistId)
+      }
+    })
+  }
+
+  setDistinctTracksInPlaylist(newState)
 }

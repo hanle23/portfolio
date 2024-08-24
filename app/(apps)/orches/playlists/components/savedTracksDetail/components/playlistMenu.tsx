@@ -6,27 +6,35 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import type { PlaylistSummary } from '@/app/types/spotify/playlist'
+import type { AudioFeaturesObject } from '@/app/types/spotify/audioFeatures'
+import calculateFeatureSimilarity from './actions/calculateFeatureSimilarity'
+import SimilarityIcon from './helpers/similarityIcon'
 
 export default function PlaylistMenu({
   anchorEl,
   handleClose,
   playlists,
   open,
+  currTrackId,
   isSubmittable,
   handleAddOrRemoveFromPlaylist,
   isChecked,
   handleSubmit,
+  audioFeatures,
 }: {
   anchorEl: HTMLElement | null
   handleClose: () => void
+  currTrackId: string
   open: boolean
   playlists: PlaylistSummary[] | undefined | undefined
   isSubmittable: boolean
   handleAddOrRemoveFromPlaylist: (playlistId: string) => void
   isChecked: (playlistId: string) => boolean
-  handleSubmit: () => void
+  handleSubmit: () => Promise<void>
+  audioFeatures: Record<string, number | AudioFeaturesObject>
 }): JSX.Element {
   const [searchInput, setSearchInput] = useState<string>('')
+  console.log(playlists)
   const [filteredPlaylists, setFilteredPlaylists] = useState(playlists)
   useEffect(() => {
     if (searchInput !== '') {
@@ -91,50 +99,59 @@ export default function PlaylistMenu({
           />
         </div>
         <div className="flex flex-col h-[15rem] max-h-[15rem] w-full overflow-y-auto mt-2 gap-3">
-          {filteredPlaylists?.map((playlist) => (
-            <div
-              key={playlist.id}
-              className="flex items-center hover:bg-spotify-item-hover p-2 rounded-md justify-between"
-            >
-              <div className="flex gap-3 items-center w-fit h-full ">
-                <Image
-                  src={
-                    playlist.images?.reduce((minImg, img) =>
-                      img?.width !== null &&
-                      img?.height !== null &&
-                      minImg?.width !== null &&
-                      minImg?.height !== null &&
-                      img?.width * img?.height < minImg?.width * minImg?.height
-                        ? img
-                        : minImg,
-                    ).url
-                  }
-                  alt={playlist.name}
-                  width={45}
-                  height={45}
-                  className="rounded-md"
-                />
-                <p>{playlist.name}</p>
+          {filteredPlaylists?.map((playlist) => {
+            const targetTrackFeature = audioFeatures[currTrackId]
+            const featureSimilarity = calculateFeatureSimilarity(
+              playlist,
+              targetTrackFeature,
+            )
+            return (
+              <div
+                key={playlist.id}
+                className="flex relative items-center hover:bg-spotify-item-hover p-2 rounded-md justify-between"
+              >
+                <SimilarityIcon featureSimilarity={featureSimilarity} />
+                <div className="flex gap-3 items-center w-fit h-full ">
+                  <Image
+                    src={
+                      playlist.images?.reduce((minImg, img) =>
+                        img?.width !== null &&
+                        img?.height !== null &&
+                        minImg?.width !== null &&
+                        minImg?.height !== null &&
+                        img?.width * img?.height <
+                          minImg?.width * minImg?.height
+                          ? img
+                          : minImg,
+                      ).url
+                    }
+                    alt={playlist.name}
+                    width={45}
+                    height={45}
+                    className="rounded-md"
+                  />
+                  <p>{playlist.name}</p>
+                </div>
+                {isChecked(playlist.id) ? (
+                  <button
+                    onClick={() => {
+                      handleAddOrRemoveFromPlaylist(playlist.id)
+                    }}
+                  >
+                    <CheckCircleIcon className="text-spotify-color text-xl" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      handleAddOrRemoveFromPlaylist(playlist.id)
+                    }}
+                  >
+                    <CheckCircleIcon className="text-xl" />
+                  </button>
+                )}
               </div>
-              {isChecked(playlist.id) ? (
-                <button
-                  onClick={() => {
-                    handleAddOrRemoveFromPlaylist(playlist.id)
-                  }}
-                >
-                  <CheckCircleIcon className="text-spotify-color text-xl" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    handleAddOrRemoveFromPlaylist(playlist.id)
-                  }}
-                >
-                  <CheckCircleIcon className="text-xl" />
-                </button>
-              )}
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
       <div className="flex h-[3rem] justify-end items-center px-5 gap-4">
@@ -150,7 +167,11 @@ export default function PlaylistMenu({
         {isSubmittable && (
           <button
             className="bg-white text-spotify-item-hover rounded-full font-semibold px-4 py-1 hover:scale-105"
-            onClick={handleSubmit}
+            onClick={() => {
+              handleSubmit().catch((e) => {
+                console.log(e)
+              })
+            }}
           >
             Done
           </button>
