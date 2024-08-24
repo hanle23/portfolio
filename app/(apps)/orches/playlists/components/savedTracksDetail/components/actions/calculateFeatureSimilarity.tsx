@@ -28,10 +28,10 @@ export default function calculateFeatureSimilarity(
   for (const featureName of FEATURE_NAMES) {
     if (shouldIncludeFeature(featureName, filter)) {
       const featureArray = getFeatureRange(playlist, featureName)
-      const targetFeatureValue =
-        typeof targetTrackFeature[featureName] === 'string'
-          ? parseFloat(targetTrackFeature[featureName])
-          : targetTrackFeature[featureName]
+      let targetFeatureValue = targetTrackFeature[featureName]
+      if (typeof targetFeatureValue !== 'number') {
+        targetFeatureValue = parseFloat(targetFeatureValue)
+      }
       const similarityPercentage = getSimilarityPercentage(
         featureArray,
         targetFeatureValue,
