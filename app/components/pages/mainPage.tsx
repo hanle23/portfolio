@@ -1,11 +1,11 @@
 'use client'
 import React, { useContext } from 'react'
 import Image from 'next/image'
-import GreetingPhrase from '@/app/(portfolio)/components/greetingPhrase'
+import GreetingPhrase from '@/app/components/greetingPhrase'
 import githubLogo from '@/public/svg/githubIcon.svg'
 import linkedInLogo from '@/public/svg/linkedInIcon.svg'
-import BlockContainer from '@/app/(portfolio)/components/specialComponent/BlockContainer'
-import { Context } from '@/app/(portfolio)/components/appWrapper'
+import BlockContainer from '@/app/components/specialComponent/BlockContainer'
+import { Context } from '@/app/components/appWrapper'
 
 export default function MainPage(): React.JSX.Element {
   const context = useContext(Context)
