@@ -1,9 +1,9 @@
 'use client'
 import React, { useContext } from 'react'
 import closeLogo from '@/public/svg/close.svg'
-import { Context } from '@/app/(portfolio)/components/appWrapper'
+import { Context } from '@/app/components/appWrapper'
 import Image from 'next/image'
-import BlockContainer from '@/app/(portfolio)/components/specialComponent/BlockContainer'
+import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 
 interface props {
   open: boolean

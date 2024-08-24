@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import BlockContainer from '@/app/(portfolio)/components/specialComponent/BlockContainer'
+import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 import UpArrow from '@/public/js/chevronUp'
 
 const ScrollToTop = (): React.JSX.Element => {
