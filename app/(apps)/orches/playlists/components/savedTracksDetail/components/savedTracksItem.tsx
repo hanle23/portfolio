@@ -178,6 +178,7 @@ export default function SavedTracksItem({
         handleClose={handleClose}
         playlists={playlists}
         open={open}
+        currTrackId={currTrackId}
         isSubmittable={
           playlistsToAdd.length > 0 || playlistsToRemove.length > 0
         }
