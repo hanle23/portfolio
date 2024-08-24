@@ -5,8 +5,8 @@ import throttledFetchAudioFeatures from './throttledFetchAudioFeatures'
 export default async function updateAudioFeatures(
   trackArray: PlaylistTrackObject[] | SavedTracksObject[],
   audioFeatures: Record<string, number | AudioFeaturesObject>,
-  currPageIndex: number,
-  totalPage: number,
+  currPageIndex?: number,
+  totalPage?: number,
 ): Promise<Record<string, number | AudioFeaturesObject> | undefined> {
   try {
     const newAudioFeatures = audioFeatures

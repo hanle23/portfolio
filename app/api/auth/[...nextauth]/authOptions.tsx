@@ -16,7 +16,7 @@ export const authOptions: AuthOptions = {
     }: {
       token: JWT
       account: Account | null
-      profile: any
+      profile?: any
     }): Promise<JWT> {
       if (account !== null && account !== undefined) {
         return {
