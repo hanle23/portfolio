@@ -114,6 +114,7 @@ export default function ExperiencePage(): React.JSX.Element {
           src="/pdf/resume.pdf#toolbar=0"
           allowFullScreen
           className="w-full h-full"
+          sandbox="allow-scripts"
         />
       </DialogModal>
     </div>
