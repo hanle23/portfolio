@@ -44,14 +44,16 @@ export default function ProjectPage(): React.JSX.Element {
       id="projects-section"
       className="h-screen w-fit flex flex-col  m-auto z-[0]"
     >
-      <div className="text-center text-text-light font-extrabold text-3xl md:text-5xl mt-8">{`Project List`}</div>
+      <div className="text-center text-text-light font-extrabold text-3xl md:text-5xl mt-8">
+        Project List
+      </div>
       {currentDisplay != null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: Project) => {
             const recentActivity =
               new Date(project.updated_at) > new Date(project.pushed_at)
-                ? `updated_at`
-                : `pushed_at`
+                ? 'updated_at'
+                : 'pushed_at'
             const currentDate = new Date().getTime()
             const maxDate = new Date(project[recentActivity])
             maxDate.setMonth(maxDate.getMonth() + 1)
@@ -85,8 +87,8 @@ export default function ProjectPage(): React.JSX.Element {
                       />
                       <div>
                         {maxDate.getTime() <= currentDate
-                          ? `Stale`
-                          : `New update available!`}
+                          ? 'Stale'
+                          : 'New update available!'}
                       </div>
                     </div>
                   </div>
