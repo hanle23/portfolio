@@ -8,7 +8,9 @@ import Image from 'next/image'
 export default function ContactPage(): React.JSX.Element {
   return (
     <div className="justify-items-center flex flex-col h-full w-full m-auto px-4 py-2">
-      <div className="text-center font-extrabold text-3xl md:text-5xl my-10 h-fit">{`Contact Me`}</div>
+      <div className="text-center font-extrabold text-3xl md:text-5xl my-10 h-fit">
+        Contact Me
+      </div>
       <div className="grid auto-rows-max h-full w-full">
         <div className="flex h-fit w-full">
           <p className="text-center">
