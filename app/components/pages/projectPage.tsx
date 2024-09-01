@@ -72,7 +72,7 @@ export default function ProjectPage(): React.JSX.Element {
                     <div className=" font-bold text-lg md:text-xl">
                       {project.name
                         .replace(/-/gi, ' ')
-                        .replace(/(^\w|\s\w)/g, (m: any) => m.toUpperCase())}
+                        .replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase())}
                     </div>
                     <p className="line-clamp-2 hover:line-clamp-none">
                       {project.description ?? ''}

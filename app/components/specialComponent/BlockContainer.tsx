@@ -1,12 +1,13 @@
 import React from 'react'
+import type { ComponentProps, CSSProperties } from 'react'
 
 import WithHover from '../cursor/WithHover'
 
-const baseStyles = {
+const baseStyles: CSSProperties = {
   padding: '8px 16px',
   position: 'relative',
 }
-const BlockContainer = (props: any): React.JSX.Element => {
+const BlockContainer = (props: ComponentProps<'div'>): React.JSX.Element => {
   return <div style={baseStyles} {...props} />
 }
 
