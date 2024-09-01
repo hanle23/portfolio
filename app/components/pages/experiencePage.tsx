@@ -110,9 +110,11 @@ export default function ExperiencePage(): React.JSX.Element {
         className="bg-white md:h-5/6 md:w-8/12 text-black"
       >
         <iframe
+          title="Resume Preview"
           src="/pdf/resume.pdf#toolbar=0"
           allowFullScreen
           className="w-full h-full"
+          sandbox=""
         />
       </DialogModal>
     </div>
