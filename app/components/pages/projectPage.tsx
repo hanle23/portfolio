@@ -43,6 +43,7 @@ export default function ProjectPage(): React.JSX.Element {
         Project List
       </div>
       {currentDisplay !== null && (
+
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: Project) => {
             const recentActivity =
@@ -62,6 +63,7 @@ export default function ProjectPage(): React.JSX.Element {
                   currentDate={currentDate}
                   maxDate={maxDate}
                 />
+
               </BlockContainer>
             )
           })}
