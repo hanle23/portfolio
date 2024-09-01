@@ -42,7 +42,7 @@ export default function ProjectPage(): React.JSX.Element {
       <div className="text-center text-text-light font-extrabold text-3xl md:text-5xl mt-8">
         Project List
       </div>
-      {currentDisplay != null && (
+      {currentDisplay !== null && (
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: Project) => {
             const recentActivity =
@@ -67,7 +67,7 @@ export default function ProjectPage(): React.JSX.Element {
           })}
         </div>
       )}
-      {currentDisplay != null &&
+      {currentDisplay !== null &&
         data?.length !== undefined &&
         data?.length > 6 && (
           <div className="flex justify-center mt-10">
