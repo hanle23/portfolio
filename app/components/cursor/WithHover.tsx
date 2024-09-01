@@ -1,12 +1,16 @@
 import React, { useState, useContext } from 'react'
+import type { ComponentPropsWithRef } from 'react'
 import { Context } from '../appWrapper'
 
 const withHover = (
-  Component: React.ComponentType<any>,
+  Component: React.ComponentType<ComponentPropsWithRef<'div'>>,
   type: string,
-  config?: Record<string, any>,
+  config?: Record<string, object>,
 ) => {
-  return function WithHoverComponent({ passThroughRef, ...props }: any) {
+  return function WithHoverComponent({
+    ref,
+    ...props
+  }: ComponentPropsWithRef<'div'>) {
     const context = useContext(Context)
 
     const [hovering, setHovering] = useState(false)
@@ -69,7 +73,7 @@ const withHover = (
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={styles}
-        ref={passThroughRef}
+        ref={ref}
         {...props}
       />
     )
