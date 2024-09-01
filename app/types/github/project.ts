@@ -4,4 +4,5 @@ export interface Project {
   updated_at: string
   pushed_at: string
   html_url: string
+  private: boolean
 }
