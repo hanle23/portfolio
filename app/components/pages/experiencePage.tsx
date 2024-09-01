@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { experiencesData } from '@/lib/data'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 import ResumeLogo from '@/public/js/resumeIcon'
@@ -54,6 +54,10 @@ export default function ExperiencePage(): React.JSX.Element {
           } ${experience.endDate.getFullYear()}`
     return <div className={className}>{`${startDate} — ${endDate}`}</div>
   }
+
+  const handleOpen = useCallback(() => {
+    setOpen(!open)
+  }, [open])
   return (
     <div
       className="justify-items-center grid text-text-light  min-h-screen w-fit m-auto"
@@ -66,11 +70,7 @@ export default function ExperiencePage(): React.JSX.Element {
       <div className="top-[-100%] grid justify-items-center">
         <div className="sticky h-fit md:-mt-[80px] justify-self-end top-20 md:right-28 hidden md:block">
           <BlockContainer>
-            <button
-              onClick={() => {
-                setOpen(!open)
-              }}
-            >
+            <button onClick={handleOpen}>
               <ResumeLogo color="#3a405c" />
             </button>
           </BlockContainer>
@@ -111,7 +111,7 @@ export default function ExperiencePage(): React.JSX.Element {
       >
         <iframe
           src="/pdf/resume.pdf#toolbar=0"
-          allowFullScreen={true}
+          allowFullScreen
           className="w-full h-full"
         />
       </DialogModal>

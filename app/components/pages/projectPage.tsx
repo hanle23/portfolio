@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import BlockContainer from '../specialComponent/BlockContainer'
 
 interface Project {
@@ -17,9 +17,9 @@ export default function ProjectPage(): React.JSX.Element {
   const [data, setData] = useState<Project[] | null>(null)
   const [displaySmallData, setDisplaySmallData] = useState(true)
 
-  const toggleDisplay = (): void => {
+  const toggleDisplay = useCallback(() => {
     setDisplaySmallData((prevDisplay) => !prevDisplay)
-  }
+  }, [])
   useEffect(() => {
     const fetchData = (): void => {
       fetch('/api/projects', { cache: 'no-store' })
