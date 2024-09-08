@@ -13,7 +13,7 @@ on:
       - master
 
 env:
-  ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 defaults:
   run:
@@ -28,6 +28,7 @@ permissions:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - uses: actions/checkout@v3
 
