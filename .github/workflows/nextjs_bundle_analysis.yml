@@ -11,10 +11,9 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
 
 env:
-  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 defaults:
   run:

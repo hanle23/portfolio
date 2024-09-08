@@ -1,7 +1,7 @@
 name: Personal page
 
 env:
-  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   # Runs on pushes targeting the default branch
