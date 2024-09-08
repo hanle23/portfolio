@@ -3,6 +3,10 @@ import { ignoreList } from '@/constants/githubIgnoreList'
 import type { Project } from '@/app/types/github/project'
 
 export async function GET(): Promise<NextResponse<{ data: Project[] }>> {
+  const ACCESS_TOKEN = process.env.ACCESS_TOKEN
+  if (ACCESS_TOKEN === undefined || ACCESS_TOKEN === '') {
+    throw new Error('ACCESS_TOKEN is not defined')
+  }
   const res = await fetch(
     'https://api.github.com/user/repos?affiliation=owner,collaborator&sort=updated',
     {
