@@ -14,8 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  NEXT_PUBLIC_SPOTIFY_CLIENT_ID: ${{ vars.NEXT_PUBLIC_SPOTIFY_CLIENT_ID }}
-  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 defaults:
   run:
