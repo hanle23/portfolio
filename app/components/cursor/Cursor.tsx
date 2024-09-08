@@ -30,7 +30,7 @@ export default function Cursor(): React.JSX.Element {
           height: '24px',
           background: '#3a405c',
           opacity: `${
-            isVisible && context != null && context.pos.x > 1 ? '1' : '0'
+            isVisible && context !== null && context.pos.x > 1 ? '1' : '0'
           }`,
           position: 'fixed' as 'fixed',
           borderRadius: '9999px',
@@ -64,7 +64,7 @@ export default function Cursor(): React.JSX.Element {
   }, [context, context?.selectedElement, context?.status])
 
   useEffect(() => {
-    if (context == null || context.selectedElement?.el != null) return
+    if (context == null || context.selectedElement?.el !== null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
@@ -85,10 +85,10 @@ export default function Cursor(): React.JSX.Element {
       (context.status === 'entering' || context.status === 'shifting') &&
       context.selectedElement?.type === 'text'
     ) {
-      const textSize =
-        context.selectedElement?.config?.textSize != null
-          ? context.selectedElement?.config?.textSize
-          : 1
+      let textSize = context.selectedElement?.config?.textSize
+      if (textSize === undefined) {
+        textSize = 1
+      }
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
         duration: 0.5,
@@ -105,7 +105,10 @@ export default function Cursor(): React.JSX.Element {
     }
   }, [context, context?.pos])
 
-  if (context?.selectedElement?.el != null) {
+  if (
+    context?.selectedElement?.el !== null &&
+    context?.selectedElement?.el !== undefined
+  ) {
     const amount = 5
     const relativePos = {
       x:
@@ -120,7 +123,7 @@ export default function Cursor(): React.JSX.Element {
       ((relativePos.y - yMid) / context.selectedElement.el.clientHeight) *
       amount
 
-    if (context.selectedElement.type === 'block') {
+    if (context?.selectedElement?.type === 'block') {
       const rect = context.selectedElement.el.getBoundingClientRect()
       baseStyles.left = rect.left + xMove
       baseStyles.top = rect.top + yMove
@@ -164,9 +167,9 @@ export default function Cursor(): React.JSX.Element {
   })
 
   const shapeClass =
-    context?.selectedElement?.el != null &&
-    !(context.status === 'entering' || context.status === 'shifting') &&
-    context.selectedElement.type != null &&
+    context?.selectedElement?.el !== null &&
+    !(context?.status === 'entering' || context?.status === 'shifting') &&
+    context?.selectedElement?.type !== null &&
     !isVisible
   return (
     <div

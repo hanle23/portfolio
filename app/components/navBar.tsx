@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import BlockContainer from './specialComponent/BlockContainer'
 import { Context } from './appWrapper'
 import { HideOnScroll } from '@/app/components/scrollComponents/hideOnScroll'
@@ -12,6 +12,17 @@ export default function NavBar(): React.JSX.Element {
   const mainNavContent: string[] = ['experience', 'projects', 'contact']
 
   const context = useContext(Context)
+
+  const handleScrollToSection = useCallback(
+    (item: string) => {
+      if (item === 'contact') {
+        context?.setContactOpen(!context.contactOpen)
+        return
+      }
+      scrollToSection(`${item}-section`)
+    },
+    [context],
+  )
 
   return (
     <HideOnScroll>
@@ -32,13 +43,7 @@ export default function NavBar(): React.JSX.Element {
             <BlockContainer
               key={item}
               className="text-text-light font-bold p-2.5"
-              onClick={() => {
-                if (item === 'contact') {
-                  context?.setContactOpen(!context.contactOpen)
-                  return
-                }
-                scrollToSection(`${item}-section`)
-              }}
+              onClick={handleScrollToSection.bind(null, item)}
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
             </BlockContainer>

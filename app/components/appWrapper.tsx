@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useCallback } from 'react'
 import NavBar from './navBar'
 import Cursor from './cursor/Cursor'
 
@@ -42,9 +42,9 @@ export default function AppWrapper({
   const [contactOpen, setContactOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [pressing, setPressing] = useState(false)
-  const changePosition = (e: React.MouseEvent<HTMLDivElement>): void => {
+  const changePosition = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     setMousePos({ x: e.clientX, y: e.clientY })
-  }
+  }, [])
 
   const context = {
     pos: mousePos,
@@ -83,17 +83,17 @@ export default function AppWrapper({
     setPressing,
   }
 
+  const changePressing = useCallback(() => {
+    setPressing(!pressing)
+  }, [pressing])
+
   return (
     <Context.Provider value={context}>
       <div
         className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
         onMouseMove={changePosition}
-        onMouseDown={() => {
-          setPressing(true)
-        }}
-        onMouseUp={() => {
-          setPressing(false)
-        }}
+        onMouseDown={changePressing}
+        onMouseUp={changePressing}
       >
         <Cursor />
         <NavBar />

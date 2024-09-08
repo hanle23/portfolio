@@ -13,11 +13,11 @@ export default function Page(): React.JSX.Element {
   return (
     <div className="grid content-center justify-items-center gap-y-10 w-full h-full ">
       <div className="overlay"></div>
-      <div>
+      <div className="h-full w-full">
         <MainPage />
         <ExperiencePage />
         <ProjectPage />
-        {context != null && (
+        {context !== null && (
           <DialogModal
             id="builtInModal"
             open={context?.contactOpen}
