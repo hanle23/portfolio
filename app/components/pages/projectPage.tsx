@@ -43,7 +43,6 @@ export default function ProjectPage(): React.JSX.Element {
         Project List
       </div>
       {currentDisplay !== null && (
-
         <div className="grid grid-cols-2  gap-y-4 justify-items-center mt-4 w-full h-fit">
           {currentDisplay?.map((project: Project) => {
             const recentActivity =
@@ -56,14 +55,13 @@ export default function ProjectPage(): React.JSX.Element {
             return (
               <BlockContainer
                 key={project.name}
-                className="flex h-full w-9/12 text-text-light"
+                className="flex h-full w-96 text-text-light"
               >
                 <ProjectPageContent
                   project={project}
                   currentDate={currentDate}
                   maxDate={maxDate}
                 />
-
               </BlockContainer>
             )
           })}

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import BlockContainer from './specialComponent/BlockContainer'
-import { Context } from '../components/appWrapper'
+import { Context } from './appWrapper'
 import { HideOnScroll } from '@/app/components/scrollComponents/hideOnScroll'
 
 import AppBar from '@mui/material/AppBar'
