@@ -34,6 +34,8 @@ export default function DialogModal({
     [],
   )
 
+  const voidKeyDown = useCallback(() => {}, [])
+
   const handleKeyPressClose = useCallback(
     (e: React.KeyboardEvent<HTMLButtonElement>) => {
       if (e.key === 'Escape') {
@@ -60,6 +62,7 @@ export default function DialogModal({
         id={id}
         className={className}
         onClick={stopPropagation}
+        onKeyDown={voidKeyDown}
         role="document"
       >
         {children}

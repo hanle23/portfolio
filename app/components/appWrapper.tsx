@@ -90,11 +90,11 @@ export default function AppWrapper({
   return (
     <Context.Provider value={context}>
       <div
+        role="button"
         className="items-center  flex flex-col min-w-screen w-full min-h-fit overscroll-none px-7 lg:px-10 py-3"
         onMouseMove={changePosition}
         onMouseDown={changePressing}
         onMouseUp={changePressing}
-        role="main"
       >
         <Cursor />
         <NavBar />
