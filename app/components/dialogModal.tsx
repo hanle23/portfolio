@@ -48,6 +48,16 @@ export default function DialogModal({
     [context, onClose, open],
   )
 
+  const handleKeyPressCloseDiv = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Escape') {
+        if (context !== null) context.removeSelectedElement()
+        onClose(!open)
+      }
+    },
+    [context, onClose, open],
+  )
+
   useEffect(() => {
     if (open && closeButtonRef.current !== null) {
       closeButtonRef.current.focus()
@@ -59,12 +69,14 @@ export default function DialogModal({
       role="dialog"
       className={`${open ? 'fixed' : 'hidden'} inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-[1]`}
       onClick={handleOnClose}
+      onKeyDown={handleKeyPressCloseDiv}
     >
       <div
         id={id}
         className={className}
         onClick={stopPropagation}
         onKeyDown={voidKeyDown}
+        tabIndex={0}
         role="button"
       >
         {children}
