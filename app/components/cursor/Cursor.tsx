@@ -30,14 +30,18 @@ export default function Cursor(): React.JSX.Element {
           height: '24px',
           background: '#3a405c',
           opacity: `${isVisible && context.pos.x > 1 ? '1' : '0'}`,
-          position: 'fixed' as 'fixed',
+          position: 'fixed' as const,
           borderRadius: '9999px',
           zIndex: 2,
           pointerEvents: 'none ' as 'none',
         }
       : {}
   useEffect(() => {
-    if (context?.selectedElement?.el == null) return
+    if (
+      context?.selectedElement?.el === null ||
+      context?.selectedElement?.el === undefined
+    )
+      return
     if (context.status === 'entering' || context.status === 'shifting') {
       if (context.selectedElement.type === 'block') {
         const rect = context.selectedElement.el.getBoundingClientRect()
@@ -61,7 +65,7 @@ export default function Cursor(): React.JSX.Element {
   }, [context, context?.selectedElement, context?.status])
 
   useEffect(() => {
-    if (context == null || context.selectedElement?.el !== null) return
+    if (context === null || context.selectedElement?.el !== null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {

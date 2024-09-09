@@ -4,6 +4,7 @@ import { experiencesData } from '@/lib/data'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 import ResumeLogo from '@/public/js/resumeIcon'
 import DialogModal from '@/app/components/dialogModal'
+import ExperiencePageContent from './experiencePage/experiencePageContent'
 
 interface Project {
   title: string
@@ -35,26 +36,6 @@ export default function ExperiencePage(): React.JSX.Element {
     return new Date(b.startDate).valueOf() - new Date(a.startDate).valueOf()
   })
 
-  function FormatDate({
-    className,
-    experience,
-  }: {
-    className: string
-    experience: { startDate: Date; endDate: Date }
-  }): React.JSX.Element {
-    const startDate = `${
-      months[experience.startDate.getMonth()]
-    } ${experience.startDate.getFullYear()}`
-    const endDate =
-      experience.endDate.setHours(0, 0, 0, 0) ===
-      new Date().setHours(0, 0, 0, 0)
-        ? 'Present'
-        : `${
-            months[experience.endDate.getMonth()]
-          } ${experience.endDate.getFullYear()}`
-    return <div className={className}>{`${startDate} — ${endDate}`}</div>
-  }
-
   const handleOpen = useCallback(() => {
     setOpen(!open)
   }, [open])
@@ -75,31 +56,13 @@ export default function ExperiencePage(): React.JSX.Element {
             </button>
           </BlockContainer>
         </div>
-        {experiences?.map((experience) => {
-          return (
-            <article className="flex w-8/12" key={experience.title}>
-              <BlockContainer className="flex h-full w-full p-3 relative">
-                <div className=" items-center w-4/12 shrink-0">
-                  <FormatDate
-                    experience={experience}
-                    className="sticky top-10 font-medium"
-                  />
-                  <div className="sticky -z-[1] bottom-[100px]" />
-                </div>
-                <div className="grid">
-                  <div className="text-2xl font-semibold">
-                    {experience.title}
-                  </div>
-                  <div className="text-xl font-medium">
-                    {experience.company}
-                  </div>
-                  <div>{experience.location}</div>
-                  <p>{experience.description}</p>
-                </div>
-              </BlockContainer>
-            </article>
-          )
-        })}
+        {experiences?.map((experience) => (
+          <ExperiencePageContent
+            key={experience.title}
+            experience={experience}
+            months={months}
+          />
+        ))}
         <div className="sticky z-[-1] bottom-[1000px]" />
       </div>
 

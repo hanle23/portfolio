@@ -1,11 +1,4 @@
-interface Experience {
-  title: string
-  company: string
-  location: string
-  description: string
-  startDate: Date
-  endDate: Date
-}
+import type { Experience } from '@/app/types/generic'
 export const experiencesData: Experience[] = [
   {
     title: 'Information Technology Assistant (Work/Study)',

@@ -9,7 +9,11 @@ const ScrollToTop = (): React.JSX.Element => {
 
   useEffect(() => {
     const toggleVisibility = (): void => {
-      window.scrollY > 50 ? setIsVisible(true) : setIsVisible(false)
+      if (window.scrollY > 50) {
+        setIsVisible(true)
+      } else {
+        setIsVisible(false)
+      }
     }
     window.addEventListener('scroll', toggleVisibility)
     return () => {
@@ -18,13 +22,13 @@ const ScrollToTop = (): React.JSX.Element => {
   }, [])
 
   const scrollToTop = useCallback(() => {
-    isVisible &&
-      setTimeout(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        })
-      }, 100)
+    if (!isVisible) return
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }, 100)
   }, [isVisible])
 
   return (
