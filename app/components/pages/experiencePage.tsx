@@ -39,6 +39,18 @@ export default function ExperiencePage(): React.JSX.Element {
   const handleOpen = useCallback(() => {
     setOpen(!open)
   }, [open])
+
+  const ResumeButton = useCallback(
+    () => (
+      <div className="sticky h-fit md:-mt-[80px] justify-self-end top-20 md:right-28 hidden md:block">
+        <BlockContainer role="button" onClick={handleOpen}>
+          <ResumeLogo color="#3a405c" />
+        </BlockContainer>
+      </div>
+    ),
+    [handleOpen],
+  )
+
   return (
     <div
       className="justify-items-center grid text-text-light  min-h-screen w-fit m-auto"
@@ -49,13 +61,7 @@ export default function ExperiencePage(): React.JSX.Element {
       </div>
 
       <div className="top-[-100%] grid justify-items-center">
-        <div className="sticky h-fit md:-mt-[80px] justify-self-end top-20 md:right-28 hidden md:block">
-          <BlockContainer>
-            <button onClick={handleOpen}>
-              <ResumeLogo color="#3a405c" />
-            </button>
-          </BlockContainer>
-        </div>
+        <ResumeButton />
         {experiences?.map((experience) => (
           <ExperiencePageContent
             key={experience.title}
