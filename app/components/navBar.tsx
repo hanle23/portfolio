@@ -25,7 +25,7 @@ export default function NavBar(): React.JSX.Element {
   )
 
   const ButtonHTML = ({ item }: { item: string }): React.JSX.Element => {
-    const handleClick = (): void => {
+    function handleClick(): void {
       handleScrollToSection(item)
     }
     return (
