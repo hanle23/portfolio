@@ -69,6 +69,7 @@ export default function DialogModal({
       role="button"
       className={`${open ? 'fixed' : 'hidden'} inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-[1]`}
       onClick={handleOnClose}
+      tabIndex={-1}
       onKeyDown={handleKeyPressCloseDiv}
     >
       <div
