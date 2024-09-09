@@ -34,7 +34,9 @@ export default function DialogModal({
     [],
   )
 
-  const voidKeyDown = useCallback(() => {}, [])
+  const voidKeyDown = useCallback(() => {
+    // Do nothing to avoit jslint error
+  }, [])
 
   const handleKeyPressClose = useCallback(
     (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -63,7 +65,7 @@ export default function DialogModal({
         className={className}
         onClick={stopPropagation}
         onKeyDown={voidKeyDown}
-        role="document"
+        role="button"
       >
         {children}
       </div>
