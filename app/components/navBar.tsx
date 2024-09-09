@@ -43,7 +43,9 @@ export default function NavBar(): React.JSX.Element {
             <BlockContainer
               key={item}
               className="text-text-light font-bold p-2.5"
-              onClick={handleScrollToSection.bind(null, item)}
+              onClick={() => {
+                handleScrollToSection(item)
+              }}
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
             </BlockContainer>

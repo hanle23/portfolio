@@ -17,7 +17,7 @@ export async function GET(): Promise<NextResponse<{ data: Project[] }>> {
     },
   )
   if (res.status !== 200) {
-    throw new Error('Failed to fetch data: ' + res.statusText)
+    throw new Error(`Failed to fetch data: ${res.statusText}`)
   }
   const data: Project[] = await res.json()
   const filteredResult: Project[] = data.flatMap((item: Project) => {
