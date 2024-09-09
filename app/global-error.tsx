@@ -10,7 +10,7 @@ export default function GlobalError({
     reset()
   }, [reset])
   return (
-    <html>
+    <html lang="en-US">
       <body>
         <h2>Something went wrong!</h2>
         <button onClick={handleReset}>Try again</button>
