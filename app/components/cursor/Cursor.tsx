@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useEffect, useContext, useState } from 'react'
 import { Context } from '../appWrapper'
 import { gsap } from 'gsap'
@@ -5,7 +6,6 @@ export default function Cursor(): React.JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null)
   const context = useContext(Context)
   const [isVisible, setIsVisible] = useState<boolean>(true)
-  const [inDialog, setInDialog] = useState<boolean>(false)
   const [, setScrollPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -29,16 +29,13 @@ export default function Cursor(): React.JSX.Element {
           width: '24px',
           height: '24px',
           background: '#3a405c',
-          opacity: `${
-            isVisible && context !== null && context.pos.x > 1 ? '1' : '0'
-          }`,
+          opacity: `${isVisible && context.pos.x > 1 ? '1' : '0'}`,
           position: 'fixed' as 'fixed',
           borderRadius: '9999px',
-          zIndex: inDialog ? 2 : 0,
+          zIndex: 2,
           pointerEvents: 'none ' as 'none',
         }
       : {}
-
   useEffect(() => {
     if (context?.selectedElement?.el == null) return
     if (context.status === 'entering' || context.status === 'shifting') {
@@ -141,16 +138,6 @@ export default function Cursor(): React.JSX.Element {
     const handleMouseLeave = (): void => {
       setIsVisible(false)
     }
-    document
-      .getElementById('builtInModal')
-      ?.addEventListener('mouseover', () => {
-        setInDialog(true)
-      })
-    document
-      .getElementById('builtInModal')
-      ?.addEventListener('mouseleave', () => {
-        setInDialog(false)
-      })
     document.getElementById('iframe')?.addEventListener('mouseover', () => {
       setIsVisible(false)
     })
@@ -163,6 +150,12 @@ export default function Cursor(): React.JSX.Element {
     return () => {
       document.body.removeEventListener('mouseenter', handleMouseEnter)
       document.body.removeEventListener('mouseleave', handleMouseLeave)
+      document
+        .getElementById('iframe')
+        ?.removeEventListener('mouseleave', handleMouseEnter)
+      document
+        .getElementById('iframe')
+        ?.removeEventListener('mouseover', handleMouseLeave)
     }
   })
 

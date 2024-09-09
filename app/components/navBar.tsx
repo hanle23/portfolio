@@ -14,26 +14,16 @@ export default function NavBar(): React.JSX.Element {
   const context = useContext(Context)
 
   const handleScrollToSection = useCallback(
-    (item: string) => {
-      if (item === 'contact') {
+    (e: React.MouseEvent<HTMLElement>) => {
+      const value = (e.target as HTMLInputElement).innerText.toLowerCase()
+      if (value === 'contact') {
         context?.setContactOpen(!context.contactOpen)
         return
       }
-      scrollToSection(`${item}-section`)
+      scrollToSection(`${value}-section`)
     },
     [context],
   )
-
-  const ButtonHTML = ({ item }: { item: string }): React.JSX.Element => {
-    const handleClick = useCallback(() => {
-      handleScrollToSection(item)
-    }, [item])
-    return (
-      <button onClick={handleClick}>
-        {item.charAt(0).toUpperCase() + item.slice(1)}
-      </button>
-    )
-  }
 
   return (
     <HideOnScroll>
@@ -54,8 +44,9 @@ export default function NavBar(): React.JSX.Element {
             <BlockContainer
               key={item}
               className="text-text-light font-bold p-2.5"
+              onClick={handleScrollToSection}
             >
-              <ButtonHTML item={item} />
+              {item.charAt(0).toUpperCase() + item.slice(1)}
             </BlockContainer>
           ))}
         </Toolbar>
