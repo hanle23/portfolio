@@ -25,9 +25,9 @@ export default function NavBar(): React.JSX.Element {
   )
 
   const ButtonHTML = ({ item }: { item: string }): React.JSX.Element => {
-    function handleClick(): void {
+    const handleClick = useCallback(() => {
       handleScrollToSection(item)
-    }
+    }, [item])
     return (
       <button onClick={handleClick}>
         {item.charAt(0).toUpperCase() + item.slice(1)}
