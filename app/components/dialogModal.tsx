@@ -21,23 +21,12 @@ export default function DialogModal({
 }: props): React.JSX.Element {
   const context = useContext(Context)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
-  const handleOnCloseButton = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      event.stopPropagation()
-      if (context !== null) context.removeSelectedElement()
-      onClose(!open)
-    },
-    [context, onClose, open],
-  )
 
-  const handleOnCloseDiv = useCallback(
-    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      event.stopPropagation()
-      if (context !== null) context.removeSelectedElement()
-      onClose(!open)
-    },
-    [context, onClose, open],
-  )
+  const handleOnClose = useCallback(() => {
+    if (context !== null) context.removeSelectedElement()
+    onClose(!open)
+  }, [context, onClose, open])
+
   const stopPropagation = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.stopPropagation()
@@ -46,7 +35,7 @@ export default function DialogModal({
   )
 
   const handleKeyPressClose = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: React.KeyboardEvent<HTMLButtonElement>) => {
       if (e.key === 'Escape') {
         if (context !== null) context.removeSelectedElement()
         onClose(!open)
@@ -65,17 +54,22 @@ export default function DialogModal({
     <div
       role="dialog"
       className={`${open ? 'fixed' : 'hidden'} inset-0 flex h-full w-full justify-center items-center bg-gray-900 bg-opacity-50 z-[1]`}
-      onClick={handleOnCloseDiv}
-      onKeyDown={handleKeyPressClose}
+      onClick={handleOnClose}
     >
-      <div id={id} className={className} onClick={stopPropagation}>
+      <div
+        id={id}
+        className={className}
+        onClick={stopPropagation}
+        role="document"
+      >
         {children}
       </div>
       <div className="h-5/6">
         <BlockContainer className="flex bg-white opacity-20 rounded-lg h-fit w-fit">
           <button
-            onClick={handleOnCloseButton}
+            onClick={handleOnClose}
             ref={closeButtonRef}
+            onKeyDown={handleKeyPressClose}
             className="flex h-fit w-fit"
           >
             <Image src={closeLogo} width={35} alt="Close Icon" />

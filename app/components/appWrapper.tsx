@@ -94,6 +94,7 @@ export default function AppWrapper({
         onMouseMove={changePosition}
         onMouseDown={changePressing}
         onMouseUp={changePressing}
+        role="main"
       >
         <Cursor />
         <NavBar />
