@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import type { ComponentPropsWithRef } from 'react'
 import { Context } from '../appWrapper'
 
@@ -15,36 +15,39 @@ const withHover = (
 
     const [hovering, setHovering] = useState(false)
 
-    const handleMouseEnter = (e: React.MouseEvent<HTMLElement>): void => {
-      if (context === null) return
-      const result = {
-        el: e.currentTarget,
-        type,
-        config: { ...config },
-      }
+    const handleMouseEnter = useCallback(
+      (e: React.MouseEvent<HTMLElement>) => {
+        if (context === null) return
+        const result = {
+          el: e.currentTarget,
+          type,
+          config: { ...config },
+        }
 
-      context.selectedElementSet(result)
-      setHovering(true)
-    }
+        context.selectedElementSet(result)
+        setHovering(true)
+      },
+      [context],
+    )
 
-    const handleMouseLeave = (): void => {
+    const handleMouseLeave = useCallback(() => {
       if (context === null) return
       context.removeSelectedElement()
       setHovering(false)
-    }
+    }, [context])
 
     let styles: React.CSSProperties | undefined
 
     if (
-      context != null &&
+      context !== null &&
       hovering &&
-      context.selectedElement?.el != null &&
-      context.selectedElement.type === 'block'
+      context.selectedElement?.el !== null &&
+      context.selectedElement?.type === 'block'
     ) {
-      const amount =
-        context.selectedElement.config?.hoverOffset != null
-          ? context.selectedElement.config.hoverOffset
-          : 2
+      let amount = context?.selectedElement?.config?.hoverOffset
+      if (amount === undefined) {
+        amount = 2
+      }
       const relativePos = {
         x:
           context.pos.x -

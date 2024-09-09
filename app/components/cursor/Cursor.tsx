@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useEffect, useContext, useState } from 'react'
 import { Context } from '../appWrapper'
 import { gsap } from 'gsap'
@@ -5,7 +6,6 @@ export default function Cursor(): React.JSX.Element {
   const cursor = useRef<HTMLDivElement | null>(null)
   const context = useContext(Context)
   const [isVisible, setIsVisible] = useState<boolean>(true)
-  const [inDialog, setInDialog] = useState<boolean>(false)
   const [, setScrollPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -29,16 +29,13 @@ export default function Cursor(): React.JSX.Element {
           width: '24px',
           height: '24px',
           background: '#3a405c',
-          opacity: `${
-            isVisible && context != null && context.pos.x > 1 ? '1' : '0'
-          }`,
+          opacity: `${isVisible && context.pos.x > 1 ? '1' : '0'}`,
           position: 'fixed' as 'fixed',
           borderRadius: '9999px',
-          zIndex: inDialog ? 2 : 0,
+          zIndex: 2,
           pointerEvents: 'none ' as 'none',
         }
       : {}
-
   useEffect(() => {
     if (context?.selectedElement?.el == null) return
     if (context.status === 'entering' || context.status === 'shifting') {
@@ -64,7 +61,7 @@ export default function Cursor(): React.JSX.Element {
   }, [context, context?.selectedElement, context?.status])
 
   useEffect(() => {
-    if (context == null || context.selectedElement?.el != null) return
+    if (context == null || context.selectedElement?.el !== null) return
     if (context.status === 'exiting') {
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
@@ -85,10 +82,10 @@ export default function Cursor(): React.JSX.Element {
       (context.status === 'entering' || context.status === 'shifting') &&
       context.selectedElement?.type === 'text'
     ) {
-      const textSize =
-        context.selectedElement?.config?.textSize != null
-          ? context.selectedElement?.config?.textSize
-          : 1
+      let textSize = context.selectedElement?.config?.textSize
+      if (textSize === undefined) {
+        textSize = 1
+      }
       gsap.killTweensOf(cursor.current)
       gsap.to(cursor.current, {
         duration: 0.5,
@@ -105,7 +102,10 @@ export default function Cursor(): React.JSX.Element {
     }
   }, [context, context?.pos])
 
-  if (context?.selectedElement?.el != null) {
+  if (
+    context?.selectedElement?.el !== null &&
+    context?.selectedElement?.el !== undefined
+  ) {
     const amount = 5
     const relativePos = {
       x:
@@ -120,7 +120,7 @@ export default function Cursor(): React.JSX.Element {
       ((relativePos.y - yMid) / context.selectedElement.el.clientHeight) *
       amount
 
-    if (context.selectedElement.type === 'block') {
+    if (context?.selectedElement?.type === 'block') {
       const rect = context.selectedElement.el.getBoundingClientRect()
       baseStyles.left = rect.left + xMove
       baseStyles.top = rect.top + yMove
@@ -138,16 +138,6 @@ export default function Cursor(): React.JSX.Element {
     const handleMouseLeave = (): void => {
       setIsVisible(false)
     }
-    document
-      .getElementById('builtInModal')
-      ?.addEventListener('mouseover', () => {
-        setInDialog(true)
-      })
-    document
-      .getElementById('builtInModal')
-      ?.addEventListener('mouseleave', () => {
-        setInDialog(false)
-      })
     document.getElementById('iframe')?.addEventListener('mouseover', () => {
       setIsVisible(false)
     })
@@ -160,13 +150,19 @@ export default function Cursor(): React.JSX.Element {
     return () => {
       document.body.removeEventListener('mouseenter', handleMouseEnter)
       document.body.removeEventListener('mouseleave', handleMouseLeave)
+      document
+        .getElementById('iframe')
+        ?.removeEventListener('mouseleave', handleMouseEnter)
+      document
+        .getElementById('iframe')
+        ?.removeEventListener('mouseover', handleMouseLeave)
     }
   })
 
   const shapeClass =
-    context?.selectedElement?.el != null &&
-    !(context.status === 'entering' || context.status === 'shifting') &&
-    context.selectedElement.type != null &&
+    context?.selectedElement?.el !== null &&
+    !(context?.status === 'entering' || context?.status === 'shifting') &&
+    context?.selectedElement?.type !== null &&
     !isVisible
   return (
     <div

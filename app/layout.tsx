@@ -17,7 +17,7 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="h-full w-full bg-main-light">
+      <body className="flex h-full w-full bg-main-light">
         <AppWrapper>{children}</AppWrapper>
         <Analytics />
         <SpeedInsights />

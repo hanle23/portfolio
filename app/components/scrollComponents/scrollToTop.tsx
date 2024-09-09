@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import BlockContainer from '@/app/components/specialComponent/BlockContainer'
 import UpArrow from '@/public/js/chevronUp'
 
@@ -17,7 +17,7 @@ const ScrollToTop = (): React.JSX.Element => {
     }
   }, [])
 
-  const scrollToTop = (): void => {
+  const scrollToTop = useCallback(() => {
     isVisible &&
       setTimeout(() => {
         window.scrollTo({
@@ -25,7 +25,7 @@ const ScrollToTop = (): React.JSX.Element => {
           behavior: 'smooth',
         })
       }, 100)
-  }
+  }, [isVisible])
 
   return (
     <div

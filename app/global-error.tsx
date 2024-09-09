@@ -1,22 +1,19 @@
 'use client'
-import React from 'react'
+import React, { useCallback } from 'react'
 export default function GlobalError({
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }): React.JSX.Element {
+  const handleReset = useCallback(() => {
+    reset()
+  }, [reset])
   return (
     <html>
       <body>
         <h2>Something went wrong!</h2>
-        <button
-          onClick={() => {
-            reset()
-          }}
-        >
-          Try again
-        </button>
+        <button onClick={handleReset}>Try again</button>
       </body>
     </html>
   )
