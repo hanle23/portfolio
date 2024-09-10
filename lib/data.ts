@@ -1,7 +1,7 @@
 import type { Experience } from '@/app/types/generic'
 export const experiencesData: Experience[] = [
   {
-    title: 'Information Technology Assistant (Work/Study)',
+    title: 'Information Technology Desktop Support',
     company: 'York University School of Continuing Studies',
     location: 'Toronto, ON',
     description:
@@ -10,13 +10,13 @@ export const experiencesData: Experience[] = [
     endDate: new Date('2023-04-28'),
   },
   {
-    title: 'Information Technology Assistant',
+    title: 'Software Developer',
     company: 'York University School of Continuing Studies',
     location: 'Toronto, ON',
     description:
       'After working here as an intern, I came back to the same department as a first real job out of university. This time I was given the opportunity to try out other roles within our department, including Business Analysis, Project Management. Although since it was only a small part of my tasks, I have developed a full application that deploy Virtual Machine to students in the Big Data program. The application has been running for 4 semesters till we decided to retired it.',
     startDate: new Date('2023-07-28'),
-    endDate: new Date('2024-03-28'),
+    endDate: new Date(),
   },
   {
     title: 'Full Stack Engineer',
