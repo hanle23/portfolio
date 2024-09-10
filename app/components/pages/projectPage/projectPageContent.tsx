@@ -1,4 +1,5 @@
 import type { Project } from '@/app/types/github/project'
+import ProjectPageContainer from './projectPageContainer'
 export default function ProjectPageContent({
   project,
   maxDate,
@@ -9,17 +10,14 @@ export default function ProjectPageContent({
   currentDate: number
 }): JSX.Element {
   return (
-    <a
-      target="_blank"
-      href={project.html_url}
-      rel="noopener noreferrer"
-      className="border border-text-light inline-block rounded-md p-2.5  transition duration-150 w-full relative"
-    >
+    <ProjectPageContainer project={project}>
       <div className="flex flex-col h-full overflow-hidden">
         <div className=" font-bold text-lg md:text-xl">
-          {project.name
+          {`${project.name
             .replace(/-/gi, ' ')
-            .replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase())}
+            .replace(/(^\w|\s\w)/g, (m: string) =>
+              m.toUpperCase(),
+            )}${project.private ? ' (Private)' : ''}`}
         </div>
         <p className="line-clamp-2 hover:line-clamp-none">
           {project.description ?? ''}
@@ -37,6 +35,6 @@ export default function ProjectPageContent({
           </div>
         </div>
       </div>
-    </a>
+    </ProjectPageContainer>
   )
 }
