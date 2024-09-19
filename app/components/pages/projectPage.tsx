@@ -55,7 +55,7 @@ export default function ProjectPage(): React.JSX.Element {
             return (
               <BlockContainer
                 key={project.name}
-                className="flex h-full w-96 text-text-light"
+                className="flex h-full w-80 sm:w-96 text-text-light"
               >
                 <ProjectPageContent
                   project={project}
