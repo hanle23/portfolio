@@ -1,0 +1,15 @@
+.current {
+  color: green;
+}
+
+html {
+  position:relative;
+  min-height:100%
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin:0;
+}
