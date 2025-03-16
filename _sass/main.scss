@@ -12,4 +12,28 @@ body {
   min-height: 100vh;
   flex-direction: column;
   margin:0;
+  font-family: 'Meslo LG', sans-serif;
+}
+
+a {color:inherit;
+text-decoration: none;}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid oklch(0.967 0.003 264.542);
+  padding-block: 0.5rem;
+  padding-inline:2.5rem;
+  align-items:center}
+
+.img-container {
+  display:flex;
+  width: fit-content;
+  height: fit-content;
+}
+
+.link-group {
+  display:flex;
+gap:25px;
+color:black;
 }

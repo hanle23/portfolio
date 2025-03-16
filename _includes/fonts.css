@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Meslo LG';
+  src: url('{{ "/assets/fonts/meslolg/MesloLGL-Regular.ttf" | relative_url }}') format('ttf')
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Meslo LG';
+  src: url('{{ "/assets/fonts/meslolg/MesloLGL-Bold.ttf" | relative_url }}') format('ttf');
+  font-weight: 700;
+  font-style: normal;
+}
