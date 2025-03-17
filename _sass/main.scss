@@ -1,7 +1,3 @@
-.current {
-  color: green;
-}
-
 html {
   position:relative;
   min-height:100%
@@ -21,7 +17,7 @@ text-decoration: none;}
 .nav {
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid oklch(0.967 0.003 264.542);
+  border-bottom: 2px solid;
   padding-block: 0.5rem;
   padding-inline:2.5rem;
   align-items:center}
@@ -35,5 +31,31 @@ text-decoration: none;}
 .link-group {
   display:flex;
 gap:25px;
-color:black;
+}
+
+@media (prefers-color-scheme: dark) {
+
+  .nav {
+    border-bottom-color: oklch(0.967 0.003 264.542);
+    background-color:black;
+  }
+
+  .link-group {
+  color: white
+  }
+
+  .icon {
+    -webkit-filter: invert(100%);
+          filter: invert(100%);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .nav {
+    border-bottom-color: oklch(0.967 0.003 264.542)
+  }
+
+  .link-group {
+  color:black
+  }
 }

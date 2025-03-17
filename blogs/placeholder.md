@@ -1,5 +1,6 @@
 ---
 layout: blogs
-title: placeholder  
+title: placeholder blog 
 ---
+<p>This is a placeholder blog</p>
 
