@@ -1,39 +1,50 @@
 html {
-  position:relative;
-  min-height:100%
+  position: relative;
+  min-height: 100%
 }
 
 body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  margin:0;
+  margin: 0;
   font-family: 'Meslo LG', sans-serif;
 }
 
-a {color:inherit;
-text-decoration: none;}
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 .nav {
   display: flex;
   justify-content: space-between;
   border-bottom: 2px solid;
   padding-block: 1.5rem;
-  padding-inline:3.5rem;
-  align-items:center}
+  padding-inline: 3.5rem;
+  align-items: center
+}
 
 .img-container {
-  display:flex;
+  display: flex;
   width: 45px;
   height: 45px;
-  align-items:center;
-  
+  align-items: center;
+
+}
+
+.img-container:hover {
+  scale: 1.15;
 }
 
 .link-group {
-  display:flex;
-gap:25px;
+  display: flex;
+  gap: 25px;
   font-weight: 600;
+}
+
+.link-item:hover {
+  scale: 1.15
 }
 
 .main-section {
@@ -44,42 +55,44 @@ gap:25px;
 
 @media (prefers-color-scheme: dark) {
 
-    .main-svg {
-  fill:#9399b2;
+  .main-svg {
+    fill: #9399b2;
   }
+
   .sub-svg {
-  fill:#1e1e2e;
+    fill: #15191e;
   }
 
   .nav {
-    background-color:#1e1e2e;
-    border-bottom-color:#1e1e2e
+    background-color: #15191e;
+    border-bottom-color: #15191e;
   }
 
   .link-group {
-    color:#9399b2;
+    color: #9399b2;
   }
 
   .icon {
     -webkit-filter: invert(100%);
-          filter: invert(100%);
+    filter: invert(100%);
   }
 }
 
 @media (prefers-color-scheme: light) {
-    .main-svg {
-  fill:#5c5f77;
+  .main-svg {
+    fill: #5c5f77;
   }
+
   .sub-svg {
-  fill:#eff1f5;
+    fill: #eff1f5;
   }
 
   .nav {
-    background-color:#eff1f5;
-    border-bottom-color:#eff1f5;
+    background-color: #eff1f5;
+    border-bottom-color: #eff1f5;
   }
 
   .link-group {
-  color:#5c5f77
+    color: #5c5f77
   }
 }
