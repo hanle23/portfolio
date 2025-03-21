@@ -14,7 +14,7 @@
 
 @font-face {
   font-family: 'Halo';
-  src: url('{{ "assets/fonts/halo/Halo Outline.ttf" | relative_url }}') format('ttf');
+  src: url('{{ "/assets/fonts/halo/Halo.ttf" | relative_url }}') format('ttf');
   font-weight: normal;
   font-style: normal;
 }

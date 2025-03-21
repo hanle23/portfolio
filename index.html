@@ -36,4 +36,10 @@ layout: default
 </div>
 <div class="container-md mt-1 flex-grow">
   <p class="title-text-color text-lg font-semibold">Recent Posts:</p>
+  <div class="recent-posts">
+    {% for post in site.posts limit:2 %}
+    <div class="recent-post">
+    </div>
+    {% endfor %}
+  </div>
 </div>

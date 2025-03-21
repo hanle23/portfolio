@@ -399,6 +399,11 @@ h6 {
   margin-block: 0;
 }
 
+.copyright {
+  font-size: 0.75rem;
+  margin-block: 0;
+}
+
 @media (prefers-color-scheme: dark) {
   .main-background-color {
     background-color: #1e1e2f;
@@ -442,12 +447,17 @@ h6 {
     filter: invert(100%);
   }
 
-  .social-icon {
+  .social-icon,
+  .social-icon-inner {
     fill: #b1b5ce;
   }
 
   .social-icon:hover {
-    fill: #eff0f5
+    fill: #eff0f5;
+
+    .social-icon-inner {
+      fill: #eff0f5
+    }
   }
 }
 
