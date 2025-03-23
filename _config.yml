@@ -22,7 +22,7 @@ title: Han Le Portfolio
 email: hanle.cs23@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   A personal website that listing my work history, some projects, and blogs.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://hanle23.me" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
 github_username: hanle23 
