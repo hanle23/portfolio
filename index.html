@@ -1,0 +1,45 @@
+---
+title: Han Le
+layout: default
+---
+<header class="secondary-background-color">
+  <div class="header-container">
+    <h1 class="title-text-color">Hi, my name is Han!</h1>
+    <h4 class="secondary-text-color">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</h4>
+    <h4 class="secondary-text-color">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea
+      commodo consequat</h4>
+  </div>
+
+</header>
+<div class="container grid-xl">
+  <div class="columns negative-m">
+    <div class="column col-12 text-center">
+      <h5 class="secondary-text-color">What do you want to explore?</h5>
+    </div>
+    <div class="column col-4 col-md-6 col-sm-12">
+      <a class="index-selection-box" href="/about">
+        <p class="title-text-color">About</p>
+      </a>
+    </div>
+    <div class="column col-4 col-md-6 col-sm-12">
+      <a class="index-selection-box" href="/Projects">
+        <p class="title-text-color">Projects</p>
+      </a>
+    </div>
+    <div class="column col-4 col-md-6 col-sm-12">
+      <a class="index-selection-box" href="/Blogs">
+        <p class="title-text-color">Blogs</p>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="container-md mt-1 flex-grow">
+  <p class="title-text-color text-lg font-semibold">Recent Posts:</p>
+  <div class="recent-posts">
+    {% for post in site.posts limit:2 %}
+    <div class="recent-post">
+    </div>
+    {% endfor %}
+  </div>
+</div>
