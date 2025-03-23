@@ -1,11 +1,11 @@
-<svg width="90" height="100" viewBox="0 0 90 100" xmlns="http://www.w3.org/2000/svg" fill="black">
+<svg width="80" height="80" viewBox="0 0 90 100" xmlns="http://www.w3.org/2000/svg" fill="#272424">
     <!-- Left vertical stroke (rod) -->
-    <rect x="20" y="10" width="10" height="80" fill="black"/>
+    <rect x="20" y="10" width="10" height="80" fill="#eee8ea"/>
     
     <!-- Right vertical stroke (rod) -->
-    <rect x="60" y="10" width="10" height="80" fill="black"/>
+    <rect x="60" y="10" width="10" height="80" fill="#eee8ea"/>
 
-    <svg fill="#ffffff" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="20" y="35" width="30" height="30">
+    <svg fill="#272424" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="20" y="35" width="30" height="30">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
@@ -13,7 +13,7 @@
         </g>
     </svg>
     
-        <svg fill="#ffffff" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="41" y="35" width="30" height="30">
+        <svg fill="#272424" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="40" y="35" width="30" height="30">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
@@ -21,7 +21,7 @@
         </g>
     </svg>
     
-        <svg fill="#000000" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="30" y="35" width="30" height="30">
+        <svg fill="#eee8ea" viewBox="-1 0 20 20" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg" x="30" y="35" width="30" height="30">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
         <g id="SVGRepo_iconCarrier">
@@ -29,3 +29,4 @@
         </g>
     </svg>
 </svg>
+
