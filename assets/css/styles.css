@@ -21,6 +21,7 @@ body {
   margin: 0;
   font-family: Meslo LG;
   height: 100vh;
+  overscroll-behavior: none;
 }
 
 a {
@@ -379,7 +380,6 @@ h6 {
   flex-direction: column;
   padding-block: 1rem;
   align-items: center;
-  overflow: hidden;
   gap: 0.5rem;
 }
 
