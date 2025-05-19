@@ -2,7 +2,7 @@
 layout: default
 title: Projects - Han Le
 ---
-<div class="page-container">
+<div class="page-container gap-1">
   <div class="secondary-text-color breadcrumbs mt-1">
     {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
     <a href="/">Home</a>
@@ -14,6 +14,15 @@ title: Projects - Han Le
       {% endif %}
     {% endfor %}
     </div>
-  <p class="title-text-color text-lg">Projects</p>
-
+  <p class="title-text-color text-xl">Projects</p>
+  <div class="items">
+    {% for post in site.categories.projects %}
+    <a class="item" href="{{ post.url }}">
+      <div class="post-container secondary-text-color">
+        <p class="title-text-color text-lg font-semibold">{{post.title}}</p>
+        {{ post.content | truncate: 120}}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 </div>
