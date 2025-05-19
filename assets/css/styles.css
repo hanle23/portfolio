@@ -36,6 +36,50 @@ header {
   justify-content: center;
 }
 
+.post-container {
+  flex-direction: column;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border-radius: 0.75rem;
+}
+
+.recent-posts {
+  display: flex;
+  gap: 9rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.recent-post {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border-radius: 0.75rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  border-radius: 0.5rem;
+  opacity: 0.8;
+}
+
+.item:hover {
+  opacity: 1;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recent-post:hover {
+  opacity: 0.8;
+}
 
 .header-container {
   width: fit-content;
@@ -43,10 +87,19 @@ header {
 }
 
 .page-container {
+  display: flex;
+  flex-direction: column;
   padding-inline: 3rem;
-  width: 40rem;
+  width: 48rem;
   padding-block: 0.25rem;
 }
+
+.breadcrumbs {
+  display: flex;
+  width: 48rem;
+}
+
+
 
 h1 {
   font-size: 3.5rem;
@@ -104,6 +157,10 @@ h6 {
 
 .gap-1 {
   gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
 }
 
 .link-item:hover {
@@ -341,8 +398,6 @@ h6 {
   }
 }
 
-
-
 .negative-m {
   margin-top: -7.5rem;
 }
@@ -353,6 +408,10 @@ h6 {
 
 .text-lg {
   font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.5rem;
 }
 
 .font-semibold {
@@ -379,6 +438,15 @@ h6 {
 
 .index-selection-box:hover {
   scale: 1.05
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.padding-y-1 {
+  padding-block: 1rem;
 }
 
 
@@ -428,16 +496,20 @@ h6 {
     color: #b1b5ce;
   }
 
-  .secondary-text-color {
-    color: #b1b5ce;
-  }
-
   .main-svg {
     fill: #9399b2;
   }
 
   .sub-svg {
     fill: #15191e;
+  }
+
+  .post-container {
+    background-color: #5c5f77;
+  }
+
+  .recent-post:hover {
+    background-color: #5c5f77;
   }
 
   .index-selection-box {
@@ -494,6 +566,14 @@ h6 {
   }
 
   .index-selection-box {
+    background-color: #b1b5ce;
+  }
+
+  .post-container {
+    background-color: #b1b5ce;
+  }
+
+  .recent-post:hover {
     background-color: #b1b5ce;
   }
 

@@ -1,6 +1,8 @@
 ---
 layout: blogs
 title: First ever blog
+category:
+  - blogs
 ---
 Hi there!
 

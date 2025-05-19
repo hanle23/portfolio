@@ -5,10 +5,10 @@ layout: default
 <header class="secondary-background-color">
   <div class="header-container">
     <h1 class="title-text-color">Hi, my name is Han!</h1>
-    <h4 class="secondary-text-color">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</h4>
-    <h4 class="secondary-text-color">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-      ex ea
-      commodo consequat</h4>
+    <h4 class="secondary-text-color">This is where I showcase some of my work, writting about my own researches.</h4>
+    <h4 class="secondary-text-color">I hope that some or any of this will be helpful for you, if you want to discuss
+      about something private, please feel free to send me an email, book a meeting or create a pull request on one of
+      my project. All contribution would be appreciated!</h4>
   </div>
 
 </header>
@@ -34,12 +34,14 @@ layout: default
     </div>
   </div>
 </div>
-<div class="container-md mt-1 flex-grow">
+<div class="flex-col col-10 padding-y-1 flex-grow">
   <p class="title-text-color text-lg font-semibold">Recent Posts:</p>
   <div class="recent-posts">
-    {% for post in site.posts limit:2 %}
-    <div class="recent-post">
-    </div>
+    {% for post in site.categories.blogs limit:2 %}
+    <a class="recent-post secondary-text-color" href="{{ post.url }}">
+      <p class="title-text-color text-lg font-semibold">{{ post.title }}</p>
+      <div class="post-excerpt">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+    </a>
     {% endfor %}
   </div>
 </div>

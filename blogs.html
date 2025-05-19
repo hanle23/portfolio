@@ -2,4 +2,29 @@
 layout: default
 title: Blogs - Han Le
 ---
-<p>This is the placeholder for blogs</p>
+
+<div class="page-container gap-1">
+  <div class="secondary-text-color breadcrumbs mt-1">
+    {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
+    <a href="/">Home</a>
+    {% for crumb in crumbs offset: 1 %}
+      {% if forloop.last %}
+        / {{ page.title }}
+      {% else %}
+        / <a href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/' | replace:'without-plugin/','without-plugins/' }}{% endfor %}">{{ crumb | replace:'-',' ' | remove:'.html' | capitalize }}</a>
+      {% endif %}
+    {% endfor %}
+    </div>
+  <p class="title-text-color text-lg">Blogs</p>
+  <div class="items">
+    {% for post in site.categories.blogs %}
+    <a class="item" href="{{ post.url }}">
+      <div class="post-container secondary-text-color">
+        <p class="title-text-color text-lg font-semibold">{{post.title}}</p>
+        {{ post.content | truncate: 120}}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+</div>
