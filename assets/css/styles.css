@@ -436,6 +436,17 @@ h6 {
   font-weight: 600;
 }
 
+.button {
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+}
+
+.button:hover{
+  scale: 1.025;
+}
+
 .index-selection-box:hover {
   scale: 1.05
 }
