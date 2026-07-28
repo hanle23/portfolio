@@ -12,19 +12,21 @@ This is a personal portfolio website built with [Jekyll](https://jekyllrb.com/).
 ## Setup Instructions
 
 ### 1. Install Ruby (if needed)
+
 If you don't have the required Ruby version, install it using `ruby-install`:
 
 ```sh
-ruby-install ruby 3.1.2
+ruby-install ruby 3.3.7
 ```
 
-Replace `3.1.2` with the version specified in your project (see `.ruby-version` if present).
+Replace `3.3.7` with the version specified in your project (see `.ruby-version` if present).
 
 ### 2. Select Ruby Version with chruby
+
 Use `chruby` to switch to the correct Ruby version:
 
 ```sh
-chruby 3.1.2
+chruby 3.3.7
 ```
 
 If you have a `.ruby-version` file in the project directory, chruby will automatically switch when you `cd` into the directory (if your shell is configured accordingly).
@@ -68,9 +70,11 @@ If you don't see changes reflected, try clearing your browser cache or restartin
   ```
 
 ## Troubleshooting
+
 - Ensure you are using the correct Ruby version with `chruby`.
 - If you encounter gem issues, try `bundle update` or reinstalling gems.
 
 ## Resources
+
 - [Jekyll Documentation](https://jekyllrb.com/docs/)
 - [chruby Documentation](https://github.com/postmodern/chruby)

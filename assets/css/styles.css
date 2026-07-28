@@ -497,107 +497,167 @@ h6 {
   margin-block: 0;
 }
 
+:root {
+  color-scheme: light;
+  --bg-main: #ffffff;
+  --bg-secondary: #eff1f5;
+  --text-title: #1e1e1e;
+  --text-secondary: #5c5f77;
+  --fill-main: #5c5f77;
+  --fill-sub: #eff1f5;
+  --surface: #b1b5ce;
+  --icon-filter: none;
+  --social-fill: #5c5f77;
+  --social-fill-hover: #1e1e1e;
+}
+
 @media (prefers-color-scheme: dark) {
-  .main-background-color {
-    background-color: #1e1e2f;
-  }
-
-  .secondary-background-color {
-    background-color: #15191e;
-  }
-
-  .title-text-color {
-    color: #eff0f5;
-  }
-
-  .secondary-text-color {
-    color: #b1b5ce;
-  }
-
-  .main-svg {
-    fill: #9399b2;
-  }
-
-  .sub-svg {
-    fill: #15191e;
-  }
-
-  .post-container {
-    background-color: #5c5f77;
-  }
-
-  .recent-post:hover {
-    background-color: #5c5f77;
-  }
-
-  .index-selection-box {
-    background-color: #5c5f77;
-  }
-
-  .nav {
-    background-color: #15191e;
-    border-bottom-color: #15191e;
-  }
-
-  .icon {
-    -webkit-filter: invert(100%);
-    filter: invert(100%);
-  }
-
-  .social-icon,
-  .social-icon-inner {
-    fill: #b1b5ce;
-  }
-
-  .social-icon:hover {
-    fill: #eff0f5;
-
-    .social-icon-inner {
-      fill: #eff0f5
-    }
+  :root {
+    color-scheme: dark;
+    --bg-main: #1e1e2f;
+    --bg-secondary: #15191e;
+    --text-title: #eff0f5;
+    --text-secondary: #b1b5ce;
+    --fill-main: #9399b2;
+    --fill-sub: #15191e;
+    --surface: #5c5f77;
+    --icon-filter: invert(100%);
+    --social-fill: #b1b5ce;
+    --social-fill-hover: #eff0f5;
   }
 }
 
-@media (prefers-color-scheme: light) {
-  .main-background-color {
-    background-color: #ffffff;
-  }
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-main: #ffffff;
+  --bg-secondary: #eff1f5;
+  --text-title: #1e1e1e;
+  --text-secondary: #5c5f77;
+  --fill-main: #5c5f77;
+  --fill-sub: #eff1f5;
+  --surface: #b1b5ce;
+  --icon-filter: none;
+  --social-fill: #5c5f77;
+  --social-fill-hover: #1e1e1e;
+}
 
-  .secondary-background-color {
-    background-color: #eff1f5;
-  }
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-main: #1e1e2f;
+  --bg-secondary: #15191e;
+  --text-title: #eff0f5;
+  --text-secondary: #b1b5ce;
+  --fill-main: #9399b2;
+  --fill-sub: #15191e;
+  --surface: #5c5f77;
+  --icon-filter: invert(100%);
+  --social-fill: #b1b5ce;
+  --social-fill-hover: #eff0f5;
+}
 
-  .title-text-color {
-    color: #1e1e1e;
-  }
+.main-background-color {
+  background-color: var(--bg-main);
+}
 
-  .secondary-text-color {
-    color: #5c5f77
-  }
+.secondary-background-color {
+  background-color: var(--bg-secondary);
+}
 
-  .main-svg {
-    fill: #5c5f77;
-  }
+.title-text-color {
+  color: var(--text-title);
+}
 
-  .sub-svg {
-    fill: #eff1f5;
-  }
+.secondary-text-color {
+  color: var(--text-secondary);
+}
 
-  .index-selection-box {
-    background-color: #b1b5ce;
-  }
+.main-svg {
+  fill: var(--fill-main);
+}
 
-  .post-container {
-    background-color: #b1b5ce;
-  }
+.sub-svg {
+  fill: var(--fill-sub);
+}
 
-  .recent-post:hover {
-    background-color: #b1b5ce;
-  }
+.post-container,
+.recent-post:hover,
+.index-selection-box {
+  background-color: var(--surface);
+}
 
-  .nav {
-    background-color: #eff1f5;
-    border-bottom-color: #eff1f5;
-  }
+.nav {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--bg-secondary);
+}
 
+.icon {
+  -webkit-filter: var(--icon-filter);
+  filter: var(--icon-filter);
+}
+
+.social-icon,
+.social-icon-inner {
+  fill: var(--social-fill);
+}
+
+.social-icon:hover,
+.social-icon:hover .social-icon-inner {
+  fill: var(--social-fill-hover);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.25rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #1e1e1e;
+  line-height: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease, color 0.25s ease;
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: #eff0f5;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.12);
+  opacity: 0.85;
+}
+
+.theme-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+}
+
+.theme-toggle path {
+  fill: currentColor;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-sun,
+:root:not([data-theme="dark"]) .theme-icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-sun {
+  display: block;
+}
+
+body,
+.nav,
+.main-background-color,
+.secondary-background-color,
+.title-text-color,
+.secondary-text-color,
+.post-container,
+.index-selection-box {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }

@@ -1,0 +1,10 @@
+<div class="secondary-text-color breadcrumbs mt-1">
+  <a href="{{ '/' | relative_url }}">Home</a>
+  {% if page.categories.size > 0 %}
+    {% assign section = page.categories | first %}
+    / <a href="{{ section | prepend: '/' | relative_url }}">{{ section | capitalize }}</a>
+    / {{ page.title }}
+  {% else %}
+    / {{ page.title }}
+  {% endif %}
+</div>

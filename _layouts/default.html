@@ -4,6 +4,15 @@
 <html lang="en">
 
 <head>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { }
+    })();
+  </script>
   {% include favicons.html %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +70,17 @@
       <a class="secondary-text-color" href="{{ '/about' | relative_url }}">About</a>
       <a class="secondary-text-color" href="{{ '/projects' | relative_url }}">Projects</a>
       <a class="secondary-text-color" href="{{ '/blogs' | relative_url }}">Blogs</a>
+      <button type="button" class="theme-toggle" id="theme-toggle"
+        aria-label="Toggle light and dark mode">
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+          <path fill="currentColor"
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+          <path fill="currentColor"
+            d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm0-16.5a1 1 0 0 1 1 1V4a1 1 0 1 1-2 0V2.5a1 1 0 0 1 1-1zm0 17a1 1 0 0 1 1 1V21.5a1 1 0 1 1-2 0V19.5a1 1 0 0 1 1-1zM4.22 4.22a1 1 0 0 1 1.42 0l1.06 1.06a1 1 0 1 1-1.42 1.42L4.22 5.64a1 1 0 0 1 0-1.42zm12.02 12.02a1 1 0 0 1 1.42 0l1.06 1.06a1 1 0 0 1-1.42 1.42l-1.06-1.06a1 1 0 0 1 0-1.42zM1.5 12a1 1 0 0 1 1-1H4a1 1 0 1 1 0 2H2.5a1 1 0 0 1-1-1zm17 0a1 1 0 0 1 1-1H21.5a1 1 0 1 1 0 2H19.5a1 1 0 0 1-1-1zM4.22 19.78a1 1 0 0 1 0-1.42l1.06-1.06a1 1 0 1 1 1.42 1.42L5.64 19.78a1 1 0 0 1-1.42 0zm12.02-12.02a1 1 0 0 1 0-1.42l1.06-1.06a1 1 0 1 1 1.42 1.42L17.66 7.76a1 1 0 0 1-1.42 0z" />
+        </svg>
+      </button>
     </div>
   </nav>
 
@@ -149,6 +169,28 @@
     </div>
     <p class="copyright">© 2025 All rights reserved.</p>
   </section>
+  <script>
+    (function () {
+      var button = document.getElementById('theme-toggle');
+      if (!button) return;
+
+      function currentTheme() {
+        return document.documentElement.getAttribute('data-theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      }
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        try { localStorage.setItem('theme', theme); } catch (e) { }
+        button.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+
+      setTheme(currentTheme());
+      button.addEventListener('click', function () {
+        setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
 </body>
 
 </html>
