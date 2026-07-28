@@ -18,17 +18,17 @@ layout: default
       <h5 class="secondary-text-color">What do you want to explore?</h5>
     </div>
     <div class="column col-4 col-md-6 col-sm-12">
-      <a class="index-selection-box" href="/about">
+      <a class="index-selection-box" href="{{ '/about' | relative_url }}">
         <p class="title-text-color">About</p>
       </a>
     </div>
     <div class="column col-4 col-md-6 col-sm-12">
-      <a class="index-selection-box" href="/projects">
+      <a class="index-selection-box" href="{{ '/projects' | relative_url }}">
         <p class="title-text-color">Projects</p>
       </a>
     </div>
     <div class="column col-4 col-md-6 col-sm-12">
-      <a class="index-selection-box" href="/blogs">
+      <a class="index-selection-box" href="{{ '/blogs' | relative_url }}">
         <p class="title-text-color">Blogs</p>
       </a>
     </div>
@@ -38,7 +38,7 @@ layout: default
   <p class="title-text-color text-lg font-semibold">Recent Posts:</p>
   <div class="recent-posts">
     {% for post in site.categories.blogs limit:2 %}
-    <a class="recent-post secondary-text-color" href="{{ post.url }}">
+    <a class="recent-post secondary-text-color" href="{{ post.url | relative_url }}">
       <p class="title-text-color text-lg font-semibold">{{ post.title }}</p>
       <div class="post-excerpt">{{ post.excerpt | strip_html | truncate: 80 }}</div>
     </a>

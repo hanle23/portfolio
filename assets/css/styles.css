@@ -1,11 +1,11 @@
 @font-face {
   font-family: Meslo LG;
-  src: url('/assets/fonts/meslolg/MesloLGM-Regular.ttf');
+  src: url('../fonts/meslolg/MesloLGM-Regular.ttf');
 }
 
 @font-face {
   font-family: Magnetar;
-  src: url('/assets/fonts/magnetar_2/Magnetar.otf');
+  src: url('../fonts/magnetar_2/Magnetar.otf');
 }
 
 

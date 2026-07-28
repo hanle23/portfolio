@@ -6,7 +6,7 @@ title: Blogs - Han Le
 <div class="page-container gap-1">
   <div class="secondary-text-color breadcrumbs mt-1">
     {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
-    <a href="/">Home</a>
+    <a href="{{ '/' | relative_url }}">Home</a>
     {% for crumb in crumbs offset: 1 %}
       {% if forloop.last %}
         / {{ page.title }}
@@ -18,7 +18,7 @@ title: Blogs - Han Le
   <p class="title-text-color text-xl">Blogs</p>
   <div class="items">
     {% for post in site.categories.blogs %}
-    <a class="item" href="{{ post.url }}">
+    <a class="item" href="{{ post.url | relative_url }}">
       <div class="post-container secondary-text-color">
         <p class="title-text-color text-lg font-semibold">{{post.title}}</p>
         {{ post.content | truncate: 120}}
